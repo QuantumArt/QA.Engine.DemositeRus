@@ -1,0 +1,168 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<schema connectionStringName="qp_database" class="PostgreQpDataContext" namespace="MTS.IR.Postgre.DAL" useLongUrls="true" replaceUrls="true" dbIndependent="true" isPartial="false" sendNotifications="false" siteName="main_site" siteId="52" forStage="false" connectionString="Host=MSCPGSQL01;Database=mts_ir;Username=postgres;Password=&quot;1q2w-p=[&quot;" connectionStringObject="System.Configuration.ConfigurationManager.ConnectionStrings" dbType="postgres">
+  <content id="10609" name="ItemDefinitionConstraint" mapped_name="QPItemDefinitionConstraint" plural_mapped_name="QPItemDefinitionConstraints" use_default_filtration="true" virtual="0" user_query="0" split_articles="true">
+    <attribute name="Target" mapped_back_name="AllowDefinition" mapped_name="Target" id="47908" type="O2M" is_localization="false" related_content_id="538" has_m2o="false" />
+    <attribute name="Source" mapped_back_name="QPItemDefinitionConstraints_2" mapped_name="Source" id="47909" type="O2M" is_localization="false" related_content_id="538" has_m2o="true" />
+  </content>
+  <content id="10663" name="AB tests" mapped_name="AbTest" plural_mapped_name="AbTests" use_default_filtration="true" virtual="0" user_query="0" split_articles="true">
+    <attribute name="Title" mapped_name="Title" id="48204" type="String" is_localization="false" size="255" />
+    <attribute name="Enabled" mapped_name="Enabled" id="48205" type="Boolean" is_localization="false" />
+    <attribute name="Percentage" mapped_name="Percentage" id="48206" type="String" is_localization="false" size="255" />
+    <attribute name="StartDate" mapped_name="StartDate" id="48207" type="DateTime" is_localization="false" />
+    <attribute name="EndDate" mapped_name="EndDate" id="48208" type="DateTime" is_localization="false" />
+    <attribute name="Comment" mapped_name="Comment" id="48209" type="Textbox" is_localization="false" />
+    <attribute name="ABTestContainers" mapped_name="ABTestContainers" id="48212" type="M2O" is_localization="false" related_content_id="10664" related_attribute_id="48211" />
+  </content>
+  <content id="10664" name="AB test container" mapped_name="AbTestBaseContainer" plural_mapped_name="AbTestBaseContainers" use_default_filtration="true" virtual="0" user_query="0" split_articles="true">
+    <attribute name="ParentTest" mapped_back_name="ABTestContainers" mapped_name="ParentTest" id="48211" type="O2M" is_localization="false" related_content_id="10663" has_m2o="true" />
+    <attribute name="Description" mapped_name="Description" id="48213" type="String" is_localization="false" size="255" />
+    <attribute name="AllowedUrlPatterns" mapped_name="AllowedUrlPatterns" id="48214" type="Textbox" is_localization="false" />
+    <attribute name="DeniedUrlPatterns" mapped_name="DeniedUrlPatterns" id="48215" type="Textbox" is_localization="false" />
+    <attribute name="Domain" mapped_name="Domain" id="48216" type="String" is_localization="false" size="255" />
+    <attribute name="Precondition" mapped_name="Precondition" id="48217" type="Textbox" is_localization="false" />
+    <attribute name="Arguments" mapped_name="Arguments" id="48218" type="Textbox" is_localization="false" />
+    <attribute name="Type" mapped_name="Type" id="48220" type="Numeric" is_localization="false" size="0" is_long="false" is_classifier="true" use_inheritance="true" />
+  </content>
+  <content id="10665" name="AB test scripts" mapped_name="AbTestScript" plural_mapped_name="AbTestScripts" use_default_filtration="true" virtual="0" user_query="0" split_articles="true">
+    <attribute name="Container" mapped_back_name="ScriptsInContainer" mapped_name="Container" id="48225" type="O2M" is_localization="false" related_content_id="10666" has_m2o="true" />
+    <attribute name="Description" mapped_name="Description" id="48228" type="String" is_localization="false" size="255" />
+    <attribute name="VersionNumber" mapped_name="VersionNumber" id="48226" type="Numeric" is_localization="false" size="0" is_long="false" />
+    <attribute name="ScriptText" mapped_name="ScriptText" id="48227" type="Textbox" is_localization="false" />
+  </content>
+  <content id="10666" name="Scripts container" mapped_name="AbTestScriptContainer" plural_mapped_name="AbTestScriptContainers" use_default_filtration="true" virtual="0" user_query="0" split_articles="true">
+    <attribute name="BaseContainer" mapped_back_name="ScriptContainers" mapped_name="BaseContainer" id="48224" type="O2M" is_localization="false" related_content_id="10664" classifier_attribute_id="48220" has_m2o="false" />
+    <attribute name="Scripts" mapped_name="ScriptsInContainer" id="48229" type="M2O" is_localization="false" related_content_id="10665" related_attribute_id="48225" />
+  </content>
+  <content id="10667" name="Client redirects container" mapped_name="AbTestClientRedirectContainer" plural_mapped_name="AbTestClientRedirectContainers" use_default_filtration="true" virtual="0" user_query="0" split_articles="true">
+    <attribute name="BaseContainer" mapped_back_name="ClientRedirectContainers" mapped_name="BaseContainer" id="48230" type="O2M" is_localization="false" related_content_id="10664" classifier_attribute_id="48220" has_m2o="false" />
+    <attribute name="ClientRedirects" mapped_name="ClientRedirectsInContainer" id="48232" type="M2O" is_localization="false" related_content_id="10668" related_attribute_id="48231" />
+  </content>
+  <content id="10668" name="Client  for AB testing" mapped_name="AbTestClientRedirect" plural_mapped_name="AbTestClientRedirects" use_default_filtration="true" virtual="0" user_query="0" split_articles="true">
+    <attribute name="Container" mapped_back_name="ClientRedirectsInContainer" mapped_name="Container" id="48231" type="O2M" is_localization="false" related_content_id="10667" has_m2o="true" />
+    <attribute name="VersionNumber" mapped_name="VersionNumber" id="48233" type="String" is_localization="false" size="255" />
+    <attribute name="RedirectUrl" mapped_name="RedirectUrl" id="48234" type="String" is_localization="false" size="255" />
+  </content>
+  <content id="538" name="ItemDefinition" mapped_name="QPDiscriminator" plural_mapped_name="QPDiscriminators" use_default_filtration="true" virtual="0" user_query="0" split_articles="true">
+    <attribute name="Title" mapped_name="Title" id="27506" type="String" is_localization="false" size="255" />
+    <attribute name="Name" mapped_name="Name" id="27539" type="String" is_localization="false" size="255" />
+    <attribute name="PreferredContentId" mapped_name="PreferredContentId" id="27540" type="Numeric" is_localization="false" size="0" is_long="false" />
+    <attribute name="TypeName" mapped_name="TypeName" id="27541" type="String" is_localization="false" size="255" />
+    <attribute name="CategoryName" mapped_name="CategoryName" id="27542" type="String" is_localization="false" size="255" />
+    <attribute name="Description" mapped_name="Description" id="27543" type="String" is_localization="false" size="512" />
+    <attribute name="IconUrl" mapped_name="IconUrl" id="27544" type="Image" is_localization="false" />
+    <attribute name="IconClass" mapped_name="IconClass" id="68600" type="String" is_localization="false" size="255" />
+    <attribute name="IconIntent" mapped_name="IconIntent" id="68601" type="String" is_localization="false" size="255" />
+    <attribute name="IsPage" mapped_name="IsPage" id="27545" type="Boolean" is_localization="false" />
+    <attribute name="AllowedZones" mapped_name="AllowedZones" id="27546" type="String" is_localization="false" size="255" />
+    <attribute name="AllowedItemDefinitions1" mapped_name="AllowedItemDefinitions1" id="27552" type="M2M" is_localization="false" related_content_id="538" link_id="88" use_separate_reverse_views="false" />
+    <attribute name="FilterPartByUrl" mapped_name="FilterPartByUrl" id="27553" type="Boolean" is_localization="false" />
+    <attribute name="AllowedItemDefinitions" mapped_name="AllowedItemDefinitions" id="47910" type="M2O" is_localization="false" related_content_id="10609" related_attribute_id="47909" />
+  </content>
+  <content id="540" name="Localization" mapped_name="QPCulture" plural_mapped_name="QPCultures" use_default_filtration="true" virtual="0" user_query="0" split_articles="true">
+    <attribute name="Title" mapped_name="Title" id="27517" type="String" is_localization="false" size="255" />
+    <attribute name="Name" mapped_name="Name" id="27518" type="String" is_localization="false" size="255" />
+    <attribute name="Icon" mapped_name="Icon" id="27519" type="Image" is_localization="false" />
+  </content>
+  <content id="537" name="AbstractItem" mapped_name="QPAbstractItem" plural_mapped_name="QPAbstractItems" use_default_filtration="true" virtual="0" user_query="0" split_articles="true">
+    <attribute name="Title" mapped_name="Title" id="27505" type="String" is_localization="false" size="255" />
+    <attribute name="Name" mapped_name="Name" id="27507" type="String" is_localization="false" size="255" />
+    <attribute name="Parent" mapped_back_name="Children" mapped_name="Parent" id="27508" type="O2M" is_localization="false" related_content_id="537" has_m2o="false" />
+    <attribute name="IsVisible" mapped_name="IsVisible" id="27509" type="Boolean" is_localization="false" />
+    <attribute name="IsPage" mapped_name="IsPage" id="68612" type="Boolean" is_localization="false" />
+    <attribute name="ZoneName" mapped_name="ZoneName" id="27512" type="String" is_localization="false" size="255" />
+    <attribute name="AllowedUrlPatterns" mapped_name="AllowedUrlPatterns" id="27513" type="Textbox" is_localization="false" />
+    <attribute name="DeniedUrlPatterns" mapped_name="DeniedUrlPatterns" id="27514" type="Textbox" is_localization="false" />
+    <attribute name="Description" mapped_name="Description" id="27515" type="String" is_localization="false" size="500" />
+    <attribute name="Discriminator" mapped_back_name="Items" mapped_name="Discriminator" id="27516" type="O2M" is_localization="false" related_content_id="538" has_m2o="false" />
+    <attribute name="VersionOf" mapped_back_name="Versions" mapped_name="VersionOf" id="27520" type="O2M" is_localization="false" related_content_id="537" has_m2o="false" />
+    <attribute name="Culture" mapped_back_name="AbstractItems" mapped_name="Culture" id="27521" type="O2M" is_localization="false" related_content_id="540" has_m2o="false" />
+    <attribute name="Keywords" mapped_name="Keywords" id="27533" type="String" is_localization="false" size="512" />
+    <attribute name="MetaDescription" mapped_name="MetaDescription" id="27534" type="String" is_localization="false" size="512" />
+    <attribute name="Tags" mapped_name="Tags" id="27535" type="Textbox" is_localization="false" />
+    <attribute name="IsInSiteMap" mapped_name="IsInSiteMap" id="27536" type="Boolean" is_localization="false" />
+    <attribute name="IndexOrder" mapped_name="IndexOrder" id="27537" type="Numeric" is_localization="false" size="0" is_long="false" />
+    <attribute name="ExtensionId" mapped_name="ExtensionId" id="27538" type="Numeric" is_localization="false" size="0" is_long="false" is_classifier="true" use_inheritance="true" />
+    <attribute name="ContentId" mapped_name="ContentId" id="37906" type="Numeric" is_localization="false" size="0" is_long="false" />
+    <attribute name="TitleFormat" mapped_back_name="Item" mapped_name="TitleFormat" id="68516" type="O2M" is_localization="false" related_content_id="30736" has_m2o="false" />
+  </content>
+  <content id="30745" name="Posts" mapped_name="BlogPost" plural_mapped_name="BlogPosts" use_default_filtration="true" virtual="0" user_query="0" split_articles="true">
+    <attribute name="Title" mapped_name="Title" id="68556" type="String" is_localization="false" size="255" />
+    <attribute name="Brief" mapped_name="Brief" id="68567" type="Textbox" is_localization="false" />
+    <attribute name="PostDate" mapped_name="PostDate" id="68568" type="Date" is_localization="false" />
+    <attribute name="Category" mapped_back_name="PostsInCategory" mapped_name="Category" id="68569" type="O2M" is_localization="false" related_content_id="30746" has_m2o="false" />
+    <attribute name="Text" mapped_name="Text" id="68570" type="VisualEdit" is_localization="false" />
+    <attribute name="Tags" mapped_name="Tags" id="68571" type="M2M" is_localization="false" related_content_id="30747" link_id="140" use_separate_reverse_views="false" />
+    <attribute name="Image" mapped_name="Image" id="68572" type="Image" is_localization="false" />
+    <attribute name="subtitle" mapped_name="Subtitle" id="68613" type="String" is_localization="false" size="255" />
+  </content>
+  <content id="30757" name="NewsPosts" mapped_name="NewsPost" plural_mapped_name="NewsPosts" use_default_filtration="true" virtual="0" user_query="0" split_articles="true">
+    <attribute name="Title" mapped_name="Title" id="68618" type="String" is_localization="false" size="255" />
+    <attribute name="Brief" mapped_name="Brief" id="68619" type="Textbox" is_localization="false" />
+    <attribute name="PostDate" mapped_name="PostDate" id="68620" type="Date" is_localization="false" />
+    <attribute name="Category" mapped_back_name="NewsPostInCategory" mapped_name="Category" id="68621" type="O2M" is_localization="false" related_content_id="30756" has_m2o="false" />
+    <attribute name="Text" mapped_name="Text" id="68622" type="VisualEdit" is_localization="false" />
+  </content>
+  <content id="30762" name="FoldBoxListItems" mapped_name="FoldBoxListItem" plural_mapped_name="FoldBoxListItems" use_default_filtration="true" virtual="0" user_query="0" split_articles="true">
+    <attribute name="Title" mapped_name="Title" id="68635" type="String" is_localization="false" size="255" />
+    <attribute name="Text" mapped_name="Text" id="68636" type="VisualEdit" is_localization="false" />
+    <attribute name="SortOrder" mapped_name="SortOrder" id="68638" type="Numeric" is_localization="false" size="0" is_long="false" />
+  </content>
+  <content id="30768" name="Meetings" mapped_name="Meeting" plural_mapped_name="Meetings" use_default_filtration="true" virtual="0" user_query="0" split_articles="true">
+    <attribute name="Title" mapped_name="Title" id="68658" type="String" is_localization="false" size="255" />
+    <attribute name="MeetingDate" mapped_name="MeetingDate" id="68659" type="DateTime" is_localization="false" />
+    <attribute name="Text" mapped_name="Text" id="68660" type="VisualEdit" is_localization="false" />
+    <attribute name="IsArchive" mapped_name="IsArchive" id="68661" type="Boolean" is_localization="false" />
+  </content>
+  <content id="30769" name="Events" mapped_name="Event" plural_mapped_name="Events" use_default_filtration="true" virtual="0" user_query="0" split_articles="true">
+    <attribute name="Title" mapped_name="Title" id="68662" type="String" is_localization="false" size="255" />
+    <attribute name="EventDate" mapped_name="EventDate" id="68678" type="DateTime" is_localization="false" />
+    <attribute name="Text" mapped_name="Text" id="68668" type="VisualEdit" is_localization="false" />
+    <attribute name="EventImages" mapped_name="EventImages" id="68669" type="M2M" is_localization="false" related_content_id="30770" link_id="143" use_separate_reverse_views="false" />
+    <attribute name="TextBelow" mapped_name="TextBelow" id="68679" type="VisualEdit" is_localization="false" />
+  </content>
+  <content id="30770" name="EventImages" mapped_name="EventImage" plural_mapped_name="EventImages" use_default_filtration="true" virtual="0" user_query="0" split_articles="true">
+    <attribute name="Title" mapped_name="Title" id="68663" type="String" is_localization="false" size="255" />
+    <attribute name="SortOrder" mapped_name="SortOrder" id="68664" type="Numeric" is_localization="false" size="0" is_long="false" />
+    <attribute name="Image" mapped_name="Image" id="68667" type="Image" is_localization="false" />
+  </content>
+  <content id="30772" name="Reports" mapped_name="Report" plural_mapped_name="Reports" use_default_filtration="true" virtual="0" user_query="0" split_articles="true">
+    <attribute name="Title" mapped_name="Title" id="68680" type="String" is_localization="false" size="255" />
+    <attribute name="ReportDate" mapped_name="ReportDate" id="68681" type="Date" is_localization="false" />
+    <attribute name="Image" mapped_name="Image" id="68686" type="Image" is_localization="false" />
+    <attribute name="AdditionalAttachedImageUrl" mapped_name="AdditionalAttachedImageUrl" id="68693" type="String" is_localization="false" size="255" />
+    <attribute name="Files" mapped_name="Files" id="68690" type="M2M" is_localization="false" related_content_id="30774" link_id="148" use_separate_reverse_views="false" />
+  </content>
+  <content id="30774" name="ReportFiles" mapped_name="ReportFile" plural_mapped_name="ReportFiles" use_default_filtration="true" virtual="0" user_query="0" split_articles="true">
+    <attribute name="Title" mapped_name="Title" id="68687" type="String" is_localization="false" size="255" />
+    <attribute name="SortOrder" mapped_name="SortOrder" id="68688" type="Numeric" is_localization="false" size="0" is_long="false" />
+    <attribute name="File" mapped_name="File" id="68689" type="File" is_localization="false" />
+  </content>
+  <content id="30777" name="BannerItems" mapped_name="BannerItem" plural_mapped_name="BannerItems" use_default_filtration="true" virtual="0" user_query="0" split_articles="true">
+    <attribute name="Text" mapped_name="Text" id="68702" type="VisualEdit" is_localization="false" />
+    <attribute name="SortOrder" mapped_name="SortOrder" id="68703" type="Numeric" is_localization="false" size="0" is_long="false" />
+    <attribute name="URL" mapped_name="URL" id="68704" type="String" is_localization="false" size="255" />
+    <attribute name="Image" mapped_name="Image" id="68708" type="Image" is_localization="false" />
+  </content>
+  <content id="30746" name="Categories" mapped_name="BlogCategory" plural_mapped_name="BlogCategories" use_default_filtration="true" virtual="0" user_query="0" split_articles="false">
+    <attribute name="Title" mapped_name="Title" id="68557" type="String" is_localization="false" size="255" />
+    <attribute name="SortOrder" mapped_name="SortOrder" id="68576" type="Numeric" is_localization="false" size="0" is_long="false" />
+  </content>
+  <content id="30756" name="NewsCategories" mapped_name="NewsCategory" plural_mapped_name="NewsCategories" use_default_filtration="true" virtual="0" user_query="0" split_articles="false">
+    <attribute name="Title" mapped_name="Title" id="68615" type="String" is_localization="false" size="255" />
+    <attribute name="AlternativeTitle" mapped_name="AlternativeTitle" id="68627" type="String" is_localization="false" size="255" />
+    <attribute name="Alias" mapped_name="Alias" id="68628" type="String" is_localization="false" size="255" />
+    <attribute name="SortOrder" mapped_name="SortOrder" id="68617" type="Numeric" is_localization="false" size="0" is_long="false" />
+    <attribute name="ShowOnStart" mapped_name="ShowOnStart" id="68629" type="Boolean" is_localization="false" />
+  </content>
+  <content id="30747" name="Tags" mapped_name="BlogTag" plural_mapped_name="BlogTags" use_default_filtration="true" virtual="0" user_query="0" split_articles="false">
+    <attribute name="Title" mapped_name="Title" id="68558" type="String" is_localization="false" size="255" />
+  </content>
+  <link id="88" self="1" content_id="538" linked_content_id="538" mapped_name="ItemDefinitionItemDefinitionArticle" plural_mapped_name="ItemDefinitionItemDefinitionArticles" />
+  <link id="140" self="0" content_id="30745" linked_content_id="30747" mapped_name="PostsTagsArticle" plural_mapped_name="PostsTagsArticles" />
+  <link id="143" self="0" content_id="30769" linked_content_id="30770" mapped_name="EventsEventImagesArticle" plural_mapped_name="EventsEventImagesArticles" />
+  <link id="148" self="0" content_id="30772" linked_content_id="30774" mapped_name="ReportsReportFilesArticle" plural_mapped_name="ReportsReportFilesArticles" />
+  <status_type id="141" name="Created" site_id="52" />
+  <status_type id="142" name="Approved" site_id="52" />
+  <status_type id="143" name="Published" site_id="52" />
+  <status_type id="144" name="None" site_id="52" />
+</schema>

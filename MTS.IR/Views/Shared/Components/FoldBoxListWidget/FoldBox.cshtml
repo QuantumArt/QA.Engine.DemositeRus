@@ -1,0 +1,30 @@
+﻿<section class="foldbox">
+  <div class="wrapper">
+    <div class="page__block">
+      <div class="foldbox-list" data-foldbox-list="committees">
+        <div class="foldbox-list__button">
+          <button class="button" data-on="Show all" data-off="Hide all" style="min-width: 120px;">Show all</button>
+        </div>
+        <div class="foldbox-list__group">
+          @foreach (var item in Model.Items)
+          {
+            <div class="foldbox-list__item">
+              <div class="foldbox" data-foldbox="@item.Id">
+                <div class="foldbox__head" data-foldbox-head>
+                  <div class="foldbox__title">@item.Title</div>
+                  <div class="foldbox__arrow"></div>
+                </div>
+                <div class="foldbox__body" data-foldbox-body>
+                  <div class="foldbox__box">
+                    @Html.Raw(item.Text)
+                  </div>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+

@@ -1,0 +1,32 @@
+﻿@model MTS.IR.ViewModels.AnnualReportsPageViewModel
+
+
+<section class="page__section">
+  <div class="wrapper">
+    @await Html.PartialAsync("../_BreadCrumbs.cshtml", Model.BreadCrumbs)
+    <h1 class="h1 center">@Model.Title</h1>
+    <div class="page__block">
+      <h3 class="h3">Latest Annual Report</h3>
+      <div class="report-card">
+        <div class="report-card__img">
+          <img src=@Model.Report.Image alt="">
+          <p class="center">@Model.Report.Title</p>
+        </div>
+        <div class="report-card__body">
+          <div class="report-card__title">@Model.Report.Title</div>
+          <div class="report-card__docs">
+            @foreach (var file in Model.Report.Files)
+            {
+              <div class="report-card__doc">
+                <a class="document q4-icon_link" href=@Uri.EscapeUriString(file.FileUrl) type="">@file.Title</a>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+@await Component.WidgetZone(Html, "ContentBelow")

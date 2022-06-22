@@ -1,0 +1,22 @@
+﻿@model MTS.IR.ViewModels.NewsDetailsViewModel
+
+<main class="main">
+  <div class="page page-news-detail">
+    <div class="wrapper">
+      @await Html.PartialAsync("../_BreadCrumbs.cshtml", Model.BreadCrumbs)
+      <section class="page__section">
+        <div class="page-news-detail__box">
+          <h1 class="page__main-title">@Model.Title</h1>
+          <div class="page-news-detail__date">@Model.Date.ToString("MMMM d, yyyy")</div>
+          <div class="page-news-detail__descr">
+            @Html.Raw(Model.Text)
+          </div>
+          <div class="page-news-detail__link"><a class="read-more" href="@Model.AllnewsUrl">VIEW ALL NEWS</a></div>
+          <div class="page-news-detail__note">
+            @Model.CommonText
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</main>

@@ -1,0 +1,121 @@
+﻿
+@model MTS.IR.ViewModels.NewsPageViewModel
+<main class="main">
+  <div class="page page-news" data-news-page>
+    <div class="wrapper">
+      @await Html.PartialAsync("../_BreadCrumbs.cshtml", Model.BreadCrumbs)
+      <section class="page__section">
+        <h1 class="page__main-title">@Model.Header</h1>
+        <div class="page-news__filters">
+          <div class="page-news__filters-item">
+            <div class="select">
+              <div class="select__group">
+                <label class="select__label" for="2022">Select Year</label>
+                <div class="select__box">
+                  <select id="2022">
+                    <option value="2022">2022</option>
+                    <option value="2021">2021</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="page-news__filters-item">
+            <div class="select">
+              <div class="select__group">
+                <label class="select__label" for="month">Select Month</label>
+                <div class="select__box">
+                  <select id="month">
+                    <option value="0">All</option>
+                    <option value="1">January</option>
+                    <option value="2">February</option>
+                    <option value="3">March</option>
+                    <option value="4">April</option>
+                    <option value="5">May</option>
+                    <option value="6">June</option>
+                    <option value="7">July</option>
+                    <option value="8">August</option>
+                    <option value="9">September</option>
+                    <option value="10">October</option>
+                    <option value="11">November</option>
+                    <option value="12">December</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <section data-news-section="">
+          <div class="page-news__list">
+            <div class="news-list" data-news-list="">
+              @foreach (var item in Model.Items)
+              {
+                <div class="news-list__item">
+                  <div class="card">
+                    <div class="card__date">@item.Date.ToString("MMMM d, yyyy")</div>
+                    <div class="card__title"><a href="@item.Url">@item.Title</a></div>
+                    <div class="card__descr">@item.Brief</div><a class="read-more card__read-more" href="@item.Url">Read more...</a>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+          @if (Model.PageCount > 1)
+          {
+            <div class="pagination" data-current-page="@Model.CurrentPage">
+              @if (Model.CurrentPage > 1)
+              {
+                <div class="pagination__arrow pagination__arrow--prev"></div>
+              }
+              <ul class="pagination__list">
+                @if (Model.PageCount <= 7)
+                {
+                  @for (int i = 1; i <= Model.PageCount; i++)
+                  {
+                    <li class="pagination__list-item @(i == Model.CurrentPage ? "pagination__list-item--current" : "")" data-page-id="@i"><a href="">@i</a></li>
+                  }
+                }
+                else if (Model.CurrentPage < 5)
+                {
+                  @for (int i = 1; i <= 5; i++)
+                  {
+                    <li class="pagination__list-item @(i == Model.CurrentPage ? "pagination__list-item--current" : "")" data-page-id="@i"><a href="">@i</a></li>
+                  }
+                  <li class="pagination__list-item pagination__list-item--separator">...</li>
+                  <li class="pagination__list-item " data-page-id="@Model.PageCount"><a href="">@Model.PageCount</a></li>
+                }
+                else if (Model.CurrentPage >= Model.PageCount - 3)
+                {
+                  <li class="pagination__list-item " data-page-id="1"><a href="">1</a></li>
+                  <li class="pagination__list-item pagination__list-item--separator">...</li>
+                  @for (int i = Model.PageCount - 4; i <= Model.PageCount; i++)
+                  {
+                    <li class="pagination__list-item @(i == Model.CurrentPage ? "pagination__list-item--current" : "")" data-page-id="@i"><a href="">@i</a></li>
+                  }
+                }
+                else
+                {
+                  <li class="pagination__list-item " data-page-id="1"><a href="">1</a></li>
+                  <li class="pagination__list-item pagination__list-item--separator">...</li>
+                  @for (int i = Model.CurrentPage - 1; i <= Model.CurrentPage + 1; i++)
+                  {
+                    <li class="pagination__list-item @(i == Model.CurrentPage ? "pagination__list-item--current" : "")" data-page-id="@i"><a href="">@i</a></li>
+                  }
+                  <li class="pagination__list-item pagination__list-item--separator">...</li>
+                  <li class="pagination__list-item " data-page-id="@Model.PageCount"><a href="">@Model.PageCount</a></li>
+                }
+              </ul>
+              @if (Model.CurrentPage < Model.PageCount)
+              {
+                <div class="pagination__arrow pagination__arrow--next"></div>
+              }
+            </div>
+          }
+
+        </section>
+
+
+      </section>
+    </div>
+  </div>
+</main>
