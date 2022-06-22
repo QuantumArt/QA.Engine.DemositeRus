@@ -1,0 +1,16 @@
+﻿<section class="page__section">
+  <div class="wrapper">
+    <form class="feedback-form" data-feedback-form action="/feedback/sendfeedback">
+      <div class="feedback-form__item-container">
+        <input class="feedback-form__item" placeholder="Как к вам обращаться" type="text" data-type="text" id="feedback-name" data-error="Неверно набрано имя" name="FeedbackName"><span class="feedback-form__error" data-error-name-field></span>
+      </div>
+      <div class="feedback-form__item-container">
+        <input class="feedback-form__item" placeholder="Телефон или email" type="" data-type="email/tel" id="feedback-mobile-email" data-error="Неверный телефон или Email" name="FeedbackMobileOrEmail"><span class="feedback-form__error" data-error-email-mobile-field></span>
+      </div>
+      <div class="feedback-form__item-container-comment">
+        <textarea class="feedback-form__item feedback-form__item-comment" placeholder="Комментарий" data-type="textarea" id="feedback-text" data-error="Введите описание" name="FeedbackText"></textarea><span class="feedback-form__error" data-error-text-field></span>
+      </div>
+      <button class="feedback-form__submit-btn" type="submit">Отправить</button>
+    </form>
+  </div>
+</section>

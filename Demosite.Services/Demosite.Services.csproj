@@ -1,0 +1,45 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="EmailTemplates\CheckEmail.cshtml" />
+    <None Remove="EmailTemplates\FeedbackEmail.cshtml" />
+    <None Remove="EmailTemplates\NewsEmail.cshtml" />
+    <None Remove="Hosted\CheckEmail.cshtml" />
+    <None Remove="Resource\demo-logo.jpeg" />
+    <None Remove="Resource\demo-logo.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resource\demo-logo.jpeg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="EmailTemplates\CheckEmail.cshtml" />
+    <EmbeddedResource Include="EmailTemplates\FeedbackEmail.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EmailTemplates\NewsEmail.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="LinqKit.Microsoft.EntityFrameworkCore" Version="6.1.2" />
+    <PackageReference Include="QA.DotNetCore.Caching" Version="2.2.1-beta1" />
+    <PackageReference Include="RazorLight" Version="2.1.0" />
+    <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Demosite.Interfaces\Demosite.Interfaces.csproj" />
+    <ProjectReference Include="..\Demosite.Postgre.DAL.NotQP\Demosite.Postgre.DAL.NotQP.csproj" />
+    <ProjectReference Include="..\Demosite.Postgre.DAL\Demosite.Postgre.DAL.csproj" />
+    <ProjectReference Include="..\Demosite.Templates\Demosite.Templates.csproj" />
+  </ItemGroup>
+
+</Project>

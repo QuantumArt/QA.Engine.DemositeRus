@@ -1,0 +1,20 @@
+﻿<div class="page">
+  <section class="page__section">
+    <div class="wrapper">
+      <div class="page__block">
+        <h1 class="h1 center">Ваше сообщение @(ViewBag.IsConfirmed ? "отправлено" : "не отправлено")</h1>
+        <div class="page__text center">
+          @if (ViewBag.IsConfirmed)
+          {
+            <p>Спасибо за ваше обращение</p>
+          }
+          else
+          {
+            <p>Извините, попробуйте позднее еще раз.</p>
+          }
+
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

@@ -1,0 +1,33 @@
+﻿@model IEnumerable<Demosite.ViewModels.MenuItem>
+@using Microsoft.AspNetCore.Html
+
+@{
+  Func<dynamic, IHtmlContent> ShowTree(IEnumerable<Demosite.ViewModels.MenuItem> items) =>
+  @<ul class="unordered-list">
+    @foreach (var item in items)
+    {
+      var isHighLvl = item.Href.Count(t => t == '/') == 1;
+      @if (item.Children.Any())
+      {
+        <li>
+          <a @Html.Raw(item.Children.Any() || isHighLvl ? "class='unordered-list__title'" : "") href=@item.Href>@item.Title</a>
+          @{isHighLvl = false;}
+          @ShowTree(item.Children)(null)
+        </li>
+      }
+      else
+      {
+        <li class="last-li-mapsite">
+          <a @Html.Raw(item.Children.Any() || isHighLvl ? "class='unordered-list__title'" : "") href=@item.Href>@item.Title</a>
+        </li>
+      }
+
+    }
+  </ul>;
+}
+
+<section class="page__section">
+  <div class="wrapper">
+    @ShowTree(@Model)(null)
+  </div>
+</section>

@@ -1,0 +1,89 @@
+﻿@model Demosite.ViewModels.AnnualReportsPageViewModel
+@{
+  var titelReport = Model.Reports.First();
+  var otherReports = Model.Reports.Skip(1);
+}
+
+<section class="page__section">
+  <div class="wrapper">
+    @await Html.PartialAsync("../_BreadCrumbs.cshtml", Model.BreadCrumbs)
+    <h1 class="h1 center">@Model.Title</h1>
+    <div class="page__block">
+      <h3 class="h3">Последние документы</h3>
+      <div class="report-card">
+        <div class="report-card__img">
+          <img src=@titelReport.Image alt="">
+          <p class="center">@titelReport.Title</p>
+        </div>
+        @if (titelReport.Files.Any())
+        {
+          <div class="report-card__body">
+            <div class="report-card__title">@titelReport.Title</div>
+            <div class="report-card__docs">
+
+              @foreach (var file in titelReport.Files)
+              {
+                <div class="report-card__doc">
+                  <a class="document q4-icon_link" href=@Uri.EscapeUriString(file.FileUrl) type="">@file.Title</a>
+                </div>
+              }
+
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+@if (Model.Reports.Count() > 1)
+{
+  <section class="page__section">
+    <div class="wrapper">
+      <div class="page__block">
+        <h3 class="h3">Archive</h3>
+        <div class="report-slider" data-rs>
+          <div class="report-slider__slides" data-rs-slider data-slider-count="@Model.CountReportsToShow">
+            @foreach (var item in @otherReports)
+            {
+              <div class="report-slider__slide">
+                <div class="report-card">
+                  <div class="report-card__img">
+                    @if (string.IsNullOrEmpty(item.AdditionalAttachedImageUrl))
+                    {
+                      <img src=@item.Image alt="">
+                      <p class="center">@item.Title</p>
+                    }
+                    else
+                    {
+                      <a href=@item.AdditionalAttachedImageUrl>
+                        <img src=@item.Image alt="">
+                        <p class="center">@item.Title</p>
+                      </a>
+                    }
+                  </div>
+                  @if (item.Files.Any())
+                  {
+                    <div class="report-card__body">
+                      <div class="report-card__title">@item.Title</div>
+                      <div class="report-card__docs">
+                        @foreach (var file in item.Files)
+                        {
+                          <div class="report-card__doc">
+                            <a class="document q4-icon_link" href=@Uri.EscapeUriString(file.FileUrl) type="">@file.Title</a>
+                          </div>
+                        }
+                      </div>
+                    </div>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+          <div class="report-slider__nav slider-arrow" data-rs-nav></div>
+        </div>
+      </div>
+    </div>
+  </section>
+}
+

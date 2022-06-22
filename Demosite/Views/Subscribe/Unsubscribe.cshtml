@@ -1,0 +1,14 @@
+﻿@model Demosite.Interfaces.Dto.Request.SubscriptionStatus
+
+<div class="page">
+  <section class="page__section">
+    <div class="wrapper">
+      <div class="page__block">
+        <h1 class="h1 center">Вы  @(Model.Success ? "успешно отписались" : "не смогли отписаться")</h1>
+        <div class="page__text center">
+          <p>@Model.Message</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

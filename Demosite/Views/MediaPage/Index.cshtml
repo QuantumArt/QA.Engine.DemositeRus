@@ -1,0 +1,79 @@
+﻿@model Demosite.ViewModels.MediaPageViewModel
+@{
+  var firstDay = Model.Events.FirstOrDefault();
+  var prevDay = Model.Events?.Skip(1);
+}
+
+<section class="page__section">
+  <div class="wrapper">
+    @await Html.PartialAsync("../_BreadCrumbs.cshtml", Model.BreadCrumbs)
+    @if (firstDay != null)
+    {
+      <h1 class="h1 center">@firstDay.Title</h1>
+      <div class="page__block">
+        <div class="event">
+          @Html.Raw(firstDay.Text)
+          <div class="event__gallery">
+            <div class="event__slider" data-es>
+              <div class="event__slider-track" data-es-slider>
+                @foreach (var image in firstDay.Images)
+                {
+                  <div class="event__slider-item"><a href=@image.ImageURL data-fancybox=@firstDay.Id> <img src=@image.ImageURL alt=@image.Title></a></div>
+                }
+              </div>
+              <div class="event__slider-footer">
+                <div class="event__slider-counter" data-es-counter></div>
+                <div class="event__slider-nav" data-es-nav></div>
+              </div>
+            </div>
+          </div>
+          @if (firstDay.TextBelow != null && firstDay.TextBelow.Length > 0)
+          {
+            @Html.Raw(firstDay.TextBelow)
+          }
+        </div>
+      </div>
+    }
+  </div>
+</section>
+
+<section class="page__section">
+  <div class="wrapper">
+    @if (prevDay != null)
+    {
+      @foreach (var item in prevDay)
+      {
+        <div class="foldbox" data-foldbox=@item.Id>
+          <div class="foldbox__head" data-foldbox-head>
+            <div class="foldbox__title">@item.Title</div>
+            <div class="foldbox__arrow"></div>
+          </div>
+          <div class="foldbox__body" data-foldbox-body>
+            <div class="event">
+              @Html.Raw(item.Text)
+              <div class="event__gallery">
+                <div class="event__slider" data-es>
+                  <div class="event__slider-track" data-es-slider>
+                    @foreach (var image in item.Images)
+                    {
+                      <div class="event__slider-item"><a href=@image.ImageURL data-fancybox=@item.Id><img src=@image.ImageURL alt=@image.Title></a></div>
+                    }
+                  </div>
+                  <div class="event__slider-footer">
+                    <div class="event__slider-counter" data-es-counter></div>
+                    <div class="event__slider-nav" data-es-nav></div>
+                  </div>
+                </div>
+              </div>
+              @if (item.TextBelow != null && item.TextBelow.Length > 0)
+              {
+                @Html.Raw(item.TextBelow)
+              }
+            </div>
+          </div>
+        </div>
+      }
+    }
+
+  </div>
+</section>

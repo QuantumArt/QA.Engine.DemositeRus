@@ -1,0 +1,140 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: #{appName}#
+  namespace: #{k8snamepace}#
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: #{appName}#
+  template:
+    metadata:
+      labels:
+        app: #{appName}#
+        logging: enabled
+    spec:
+      containers:
+      - env:
+        - name: ConnectionStrings__DatabaseQPPostgre
+          value: "Server=#{postgre.db.server}#;Database=#{postgre.db.name}#;User Id=#{postgre.db.user}#;Password=#{postgre.db.password}#"
+        - name: QpSettings__IsStage
+          value: "#{isStage}#"
+        - name: QpSettings__DatabaseType
+          value: "postgres"
+        - name: QpSettings__CustomerCode
+          value: "#{customerCode}#"
+        - name: OnScreen__AdminSiteBaseUrl
+          value: "#{onscreenUrl}#"
+        - name: NewsNotificationServiceConfig__NotificationServiceIsActive
+          value: "#{notificationService.isActive}#"
+        - name: NewsNotificationServiceConfig__BaseURLNewsService
+          value: "#{notificationService.baseUrlService}#"
+        - name: NewsNotificationServiceConfig__Subject
+          value: "#{notificationService.subject}#"
+        - name: NewsNotificationServiceConfig__From
+          value: "#{notificationService.from}#"
+        - name: NewsNotificationServiceConfig__SendTimeInterval
+          value: "#{notificationService.sendTimeInterval}#"
+        - name: NewsNotificationServiceConfig__SendTimeStart
+          value: "#{notificationService.sendTimeStart}#"
+        - name: NewsNotificationServiceConfig__CreateRecipientsSize
+          value: "#{notificationService.createRecipientsSize}#"
+        - name: NewsNotificationServiceConfig__MailingPacketSize
+          value: "#{notificationService.mailingPacketSize}#"
+        - name: NewsNotificationServiceConfig__NumberOfAttemptsSending
+          value: "#{notificationService.numberOfAttemptsSending}#"
+        - name: NewsNotificationServiceConfig__TimeIntervalOfAttemptsSending
+          value: "#{notificationService.timeIntervalOfAttemptsSending}#"
+        - name: NewsNotificationServiceConfig__EmailSender__SmtpServer
+          value: "#{notificationService.smtpServer}#"
+        - name: NewsNotificationServiceConfig__EmailSender__SmtpPort
+          value: "#{notificationService.smtpPort}#"
+        - name: NewsNotificationServiceConfig__EmailSender__UserName
+          value: "#{notificationService.userName}#"
+        - name: NewsNotificationServiceConfig__EmailSender__Password
+          value: "#{notificationService.password}#"
+        - name: NewsNotificationServiceConfig__EmailSender__Domain
+          value: "#{notificationService.domain}#"
+        - name: NewsNotificationServiceConfig__EmailSender__UseSsl
+          value: "#{notificationService.useSsl}#"
+        - name: NewsNotificationServiceConfig__EmailConfirmationExpirationTime
+          value: "#{notificationService.emailConfirmationExpirationTime}#"
+        - name: CaptchaSettings__DefaultKey
+          value: "#{captchaSettings.defaultKey}#"
+        - name: CaptchaSettings__FontWarpFactor
+          value: "#{captchaSettings.fontWarpFactor}#"
+        - name: CaptchaSettings__BackgroundNoiseLevel
+          value: "#{captchaSettings.backgroundNoiseLevel}#"
+        - name: CaptchaSettings__LineNoiseLevel
+          value: "#{captchaSettings.lineNoiseLevel}#"
+        - name: CaptchaSettings__Fonts
+          value: "captchaSettings.fonts"
+        - name: CaptchaSettings__Colors
+          value: "captchaSettings.colors"
+        - name: CaptchaSettings__Letters
+          value: "#{captchaSettings.letters}#"
+        - name: CaptchaSettings__Referrer
+          value: "#{captchaSettings.referrer}#"
+        - name: CaptchaSettings__TextLength
+          value: "#{captchaSettings.textLength}#"
+        - name: CaptchaSettings__MaxShift
+          value: "#{captchaSettings.maxShift}#"
+        - name: CaptchaSettings__MinShift
+          value: "#{captchaSettings.minShift}#"
+        - name: CaptchaSettings__MaxAngle
+          value: "#{captchaSettings.maxAngle}#"
+        - name: CaptchaSettings__MinAngle
+          value: "#{captchaSettings.minAngle}#"
+        - name: CaptchaSettings__FontSizeMax
+          value: "#{captchaSettings.fontSizeMax}#"
+        - name: CaptchaSettings__FontSizeMin
+          value: "#{captchaSettings.fontSizeMin}#"
+        - name: CaptchaSettings__CaptchaWidth
+          value: "#{captchaSettings.captchaWidth}#"
+        - name: CaptchaSettings__CaptchaHeight
+          value: "#{captchaSettings.captchaHeight}#"
+        - name: Cache__Duration
+          value: "#{cacheSettings.duration}#"
+        - name: FeedbackSettings__Subject
+          value: "#{feedbackSettings.subject}#"
+        - name: FeedbackSettings__DestinationEmail
+          value: "#{feedbackSettings.destinationEmail}#"
+        - name: FeedbackSettings__FromEmail
+          value: "#{feedbackSettings.fromEmail}#"
+        image: "||registry||/#{imageName}#:||version||"
+        imagePullPolicy: IfNotPresent
+        name: #{appName}#
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            memory: 1Gi
+          requests:
+            memory: 256Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: #{appName}#
+  namespace: #{k8snamepace}#
+spec:
+  ports:
+  - port: 80
+    targetPort: 80
+  selector:
+    app: #{appName}#
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: #{appName}#
+  namespace: #{k8snamepace}#
+spec:
+  rules:
+  - host: #{appHost}#
+    http:
+      paths:
+      - backend:
+          serviceName: #{appName}#
+          servicePort: 80

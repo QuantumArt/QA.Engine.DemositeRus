@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<schema connectionStringName="qp_database" class="QPContext" namespace="QA.Core.Engine.QPData" useLongUrls="true" replaceUrls="true" dbIndependent="true" isPartial="true" sendNotifications="false" siteName="main_site">
+  <content id="10609" name="ItemDefinitionConstraint" mapped_name="QPItemDefinitionConstraint" plural_mapped_name="QPItemDefinitionConstraints" use_default_filtration="true">
+    <attribute name="Target" mapped_back_name="AllowDefinition" />
+    <attribute name="Source" mapped_back_name="QPItemDefinitionConstraints_2" />
+  </content>
+  <content id="538" name="ItemDefinition" mapped_name="QPDiscriminator" plural_mapped_name="QPDiscriminators" use_default_filtration="true">
+    <attribute name="Title" />
+    <attribute name="Name" />
+    <attribute name="PreferredContentId" />
+    <attribute name="TypeName" />
+    <attribute name="CategoryName" />
+    <attribute name="Description" />
+    <attribute name="IconUrl" />
+    <attribute name="IconClass" />
+    <attribute name="IconIntent" />
+    <attribute name="IsPage" />
+    <attribute name="AllowedZones" />
+    <attribute name="AllowedItemDefinitions1" />
+    <attribute name="FilterPartByUrl" />
+    <attribute name="AllowedItemDefinitions" />
+  </content>
+  <content id="540" name="Localization" mapped_name="QPCulture" plural_mapped_name="QPCultures" use_default_filtration="true">
+    <attribute name="Title" />
+    <attribute name="Name" />
+    <attribute name="Icon" />
+  </content>
+  <content id="537" name="AbstractItem" mapped_name="QPAbstractItem" plural_mapped_name="QPAbstractItems" use_default_filtration="true">
+    <attribute name="Title" />
+    <attribute name="Name" />
+    <attribute name="Parent" mapped_back_name="Children" />
+    <attribute name="IsVisible" />
+    <attribute name="IsPage" />
+    <attribute name="ZoneName" />
+    <attribute name="AllowedUrlPatterns" />
+    <attribute name="DeniedUrlPatterns" />
+    <attribute name="Description" />
+    <attribute name="Discriminator" mapped_back_name="Items" />
+    <attribute name="VersionOf" mapped_back_name="Versions" />
+    <attribute name="Culture" mapped_back_name="AbstractItems" />
+    <attribute name="Keywords" />
+    <attribute name="MetaDescription" />
+    <attribute name="Tags" />
+    <attribute name="IsInSiteMap" />
+    <attribute name="IndexOrder" />
+    <attribute name="ExtensionId" />
+    <attribute name="ContentId" />
+    <attribute name="TitleFormat" mapped_back_name="Item" />
+  </content>
+</schema>

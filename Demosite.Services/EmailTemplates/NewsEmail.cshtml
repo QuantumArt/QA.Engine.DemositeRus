@@ -1,0 +1,208 @@
+﻿@using RazorLight;
+@using System.Globalization;
+@*@model Demosite.Postgre.DAL.NotQP.Models.EmailModel;*@
+
+@{
+    Model.LogoImage = (Model.LogoImage != null && Model.LogoImage.Length > 0) ? Model.LogoImage : "";
+}
+
+<!DOCTYPE html>
+<html style="width:100%;font-family: arial, sans-serif;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;padding:0;margin:0;">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <meta name="x-apple-disable-message-reformatting">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta content="telephone=no" name="format-detection">
+  <title></title>
+  <!--[if (mso 16)]>
+  <style type="text/css">
+  a {text-decoration: none;}
+  </style>
+  <![endif]-->
+  <!--[if gte mso 9]><style>sup { font-size: 100% !important; }</style><![endif]-->
+</head>
+<body style="width:100%;font-family:Arial, sans-serif;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;padding:0;Margin:0;">
+    <!--[if gte mso 9]>
+    <v:background xmlns:v="urn:schemas-microsoft-com:vml" fill="t">
+      <v:fill type="tile" color="#f6f6f6"></v:fill>
+    </v:background>
+      <![endif]-->
+    <!--[if mso]>
+    <center>
+    <table>
+        <tr>
+        <td width="600">
+        <![endif]-->
+    <table cellpadding="0" cellspacing="0" class="es-wrapper"
+           style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;padding:0;margin:0;width:100%;height:100%;"
+           width="100%">
+      <tbody>
+        <tr style="border-collapse:collapse;">
+          <td style="padding:0;margin:0;" valign="top">
+            <table align="center" cellpadding="0" cellspacing="0" class="es-content"
+                   style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;table-layout:fixed !important;width:600px"
+                   width="600">
+              <tbody>
+                <tr style="border-collapse:collapse;">
+                  <td align="center" style="padding:0;margin:0;">
+                    <table align="center" bgcolor="#ffffff" cellpadding="0" cellspacing="0"
+                           class="es-content-body"
+                           style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-collapse: collapse; border-spacing: 0px; background-color: ffffff; width: 600px; min-width: 600px;"
+                           width="600">
+                      <tbody>
+                        <tr style="border-collapse:collapse;">
+                          <td align="left" style="padding:0;margin:0;">
+                            <table cellpadding="0" cellspacing="0"
+                                   style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;width:600px;"
+                                   width="600">
+                              <tbody>
+                                <tr style="border-collapse:collapse;">
+                                  <td align="left" style="padding:0;margin:0;">
+                                    <table cellpadding="0" cellspacing="0"
+                                           style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;width:100%;background-size: cover;height: 393px;"
+                                           width="600">
+                                      <!-- demosite Logo -->
+                                      <tbody>
+                                        <tr style="border-collapse:collapse;">
+                                          <td align="left"
+                                              style="padding:0;margin:0;padding-top:35px;vertical-align: top;">
+                                            <a href=""
+                                               data-felis_orig_uri=""
+                                               data-felis_link_id="9690"
+                                               style="text-decoration:none;display: inline-block;padding-right:20px;vertical-align: middle;"
+                                               target="_blank">
+                                              <img src=@Model.LogoImage alt="demosite-logo"
+                                                   style="display:block;border:0;outline:none;-ms-interpolation-mode:bicubic;width:100px;height:40px"
+                                                   width="100"height="40">
+                                            </a>
+                                          </td>
+                                        </tr>
+                                      </tbody>
+                                      <!-- demosite Logo -->
+                                    </table>
+                                  </td>
+                                </tr>
+
+                                <tr style="border-collapse:collapse;">
+                                  <td align="left"
+                                      style="padding:0;margin:0;padding-top:30px;color: #000000;">
+                                    <table cellpadding="0" cellspacing="0"
+                                           style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;width:600px;text-align:center;"
+                                           width="600">
+                                      <tbody>
+                                        <!-- заголовок News -->
+                                        <tr style="border-collapse:collapse;">
+                                          <td align="center"
+                                              style="padding: 0; margin: 0; line-height: 34px; font-size: 30px; font-weight: 900; color: #000000; ">
+                                            Новости
+                                          </td>
+                                        </tr>
+                                        <!-- заголовок News -->
+                                        <!-- блок новостей -->
+                                        @foreach (var news in Model.NewsPosts)
+                                        {
+                                          <tr style="border-collapse:collapse;">
+                                            <td align="left"
+                                                style="padding: 20px; margin: 0; padding-top: 20px; padding-bottom: 30px; line-height: 24px; font-size: 18px; font-weight: 400; padding-bottom: 25px; color: #000000;"
+                                                valign="middle">
+                                              <hr style="color: #808080" />
+                                              @news.PostDate.ToString("MMMM dd, yyyy", CultureInfo.InvariantCulture)
+                                            </td>
+                                          </tr>
+                                          <tr style="border-collapse:collapse;">
+                                            <td align="left"
+                                                style="padding: 20px; margin: 0; padding-top: 20px; padding-bottom: 30px; line-height: 24px; font-size: 25px; font-weight: 400; padding-bottom: 25px; color: #000000;"
+                                                valign="middle">
+                                              @news.Title
+                                            </td>
+                                          </tr>
+                                          <tr style="border-collapse:collapse;">
+                                            <td align="left"
+                                                style="padding: 20px; margin: 0; padding-top: 20px; padding-bottom: 30px; line-height: 24px; font-size: 18px; font-weight: 400; padding-bottom: 25px; color: #000000;"
+                                                valign="middle">
+                                              @Raw(@news.Brief)
+                                            </td>
+                                          </tr>
+                                          <tr style="border-collapse:collapse;">
+                                            <td align="left"
+                                                style="padding: 20px; margin: 0; padding-top: 20px; padding-bottom: 30px; line-height: 24px; font-size: 18px; font-weight: 400; padding-bottom: 25px; color: #000000;"
+                                                valign="middle">
+                                              @{
+                                                  string hrefReadMore = Model.BaseUrl + @"/news_and_events/" + news.Category.Alias + @"/details/" + news.Id;
+                                              }
+                                              <a href="@hrefReadMore" style="text-decoration: underline;" target="_blank">
+                                                Читать...
+                                              </a>.
+                                            </td>
+                                          </tr>
+                                        }
+                                        <!-- блок новостей -->
+                                      </tbody>
+                                    </table>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </td>
+                        </tr>
+
+                        <!-- футер -->
+                        <tr style="border-collapse:collapse;">
+                          <td align="left"
+                              style="padding:0;margin:0;padding-left:48px;padding-right:48px;padding-top:38px;padding-bottom:44px;">
+                            <table cellpadding="0" cellspacing="0"
+                                   style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;"
+                                   width="100%">
+                              <tbody>
+                                <tr style="border-collapse:collapse;">
+                                  <td align="left"
+                                      style="padding:0;margin:0;max-width:600px;"
+                                      valign="top" width="100%">
+                                    <table cellpadding="0" cellspacing="0"
+                                           style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;"
+                                           width="100%">
+                                      <tbody>
+                                        <tr style="border-collapse:collapse;">
+                                          @{
+                                              string confirmCode = Model.Subscriber?.ConfirmCode ?? System.Guid.Empty;
+                                              string hrefUnsubscribe = Model.BaseUrl + $"//subscribe//Unsubscribe?confirmCode={confirmCode}";
+                                          }
+                                          <td align="center"
+                                              style="font-family:arial, sans-serif;padding:0;margin:0;font-size:14px;line-height:18px;font-weight:400;text-align:left;color:#000000;letter-spacing: -0.06px;">
+                                            Вы получили данное сообщение т.к. подписаны на рассылку новостей. Если Вы не желаете более получать рассылку, Вы можете <a href=@hrefUnsubscribe style="text-decoration: underline;" target="_blank">
+                                              отписаться
+                                            </a>.
+                                          </td>
+                                        </tr>
+                                        <tr style="border-collapse:collapse;">
+                                          <td height="20px"
+                                              style="height:20px;"> </td>
+                                        </tr>
+                                        <tr style="border-collapse:collapse;">
+                                          <td align="center"
+                                              style="font-family: arial, sans-serif; padding: 0; margin: 0; font-size: 14px; line-height: 18px; font-weight: 400; text-align: left; color: #000000; letter-spacing: -0.06px;">
+                                            © 2022 Квантум Арт
+                                          </td>
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+</body>
+</html>
