@@ -1,0 +1,46 @@
+﻿
+@model Demosite.ViewModels.MeetingPageViewModel
+<main class="main">
+  <div class="page page-news" data-news-page>
+    <div class="wrapper">
+      @await Html.PartialAsync("../_BreadCrumbs.cshtml", Model.BreadCrumbs)
+      <section class="page__section">
+        <div class="wrapper">
+          <div class="page__block">
+            <h1 class="h1 center">@Model.Header</h1>
+            <ul class="events-list">
+              @foreach (var item in Model.Items.Where(m => m.IsArchive == false))
+              {
+                <li class="events-list__item">
+                  <div class="events-list__title"><a href=@item.URL>@item.Title</a></div>
+                  <div class="events-list__date">@(item.MeetingDate.HasValue ? item.MeetingDate.Value.ToString("MMMM d, yyyy") : "")</div>
+                </li>
+              }
+            </ul>
+          </div>
+          <div class="page__block">
+            <div class="foldbox" data-foldbox="archive">
+              <div class="foldbox__head" data-foldbox-head>
+                <div class="foldbox__title">Archive</div>
+                <div class="foldbox__arrow"></div>
+              </div>
+              <div class="foldbox__body" data-foldbox-body>
+                <div class="foldbox__box">
+                  <ul class="events-list">
+                    @foreach (var item in Model.Items.Where(m => m.IsArchive == true))
+                    {
+                      <li class="events-list__item">
+                        <div class="events-list__title"><a href=@item.URL>@item.Title</a></div>
+                        <div class="events-list__date">@(item.MeetingDate.HasValue ? item.MeetingDate.Value.ToString("MMMM d, yyyy") : "")</div>
+                      </li>
+                    }
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</main>

@@ -1,0 +1,16 @@
+using Microsoft.AspNetCore.Mvc;
+using QA.DotNetCore.Engine.QpData;
+using QA.DotNetCore.Engine.Widgets;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace Demosite.Components
+{
+    public class RecentPostWidgetViewComponent : WidgetComponentBase<AbstractWidget>
+    {
+        public override Task<IViewComponentResult> RenderAsync(AbstractWidget widget, IDictionary<string, object> argumets)
+        {
+            return Task.FromResult<IViewComponentResult>(View(widget));
+        }
+    }
+}

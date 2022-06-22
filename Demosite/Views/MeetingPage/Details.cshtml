@@ -1,0 +1,18 @@
+﻿@model Demosite.ViewModels.MeetingDetailsViewModel
+
+<main class="main">
+  <div class="page page-news-detail">
+    <div class="wrapper">
+      @await Html.PartialAsync("../_BreadCrumbs.cshtml", Model.BreadCrumbs)
+      <section class="page__section">
+        <div class="wrapper">
+          <div class="page__block">
+            <h1 class="h1 center">Shareholders’ Meeting Detail page <br> @(Model.Date.HasValue ? Model.Date.Value.ToString("MMMM d, yyyy") : "")</h1>
+            @Html.Raw(Model.Text)
+          </div>
+          <div class="page__block"><a class="read-more" href=@Model.AllMeetingsUrl>VIEW ALL AGM MATERIALS</a></div>
+        </div>
+      </section>
+    </div>
+  </div>
+</main>

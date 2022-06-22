@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<schema connectionStringName="qp_database" class="PostgreQpDataContext" namespace="Demosite.Postgre.DAL" useLongUrls="true" replaceUrls="true" dbIndependent="true" isPartial="false" sendNotifications="false" siteName="main_site">
+  <content id="10609" name="ItemDefinitionConstraint" mapped_name="QPItemDefinitionConstraint" plural_mapped_name="QPItemDefinitionConstraints" use_default_filtration="true">
+    <attribute name="Target" mapped_back_name="AllowDefinition" />
+    <attribute name="Source" mapped_back_name="QPItemDefinitionConstraints_2" />
+  </content>
+  <content id="10663" name="AB tests" mapped_name="AbTest" plural_mapped_name="AbTests" use_default_filtration="true">
+    <attribute name="Title" />
+    <attribute name="Enabled" />
+    <attribute name="Percentage" />
+    <attribute name="StartDate" />
+    <attribute name="EndDate" />
+    <attribute name="Comment" />
+    <attribute name="ABTestContainers" />
+  </content>
+  <content id="10664" name="AB test container" mapped_name="AbTestBaseContainer" plural_mapped_name="AbTestBaseContainers" use_default_filtration="true">
+    <attribute name="ParentTest" mapped_back_name="ABTestContainers" />
+    <attribute name="Description" />
+    <attribute name="AllowedUrlPatterns" />
+    <attribute name="DeniedUrlPatterns" />
+    <attribute name="Domain" />
+    <attribute name="Precondition" />
+    <attribute name="Arguments" />
+    <attribute name="Type" />
+  </content>
+  <content id="10665" name="AB test scripts" mapped_name="AbTestScript" plural_mapped_name="AbTestScripts" use_default_filtration="true">
+    <attribute name="Container" mapped_back_name="ScriptsInContainer" />
+    <attribute name="Description" />
+    <attribute name="VersionNumber" />
+    <attribute name="ScriptText" />
+  </content>
+  <content id="10666" name="Scripts container" mapped_name="AbTestScriptContainer" plural_mapped_name="AbTestScriptContainers" use_default_filtration="true">
+    <attribute name="BaseContainer" mapped_back_name="ScriptContainers" />
+    <attribute name="Scripts" mapped_name="ScriptsInContainer" />
+  </content>
+  <content id="10667" name="Client redirects container" mapped_name="AbTestClientRedirectContainer" plural_mapped_name="AbTestClientRedirectContainers" use_default_filtration="true">
+    <attribute name="BaseContainer" mapped_back_name="ClientRedirectContainers" />
+    <attribute name="ClientRedirects" mapped_name="ClientRedirectsInContainer" />
+  </content>
+  <content id="10668" name="Client  for AB testing" mapped_name="AbTestClientRedirect" plural_mapped_name="AbTestClientRedirects" use_default_filtration="true">
+    <attribute name="Container" mapped_back_name="ClientRedirectsInContainer" />
+    <attribute name="VersionNumber" />
+    <attribute name="RedirectUrl" />
+  </content>
+  <content id="538" name="ItemDefinition" mapped_name="QPDiscriminator" plural_mapped_name="QPDiscriminators" use_default_filtration="true">
+    <attribute name="Title" />
+    <attribute name="Name" />
+    <attribute name="PreferredContentId" />
+    <attribute name="TypeName" />
+    <attribute name="CategoryName" />
+    <attribute name="Description" />
+    <attribute name="IconUrl" />
+    <attribute name="IconClass" />
+    <attribute name="IconIntent" />
+    <attribute name="IsPage" />
+    <attribute name="AllowedZones" />
+    <attribute name="AllowedItemDefinitions1" />
+    <attribute name="FilterPartByUrl" />
+    <attribute name="AllowedItemDefinitions" />
+  </content>
+  <content id="540" name="Localization" mapped_name="QPCulture" plural_mapped_name="QPCultures" use_default_filtration="true">
+    <attribute name="Title" />
+    <attribute name="Name" />
+    <attribute name="Icon" />
+  </content>
+  <content id="537" name="AbstractItem" mapped_name="QPAbstractItem" plural_mapped_name="QPAbstractItems" use_default_filtration="true">
+    <attribute name="Title" />
+    <attribute name="Name" />
+    <attribute name="Parent" mapped_back_name="Children" />
+    <attribute name="IsVisible" />
+    <attribute name="IsPage" />
+    <attribute name="ZoneName" />
+    <attribute name="AllowedUrlPatterns" />
+    <attribute name="DeniedUrlPatterns" />
+    <attribute name="Description" />
+    <attribute name="Discriminator" mapped_back_name="Items" />
+    <attribute name="VersionOf" mapped_back_name="Versions" />
+    <attribute name="Culture" mapped_back_name="AbstractItems" />
+    <attribute name="Keywords" />
+    <attribute name="MetaDescription" />
+    <attribute name="Tags" />
+    <attribute name="IsInSiteMap" />
+    <attribute name="IndexOrder" />
+    <attribute name="ExtensionId" />
+    <attribute name="ContentId" />
+    <attribute name="TitleFormat" mapped_back_name="Item" />
+  </content>
+  <content id="30745" name="Posts" mapped_name="BlogPost" plural_mapped_name="BlogPosts" use_default_filtration="true">
+    <attribute name="Title" />
+    <attribute name="Brief" />
+    <attribute name="PostDate" />
+    <attribute name="Category" mapped_back_name="PostsInCategory" />
+    <attribute name="Text" />
+    <attribute name="Tags" />
+    <attribute name="Image" />
+    <attribute name="subtitle" mapped_name="Subtitle" />
+  </content>
+  <content id="30757" name="NewsPosts" mapped_name="NewsPost" plural_mapped_name="NewsPosts" use_default_filtration="true">
+    <attribute name="Title" />
+    <attribute name="Brief" />
+    <attribute name="PostDate" />
+    <attribute name="Category" mapped_back_name="NewsPostInCategory" />
+    <attribute name="Text" />
+  </content>
+  <content id="30762" name="FoldBoxListItems" mapped_name="FoldBoxListItem" plural_mapped_name="FoldBoxListItems" use_default_filtration="true">
+    <attribute name="Title" />
+    <attribute name="Text" />
+    <attribute name="SortOrder" />
+  </content>
+  <content id="30768" name="Meetings" mapped_name="Meeting" plural_mapped_name="Meetings" use_default_filtration="true">
+    <attribute name="Title" />
+    <attribute name="MeetingDate" />
+    <attribute name="Text" />
+    <attribute name="IsArchive" />
+  </content>
+  <content id="30769" name="Events" mapped_name="Event" plural_mapped_name="Events" use_default_filtration="true">
+    <attribute name="Title" />
+    <attribute name="EventDate" />
+    <attribute name="Text" />
+    <attribute name="EventImages" />
+    <attribute name="TextBelow" />
+  </content>
+  <content id="30770" name="EventImages" mapped_name="EventImage" plural_mapped_name="EventImages" use_default_filtration="true">
+    <attribute name="Title" />
+    <attribute name="SortOrder" />
+    <attribute name="Image" />
+  </content>
+  <content id="30772" name="Reports" mapped_name="Report" plural_mapped_name="Reports" use_default_filtration="true">
+    <attribute name="Title" />
+    <attribute name="ReportDate" />
+    <attribute name="Image" />
+    <attribute name="AdditionalAttachedImageUrl" />
+    <attribute name="Files" />
+  </content>
+  <content id="30774" name="ReportFiles" mapped_name="ReportFile" plural_mapped_name="ReportFiles" use_default_filtration="true">
+    <attribute name="Title" />
+    <attribute name="SortOrder" />
+    <attribute name="File" />
+  </content>
+  <content id="30777" name="BannerItems" mapped_name="BannerItem" plural_mapped_name="BannerItems" use_default_filtration="true">
+    <attribute name="Text" />
+    <attribute name="SortOrder" />
+    <attribute name="URL" />
+    <attribute name="Image" />
+  </content>
+  <content id="30746" name="Categories" mapped_name="BlogCategory" plural_mapped_name="BlogCategories" use_default_filtration="true">
+    <attribute name="Title" />
+    <attribute name="SortOrder" />
+  </content>
+  <content id="30756" name="NewsCategories" mapped_name="NewsCategory" plural_mapped_name="NewsCategories" use_default_filtration="true">
+    <attribute name="Title" />
+    <attribute name="AlternativeTitle" />
+    <attribute name="Alias" />
+    <attribute name="SortOrder" />
+    <attribute name="ShowOnStart" />
+  </content>
+  <content id="30747" name="Tags" mapped_name="BlogTag" plural_mapped_name="BlogTags" use_default_filtration="true">
+    <attribute name="Title" />
+  </content>
+</schema>

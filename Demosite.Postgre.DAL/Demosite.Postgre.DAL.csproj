@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Update="*.cs">
+      <DependentUpon>QPDataContextGenerator.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="App_Data\PostgreQpDataContextMappingResult.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="App_Data\PostgreQpDataContextMappingResult.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.1" />
+    <PackageReference Include="QP8.EntityFrameworkCore" Version="3.0.2" />
+    <PackageReference Include="Quantumart.AspNetCore" Version="5.0.0-beta" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Demosite.Interfaces\Demosite.Interfaces.csproj" />
+  </ItemGroup>
+
+</Project>
