@@ -1,10 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="EmailTemplates\CheckEmail.cshtml" />
     <None Remove="EmailTemplates\FeedbackEmail.cshtml" />
     <None Remove="EmailTemplates\NewsEmail.cshtml" />
     <None Remove="Hosted\CheckEmail.cshtml" />
@@ -12,28 +13,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="EmailTemplates\CheckEmail.cshtml" />
     <EmbeddedResource Include="EmailTemplates\FeedbackEmail.cshtml">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </EmbeddedResource>
+    <EmbeddedResource Include="EmailTemplates\NewsEmail.cshtml" />
     <Content Include="Resource\mts-logo.jpg">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="EmailTemplates\NewsEmail.cshtml">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="EmailTemplates\CheckEmail.cshtml">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>

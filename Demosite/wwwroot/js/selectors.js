@@ -53,6 +53,12 @@ var selectors = {
     nav: "[data-rs-nav]"
   },
   bannerSlider: {
-    slider: "[data-banner-slider]",
+    slider: "[data-banner-slider]"
+  },
+  feedbackForm: {
+    form: "[data-feedback-form]",
+    errorName: "[data-error-name-field]",
+    errorEmailMobile: "[data-error-email-mobile-field]",
+    errorText: "[data-error-text-field]"
   }
 };

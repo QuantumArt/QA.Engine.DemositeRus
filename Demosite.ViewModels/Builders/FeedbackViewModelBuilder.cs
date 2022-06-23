@@ -27,10 +27,9 @@ namespace Demosite.ViewModels.Builders
         {
             return new FeedbackDto()
             {
-                Email = feedback.Email,
-                Name = feedback.Name,
-                Phone = feedback.PhoneNumber,
-                Commentary = feedback.Commentary
+                EmailOrPhone = feedback.FeedbackMobileOrEmail,
+                Name = feedback.FeedbackName,
+                Commentary = feedback.FeedbackText
             };
         }
     }

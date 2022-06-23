@@ -31,7 +31,7 @@
       "wwwroot/js/fancybox.umd.js",
       "wwwroot/js/event-slider.js",
       "wwwroot/js/report-slider.js",
-      "wwwroot/js/feedback.js"
+      "wwwroot/js/feedback-form.js"
     ],
     // Optionally specify minification options
     "minify": {

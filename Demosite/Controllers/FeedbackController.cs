@@ -15,10 +15,10 @@ namespace Demosite.Controllers
         }
         
         [HttpPost("sendfeedback")]
-        public async Task<IActionResult> SendFeedback([FromBody] FeedbackViewModel feedback)
+        public async Task<IActionResult> SendFeedback([FromForm] FeedbackViewModel feedbackModel)
         {
-            bool result = await _modelBuilder.SendFeedback(feedback);
-            return new JsonResult(new { success = result, message = $"{this.Request.Scheme}://{this.Request.Host}/feedback/feedbacksended?result={result}" });
+            bool result = await _modelBuilder.SendFeedback(feedbackModel);
+            return Redirect($"{this.Request.Scheme}://{this.Request.Host}/feedback/feedbacksended?result={result}");
         }
         [HttpGet("feedbacksended")]
         public async Task<IActionResult> FeedbackSended([FromQuery] bool result)
