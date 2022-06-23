@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <schema connectionStringName="qp_database" class="PostgreQpDataContext" namespace="Demosite.Postgre.DAL" useLongUrls="true" replaceUrls="true" dbIndependent="true" isPartial="false" sendNotifications="false" siteName="main_site">
   <content id="10609" name="ItemDefinitionConstraint" mapped_name="QPItemDefinitionConstraint" plural_mapped_name="QPItemDefinitionConstraints" use_default_filtration="true">
     <attribute name="Target" mapped_back_name="AllowDefinition" />
@@ -85,76 +85,53 @@
     <attribute name="ContentId" />
     <attribute name="TitleFormat" mapped_back_name="Item" />
   </content>
-  <content id="30745" name="Posts" mapped_name="BlogPost" plural_mapped_name="BlogPosts" use_default_filtration="true">
-    <attribute name="Title" />
-    <attribute name="Brief" />
-    <attribute name="PostDate" />
-    <attribute name="Category" mapped_back_name="PostsInCategory" />
-    <attribute name="Text" />
-    <attribute name="Tags" />
-    <attribute name="Image" />
-    <attribute name="subtitle" mapped_name="Subtitle" />
-  </content>
-  <content id="30757" name="NewsPosts" mapped_name="NewsPost" plural_mapped_name="NewsPosts" use_default_filtration="true">
+  <content id="30757" name="Новости" mapped_name="NewsPost" plural_mapped_name="NewsPosts" use_default_filtration="true">
     <attribute name="Title" />
     <attribute name="Brief" />
     <attribute name="PostDate" />
     <attribute name="Category" mapped_back_name="NewsPostInCategory" />
     <attribute name="Text" />
   </content>
-  <content id="30762" name="FoldBoxListItems" mapped_name="FoldBoxListItem" plural_mapped_name="FoldBoxListItems" use_default_filtration="true">
+  <content id="30762" name="Текстовые блоки" mapped_name="FoldBoxListItem" plural_mapped_name="FoldBoxListItems" use_default_filtration="true">
     <attribute name="Title" />
     <attribute name="Text" />
     <attribute name="SortOrder" />
   </content>
-  <content id="30768" name="Meetings" mapped_name="Meeting" plural_mapped_name="Meetings" use_default_filtration="true">
-    <attribute name="Title" />
-    <attribute name="MeetingDate" />
-    <attribute name="Text" />
-    <attribute name="IsArchive" />
-  </content>
-  <content id="30769" name="Events" mapped_name="Event" plural_mapped_name="Events" use_default_filtration="true">
+  <content id="30769" name="События" mapped_name="Event" plural_mapped_name="Events" use_default_filtration="true">
     <attribute name="Title" />
     <attribute name="EventDate" />
     <attribute name="Text" />
     <attribute name="EventImages" />
     <attribute name="TextBelow" />
   </content>
-  <content id="30770" name="EventImages" mapped_name="EventImage" plural_mapped_name="EventImages" use_default_filtration="true">
+  <content id="30770" name="Фото событий" mapped_name="EventImage" plural_mapped_name="EventImages" use_default_filtration="true">
     <attribute name="Title" />
     <attribute name="SortOrder" />
     <attribute name="Image" />
   </content>
-  <content id="30772" name="Reports" mapped_name="Report" plural_mapped_name="Reports" use_default_filtration="true">
+  <content id="30772" name="Группы документов" mapped_name="Report" plural_mapped_name="Reports" use_default_filtration="true">
     <attribute name="Title" />
     <attribute name="ReportDate" />
     <attribute name="Image" />
     <attribute name="AdditionalAttachedImageUrl" />
     <attribute name="Files" />
   </content>
-  <content id="30774" name="ReportFiles" mapped_name="ReportFile" plural_mapped_name="ReportFiles" use_default_filtration="true">
+  <content id="30774" name="Файлы документов" mapped_name="ReportFile" plural_mapped_name="ReportFiles" use_default_filtration="true">
     <attribute name="Title" />
     <attribute name="SortOrder" />
     <attribute name="File" />
   </content>
-  <content id="30777" name="BannerItems" mapped_name="BannerItem" plural_mapped_name="BannerItems" use_default_filtration="true">
+  <content id="30777" name="Слайды баннеров" mapped_name="BannerItem" plural_mapped_name="BannerItems" use_default_filtration="true">
     <attribute name="Text" />
     <attribute name="SortOrder" />
     <attribute name="URL" />
     <attribute name="Image" />
   </content>
-  <content id="30746" name="Categories" mapped_name="BlogCategory" plural_mapped_name="BlogCategories" use_default_filtration="true">
-    <attribute name="Title" />
-    <attribute name="SortOrder" />
-  </content>
-  <content id="30756" name="NewsCategories" mapped_name="NewsCategory" plural_mapped_name="NewsCategories" use_default_filtration="true">
+  <content id="30756" name="Категории новостей" mapped_name="NewsCategory" plural_mapped_name="NewsCategories" use_default_filtration="true">
     <attribute name="Title" />
     <attribute name="AlternativeTitle" />
     <attribute name="Alias" />
     <attribute name="SortOrder" />
     <attribute name="ShowOnStart" />
-  </content>
-  <content id="30747" name="Tags" mapped_name="BlogTag" plural_mapped_name="BlogTags" use_default_filtration="true">
-    <attribute name="Title" />
   </content>
 </schema>

@@ -5,6 +5,7 @@ namespace Demosite.Models.Pages
 {
     public class AnnualReportsPage : AbstractPage
     {
-        public int? ReportItemId => GetDetail<int?>("ReportItem", null);
+        public IEnumerable<int> ReportsItemIds => GetRelationIds("Reports");
+        public int? CountReportToShow => GetDetail<int?>("CountCardToShow", null);
     }
 }

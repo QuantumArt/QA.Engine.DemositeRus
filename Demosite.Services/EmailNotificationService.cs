@@ -28,6 +28,7 @@ namespace Demosite.Services
         private EmailNotificationSettings _settings { get; }
         private ILogger<EmailNotificationService> _logger { get; }
         private string nameService => nameof(EmailNotificationService);
+        private string logoFileName = "";
         private INotificationTemplateEngine _notificationTemplateEngine { get; }
         private IWebHostEnvironment _environment { get; }
         public const string checkEmailName = "Demosite.Services.EmailTemplates.CheckEmail.cshtml";
@@ -227,8 +228,8 @@ namespace Demosite.Services
 
         private async Task SendCheckEmail(EmailNewsSubscriber subscriber)
         {
-            string logoImage = "";
-            string base64ImageRepresentation = await GetConvertedLogoImage(logoImage);
+            
+            string base64ImageRepresentation = await GetConvertedLogoImage(logoFileName);
             string body = "";
             var model = new EmailModel()
             {
@@ -325,7 +326,7 @@ namespace Demosite.Services
                 _logger.LogInformation(nameService + $": not found new news to send");
                 return;
             }
-            string base64ImageRepresentation = await GetConvertedLogoImage();
+            string base64ImageRepresentation = await GetConvertedLogoImage(logoFileName);
             var query = dbContext.EmailNewsSubscribers
                         .AsNoTracking()
                         .Where(s => s.IsActive);

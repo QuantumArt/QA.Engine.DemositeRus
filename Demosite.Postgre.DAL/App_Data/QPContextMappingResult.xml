@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <schema connectionStringName="qp_database" class="QPContext" namespace="QA.Core.Engine.QPData" useLongUrls="true" replaceUrls="true" dbIndependent="true" isPartial="true" sendNotifications="false" siteName="main_site" siteId="52" forStage="false" connectionString="Host=MSCPGSQL01;Database=qa_demosite_rus;Username=postgres;Password=&quot;1q2w-p=[&quot;" connectionStringObject="System.Configuration.ConfigurationManager.ConnectionStrings">
   <content id="10609" name="ItemDefinitionConstraint" mapped_name="QPItemDefinitionConstraint" plural_mapped_name="QPItemDefinitionConstraints" use_default_filtration="true" virtual="0" user_query="0" split_articles="true">
     <attribute name="Target" mapped_back_name="AllowDefinition" mapped_name="Target" id="47908" type="O2M" is_localization="false" related_content_id="538" has_m2o="false" />

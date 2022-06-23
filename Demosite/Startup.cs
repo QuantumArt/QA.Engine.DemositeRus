@@ -84,28 +84,24 @@ namespace Demosite
             });
 
             //сервисы слоя данных
-            services.AddScoped<IBlogService, BlogService>();
             services.AddScoped<INewsService, NewsService>();
             services.AddScoped<IFoldBoxListService, FoldBoxListService>();
-            services.AddScoped<IMeetingService, MeetingService>();
             services.AddScoped<IMediaService, MediaService>();
-            services.AddScoped<IAnnualReportsService, AnnualReportsService>();
+            services.AddScoped<IReportsService, ReportsService>();
             services.AddScoped<IFeedbackService, FeedbackService>();
             services.AddScoped<IBannerWidgetService, BannerWidgetService>();
 
+
             //сервисы построения view-model
-            services.AddScoped<BlogPageViewModelBuilder>();
             services.AddScoped<NewsPageViewModelBuilder>();
             services.AddScoped<NewsRoomViewModelBuilder>();
             services.AddSingleton<MenuViewModelBuilder>();
             services.AddScoped<FoldBoxListViewModelBuilder>();
             services.AddScoped<SubscribeViewModelBuilder>();
-            services.AddScoped<MeetingPageViewModelBuilder>();
             services.AddScoped<MediaPageViewModelBuilder>();
-            services.AddScoped<AnnualReportsPageViewModelBuilder>();
             services.AddScoped<FeedbackViewModelBuilder>();
-            services.AddScoped<ReportBoxViewModelBuilder>();
             services.AddScoped<BannerWidgetViewModelBuilder>();
+            services.AddScoped<AnnualReportPageViewModelBuilder>();
 
             services.AddAbTestServices(options =>
             {

@@ -9,7 +9,8 @@ namespace Demosite.ViewModels
     public class AnnualReportsPageViewModel
     {
         public string Title { get; set; }
-        public ReportItem Report { get; set; }
+        public List<ReportItem> Reports { get; set; } = new List<ReportItem>();
+        public int? CountReportsToShow { get; set; }
         public List<BreadCrumbViewModel> BreadCrumbs { get; set; } = new List<BreadCrumbViewModel>();
     }
 

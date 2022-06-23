@@ -7,10 +7,10 @@ using System.Linq;
 
 namespace Demosite.Services
 {
-    public class AnnualReportsService: IAnnualReportsService
+    public class ReportsService: IReportsService
     {
         private PostgreQpDataContext qpDataContext { get; }
-        public AnnualReportsService(IDbContext context)
+        public ReportsService(IDbContext context)
         {
             qpDataContext = context as PostgreQpDataContext;
         }
@@ -34,7 +34,7 @@ namespace Demosite.Services
         {
             if(id.HasValue)
             {
-                return Map(qpDataContext.Reports.FirstOrDefault(r => r.Id == id.Value));
+                return Map(qpDataContext.Reports.Include(r => r.Files).FirstOrDefault(r => r.Id == id.Value));
             }
             else
             {

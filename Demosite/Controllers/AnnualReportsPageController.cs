@@ -7,15 +7,16 @@ namespace Demosite.Controllers
 {
     public class AnnualReportsPageController : ContentControllerBase<AnnualReportsPage>
     {
-        private AnnualReportsPageViewModelBuilder modelBuilder { get; }
-        public AnnualReportsPageController(AnnualReportsPageViewModelBuilder modelBuilder)
+        private AnnualReportPageViewModelBuilder modelBuilder { get; }
+        public AnnualReportsPageController(AnnualReportPageViewModelBuilder modelBuilder)
         {
             this.modelBuilder = modelBuilder;
         }
         public IActionResult Index()
         {
-            var id = CurrentItem.ReportItemId;
-            var vm = modelBuilder.BuildForm(CurrentItem, id);
+            var ids = CurrentItem.ReportsItemIds; ;
+            var vm = modelBuilder.BuildForm(CurrentItem, ids);
+            vm.CountReportsToShow = CurrentItem.CountReportToShow;
             return View(vm);
         }
     }

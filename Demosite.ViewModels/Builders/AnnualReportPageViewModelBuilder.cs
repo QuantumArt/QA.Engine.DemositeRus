@@ -3,21 +3,23 @@ using Demosite.Interfaces.Dto;
 using Demosite.ViewModels.Helpers;
 using QA.DotNetCore.Engine.Abstractions;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Demosite.ViewModels.Builders
 {
-    public class AnnualReportsPageViewModelBuilder
+    public class AnnualReportPageViewModelBuilder
     {
-        private IAnnualReportsService reportsService { get; }
-        public AnnualReportsPageViewModelBuilder(IAnnualReportsService service)
+        private IReportsService reportsService { get; }
+        public AnnualReportPageViewModelBuilder(IReportsService service)
         {
             this.reportsService = service;
         }
-        public AnnualReportsPageViewModel BuildForm(IAbstractPage page, int? id)
+        public AnnualReportsPageViewModel BuildForm(IAbstractPage page, IEnumerable<int> ids)
         {
             var vm = new AnnualReportsPageViewModel() { Title = page.Title };
-            vm.Report = Map(reportsService.GetReport(id));
+            var reports = reportsService.GetReports(ids).Select(Map).ToArray();
+            vm.Reports.AddRange(reports);
             vm.BreadCrumbs = page.GetBreadCrumbs();
             return vm;
         }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Demosite.Interfaces
 {
-    public interface IAnnualReportsService
+    public interface IReportsService
     {
         IEnumerable<ReportDto> GetAllReports();
         IEnumerable<ReportDto> GetReports(IEnumerable<int> idsReport);
