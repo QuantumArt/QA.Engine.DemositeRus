@@ -25,7 +25,6 @@ namespace Demosite.Services.Settings
         public int FontSizeMin { get; set; }
         public int CaptchaWidth { get; set; }
         public int CaptchaHeight { get; set; }
-        public string ClientKey { get; set; }
     }
     /// <summary>
     /// Amount of random font warping to apply to rendered text

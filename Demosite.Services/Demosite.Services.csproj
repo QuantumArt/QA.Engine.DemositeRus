@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
@@ -9,7 +9,14 @@
     <None Remove="EmailTemplates\FeedbackEmail.cshtml" />
     <None Remove="EmailTemplates\NewsEmail.cshtml" />
     <None Remove="Hosted\CheckEmail.cshtml" />
-    <None Remove="Resource\mts-logo.jpg" />
+    <None Remove="Resource\demo-logo.jpeg" />
+    <None Remove="Resource\demo-logo.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resource\demo-logo.jpeg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
@@ -19,11 +26,6 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="EmailTemplates\NewsEmail.cshtml" />
-    <Content Include="Resource\mts-logo.jpg">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
 
   <ItemGroup>
