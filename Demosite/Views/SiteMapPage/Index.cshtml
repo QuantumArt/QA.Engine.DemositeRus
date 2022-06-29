@@ -2,24 +2,25 @@
 @using Microsoft.AspNetCore.Html
 
 @{
-  Func<dynamic, IHtmlContent> ShowTree(IEnumerable<Demosite.ViewModels.MenuItem> items) =>
-  @<ul>
+    Func<dynamic, IHtmlContent> ShowTree(IEnumerable<Demosite.ViewModels.MenuItem> items) =>
+  @<ul class="unordered-list">
     @foreach (var item in items)
     {
-      <li>
-        <a href=@item.Href><p style=@Html.Raw(item.Children.Any() ? "color:red;":"color:blue;")>@item.Title</p></a>
-        @if (item.Children.Any())
-        {
-          @ShowTree(item.Children)(null)
-        }
-      </li>
+     <li>
+       @{var isHighLvl = item.Href.Count(t => t == '/') == 1; }
+       <a class=@Html.Raw(item.Children.Any() || isHighLvl ? "unordered-list__title": "") href=@item.Href>@item.Title</a>
+       @if (item.Children.Any())
+       {
+         isHighLvl = false;
+         @ShowTree(item.Children)(null)
+       }
+     </li>
     }
   </ul>;
 }
+
 <section class="page__section">
   <div class="wrapper">
-    <div>
-      @ShowTree(@Model)(null)
-    </div>
+    @ShowTree(@Model)(null)
   </div>
 </section>
