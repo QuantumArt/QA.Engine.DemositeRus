@@ -16,7 +16,7 @@ var reportSlider = {
         appendArrows: $(this).parent().find(reportSlider.nav)
       });
       _self.setSettings({
-        slidesToShow: parseInt($(this).attr("data-slider-count")),
+        slidesToShow: parseInt($(this).attr("data-slider-count")) || 3,
         responsive: [{
           breakpoint: 1024,
           settings: {

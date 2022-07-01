@@ -11,15 +11,15 @@ namespace Demosite.Components
 {
     public class SubscribeWidgetViewComponent : WidgetComponentBase<SubscribeWidget>
     {
-        private SubscribeViewModelBuilder ModelBuilder { get; }
-        public SubscribeWidgetViewComponent(SubscribeViewModelBuilder modelBuilder)
+        private NewsPageViewModelBuilder ModelBuilder { get; }
+        public SubscribeWidgetViewComponent(NewsPageViewModelBuilder modelBuilder)
         {
             this.ModelBuilder = modelBuilder;
         }
         public override Task<IViewComponentResult> RenderAsync(SubscribeWidget widget, IDictionary<string, object> arguments)
         {
-            var model = ModelBuilder.BuildForm(widget);
-            return Task.FromResult<IViewComponentResult>(View(model));
+            var categories = ModelBuilder.BuildCategories();
+            return Task.FromResult<IViewComponentResult>(View(categories));
         }
     }
 }

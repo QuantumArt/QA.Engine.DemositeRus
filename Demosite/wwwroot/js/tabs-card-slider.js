@@ -54,7 +54,7 @@ var tabsCardSlider = {
               appendDots: $sliderNav
             }
             }],
-          slidesToShow: parseInt($slider.attr("data-slider-count"))
+          slidesToShow: parseInt($slider.attr("data-slider-count")) || 3
         });
         utils.initSlick($slider, _self.sliderSettings);
       } else {
