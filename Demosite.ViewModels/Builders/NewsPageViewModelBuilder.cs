@@ -53,6 +53,7 @@ namespace Demosite.ViewModels.Builders
             });
             return new NewsDetailsViewModel
             {
+                Id = post.Id,
                 Title = post.Title,
                 Date = post.PostDate,
                 Text = post.Text,
