@@ -3820,7 +3820,7 @@ input:checked ~ .checkbox__marker:before {
 }
 
 .banner-slider__item {
-  height: 589px;
+  height: 400px;
   display: block;
 }
 
@@ -3888,7 +3888,7 @@ input:checked ~ .checkbox__marker:before {
 
   .banner-slider .banner-slider__item,
   .banner-slider .slick-track {
-    height: 440px !important;
+    height: 300px !important;
   }
 }
 
@@ -3954,7 +3954,7 @@ input:checked ~ .checkbox__marker:before {
 
 .banner-slider .slick-track {
   display: flex !important;
-  height: 589px;
+  height: 400px;
   margin: 0;
 }
 
