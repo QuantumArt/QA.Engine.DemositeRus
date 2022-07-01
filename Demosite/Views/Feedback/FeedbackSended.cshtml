@@ -2,15 +2,15 @@
   <section class="page__section">
     <div class="wrapper">
       <div class="page__block">
-        <h1 class="h1 center">Your Feedback @(ViewBag.IsConfirmed ? "is send" : "is not send")</h1>
+        <h1 class="h1 center">Ваше сообщение @(ViewBag.IsConfirmed ? "отправлено" : "не отправлено")</h1>
         <div class="page__text center">
           @if (ViewBag.IsConfirmed)
           {
-            <p>We thank you for your feedback</p>
+            <p>Спасибо за ваше обращение</p>
           }
           else
           {
-            <p>Sorry, there was an error sending your feedback, please try again later.</p>
+            <p>Извините, попробуйте позднее еще раз.</p>
           }
 
         </div>
