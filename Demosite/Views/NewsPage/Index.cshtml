@@ -1,6 +1,7 @@
 ﻿
 @model Demosite.ViewModels.NewsPageViewModel
 <main class="main">
+  @await Component.WidgetZone(Html, "ContentAbove")
   <div class="page page-news" data-news-page>
     <div class="wrapper">
       @await Html.PartialAsync("../_BreadCrumbs.cshtml", Model.BreadCrumbs)
@@ -118,4 +119,5 @@
       </section>
     </div>
   </div>
+  @await Component.WidgetZone(Html, "ContentBelow")
 </main>
