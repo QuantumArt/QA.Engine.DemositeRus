@@ -3820,8 +3820,8 @@ input:checked ~ .checkbox__marker:before {
 }
 
 .banner-slider__item {
+  height: 400px;
   display: block;
-  height: 440px;
 }
 
 .banner-slider__image-desktop {
@@ -3867,7 +3867,6 @@ input:checked ~ .checkbox__marker:before {
   width: 42px;
   height: 42px;
   background: url("/static/images/banner-slider-left-arrow.svg") no-repeat;
-  display: none !important;
 }
 
 .banner-slider .slick-next {
@@ -3879,18 +3878,17 @@ input:checked ~ .checkbox__marker:before {
   width: 42px;
   height: 42px;
   background: url("/static/images/banner-slider-right-arrow.svg") no-repeat;
-  display: none !important;
 }
 
-@media screen and (min-width: 1024px) {
+@media screen and (max-width: 1023px) {
   .banner-slider .slick-prev,
   .banner-slider .slick-next {
-    display: block !important;
+    display: none !important;
   }
 
   .banner-slider .banner-slider__item,
   .banner-slider .slick-track {
-    height: 589px !important;
+    height: 300px !important;
   }
 }
 
@@ -3904,12 +3902,9 @@ input:checked ~ .checkbox__marker:before {
 
   .banner-slider .slick-dots li {
     margin: 0 5px;
+    width: 12px;
+    border-radius: 25px;
   }
-
-    .banner-slider .slick-dots li.slick-active {
-      width: 12px;
-      border-radius: 25px;
-    }
 
   .banner-slider .slick-dots button {
     background: #5A5A5A;
@@ -3959,7 +3954,7 @@ input:checked ~ .checkbox__marker:before {
 
 .banner-slider .slick-track {
   display: flex !important;
-  height: 440px;
+  height: 400px;
   margin: 0;
 }
 
@@ -4056,6 +4051,7 @@ input:checked ~ .checkbox__marker:before {
 }
 
 .unordered-list {
+  padding-left: 1rem;
   list-style-type: none;
 }
 
