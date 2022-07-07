@@ -4050,18 +4050,27 @@ input:checked ~ .checkbox__marker:before {
   box-shadow: 0 0 0 2px #e30611;
 }
 
-.unordered-list {
-  padding-left: 1rem;
-  list-style-type: none;
+.unordered-list li {
+  padding-top: 0.5rem;
 }
 
-  .unordered-list a {
-    text-decoration: underline;
-  }
+.unordered-list {
+  padding-left: 2rem;
+  list-style-type: disc;
+  color: red;
+}
+
+.unordered-list a {
+  text-decoration: underline;
+}
 
 .unordered-list__title {
   font-size: 1.1rem;
   font-weight: 500;
+}
+
+.last-li-mapsite {
+  list-style-type: square;
 }
 
 .main-banner {
