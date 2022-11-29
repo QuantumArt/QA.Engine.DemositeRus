@@ -5,6 +5,7 @@ using Demosite.Postgre.DAL;
 using Demosite.Postgre.DAL.NotQP;
 using Demosite.Services;
 using Demosite.Services.Hosted;
+using Demosite.Services.Search;
 using Demosite.Services.Settings;
 using Demosite.ViewModels.Builders;
 using Microsoft.AspNetCore.Builder;
@@ -14,8 +15,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Npgsql;
+using Provider.Search;
 using QA.DotNetCore.Engine.Abstractions;
 using QA.DotNetCore.Engine.Abstractions.OnScreen;
 using QA.DotNetCore.Engine.AbTesting.Configuration;
@@ -31,6 +34,7 @@ using SixLabors.Fonts;
 using SixLaborsCaptcha.Mvc.Core;
 using System;
 using System.Linq;
+using WebUI.Services.Search;
 using CacheTagUtilities = Demosite.Templates.CacheTagUtilities;
 
 namespace Demosite
@@ -170,6 +174,12 @@ namespace Demosite
 
             services.AddMemoryCache();
             services.AddScoped<ICacheService, CacheService>();
+
+            SearchSettings searchSettings = Configuration.GetSection("Search").Get<SearchSettings>();
+            services.AddSingleton(searchSettings);
+            services.AddScoped<ISearchService, SearchService>();
+            services.AddHttpClient<SearchApiClient>();
+            services.AddScoped<ISearchProvider, SearchProvider>();
 
             services.AddControllersWithViews(options =>
             {

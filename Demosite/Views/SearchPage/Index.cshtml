@@ -1,0 +1,36 @@
+﻿@using Demosite.ViewModels;
+
+@model SearchResult;
+
+<div class="flex-grow-1 px-3 pt-3">
+    <div class="ps-3">
+        <h1 class="fs-3 text-center mb-4">Поиск по сайту</h1>
+        <div class="d-flex justify-content-center">
+            <div class="col-6">
+                <vc:search-bar type="Standalone" query="@(default)" />
+            </div>
+        </div>
+        <p class="fs-6 text-secondary mb-0">Результаты поиска: @Model.DocumentsCount</p>
+    </div>
+    @if (Model.DocumentsCount != 0)
+    {
+        <ul class="list-group list-group-flush news-list mt-0">
+            @foreach (Document document in Model.Documents)
+            {
+                <li>
+                    <div class="card col-12 up-news">
+                        <div class="card-body">
+                            <h5 class="card-title">@document.Title</h5>
+                            <p class="card-subtitle mb-2 text-muted">
+                                <span>@document.Category</span>
+                            </p>
+                            <p class="card-text">@document.Description</p>
+                            <a href="@document.SearchUrl" class="btn btn-light">Перейти</a>
+                        </div>
+                    </div>
+                </li>
+            }
+        </ul>
+    }
+    <vc:pagination pages-count="@Model.PagesCount" />
+</div>
