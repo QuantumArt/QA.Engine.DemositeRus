@@ -17,6 +17,7 @@
     <PackageReference Include="QA.DotNetCore.Engine.OnScreen" Version="2.2.1-beta1" />
     <PackageReference Include="QA.DotNetCore.Engine.QpData.Configuration" Version="2.2.1-beta1" />
     <PackageReference Include="QA.DotNetCore.Engine.Targeting" Version="2.2.1-beta1" />
+    <PackageReference Include="SixLaborsCaptcha.Mvc.Core" Version="0.2.2" />
   </ItemGroup>
 
   <ItemGroup>

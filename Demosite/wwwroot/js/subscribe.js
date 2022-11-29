@@ -22,7 +22,7 @@ $(document).ready(function () {
 
   function reloadCaptcha() {
     const image = $(".img-rounded", form);
-    image.attr("src", "/captcha");
+    image.attr("src", "/captcha?t=" + Math.random(5));
     $(".input[name='tokencaptcha']", form).val("");
   };
 

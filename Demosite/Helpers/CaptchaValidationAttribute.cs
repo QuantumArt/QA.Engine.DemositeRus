@@ -40,6 +40,10 @@ namespace Demosite.Helpers
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             var settings = filterContext.HttpContext.RequestServices.GetService<CaptchaSettings>();
+            if(!settings.CaptchaIsActive)
+            {
+                return;
+            }
             bool isCaptchaValid = false;
             string key = settings.DefaultKey;
             string actualValue = "";

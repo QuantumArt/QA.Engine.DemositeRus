@@ -129,20 +129,17 @@ namespace Demosite.Services
             {
                 existSubscriber.FirstName = subscriber.FirstName;
                 existSubscriber.LastName = subscriber.LastName;
-                existSubscriber.Gender = subscriber.Gender;
-                existSubscriber.Country = subscriber.Country;
                 existSubscriber.Company = subscriber.Company;
-                existSubscriber.Activity = subscriber.Activity;
                 existSubscriber.NewsCategory = subscriber.NewsCategory;
                 existSubscriber.ConfirmCode = Guid.NewGuid().ToString().ToLower();
-                existSubscriber.ConfirmCodeSendDate = DateTime.Now;
+                existSubscriber.ConfirmCodeSendDate = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc);
                 newSubscriber = existSubscriber;
             }
             else
             {
                 newSubscriber = Map(subscriber);
                 newSubscriber.ConfirmCode = Guid.NewGuid().ToString().ToLower();
-                newSubscriber.ConfirmCodeSendDate = DateTime.Now;
+                newSubscriber.ConfirmCodeSendDate = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc);
                 dbContext.EmailNewsSubscribers.Add(newSubscriber);
             }
             try
@@ -153,7 +150,14 @@ namespace Demosite.Services
             {
                 _logger.LogError(nameService + $": error dusring send check email: {ex.Message}", ex);
             }
-            await dbContext.SaveChangesAsync();
+            try
+            {
+                await dbContext.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
             return new SubscriptionStatus()
             {
                 Success = true,
@@ -536,9 +540,7 @@ namespace Demosite.Services
                     ConfirmCode = subscriber.ConfirmCode,
                     FirstName = subscriber.FirstName,
                     LastName = subscriber.LastName,
-                    Company = subscriber.Company,
-                    Country = subscriber.Country,
-                    Gender = subscriber.Gender
+                    Company = subscriber.Company
                 },
                 NewsPosts = newsArray.Where(n => subscriber.NewsCategory.Contains(n.Category.Id))
                                      .ToArray(),
@@ -602,10 +604,7 @@ namespace Demosite.Services
                 FirstName = subscriber.FirstName,
                 LastName = subscriber.LastName,
                 Company = subscriber.Company,
-                Country = subscriber.Country,
-                Gender = subscriber.Gender,
                 Email = subscriber.Email,
-                Activity = subscriber.Activity,
                 NewsCategory = subscriber.NewsCategory
             };
         }
