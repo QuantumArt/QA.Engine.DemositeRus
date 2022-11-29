@@ -53,13 +53,22 @@ namespace Demosite.Services
                  .Select(Map).ToArray();
         }
 
-        public NewsPostDto GetPost(int id)
+        public NewsPostDto GetPost(int id, int? categoryId)
         {
-            return MemoryCache.GetFromCache<NewsPostDto>(GetCacheKey(id), () =>
+            return MemoryCache.GetFromCache<NewsPostDto>(GetCacheKey(id, categoryId), () =>
             {
-                return Map((QpDataContext as PostgreQpDataContext).NewsPosts
-                 .Include(c => c.Category)
-                 .FirstOrDefault(bp => bp.Id == id));
+                var query = (QpDataContext as PostgreQpDataContext).NewsPosts
+                 .Include(c => c.Category);
+                NewsPost result = null;
+                if (categoryId.HasValue)
+                {
+                    result = query.FirstOrDefault(bp => bp.Id == id && bp.Category.Id == categoryId.Value);
+                }
+                else
+                {
+                    result = query.FirstOrDefault(bp => bp.Id == id);
+                }
+                return Map(result);
             });
 
         }
@@ -128,9 +137,9 @@ namespace Demosite.Services
                         .ToArray();
         }
 
-        static private string GetCacheKey(int id)
+        static private string GetCacheKey(int id, int? categoryId = null)
         {
-            return $"news_post_{id}";
+            return $"news_post_{id}" + (categoryId.HasValue ? $"_category_{categoryId}" : $"_withoutcategory");
         }
 
         static private string GetCacheKey(int? year = null, int? month = null, int? categoryId = null)

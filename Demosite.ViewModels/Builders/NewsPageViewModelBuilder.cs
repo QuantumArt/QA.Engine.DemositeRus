@@ -34,7 +34,7 @@ namespace Demosite.ViewModels.Builders
                                   }));
             var newsCount = news.Count();
             vm.PageCount = newsCount / count;
-            if(newsCount % count > 0)
+            if (newsCount % count > 0)
             {
                 vm.PageCount++;
             }
@@ -43,13 +43,17 @@ namespace Demosite.ViewModels.Builders
             return vm;
         }
 
-        public NewsDetailsViewModel BuildDetails(IAbstractPage newsPage, int id, string commonText)
+        public NewsDetailsViewModel BuildDetails(IAbstractPage newsPage, int id, string commonText, int? categoryId)
         {
-            var post = NewsService.GetPost(id);
+            var post = NewsService.GetPost(id, categoryId);
+            if (post == null)
+            {
+                return null;
+            }
             var breadCrumbs = newsPage.GetBreadCrumbs();
             breadCrumbs.Add(new BreadCrumbViewModel()
             {
-                Text = "Detail news page"
+                Text = "Детальная информация"
             });
             return new NewsDetailsViewModel
             {

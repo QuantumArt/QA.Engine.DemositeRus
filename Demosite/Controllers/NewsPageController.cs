@@ -1,8 +1,8 @@
-using Microsoft.AspNetCore.Mvc;
 using Demosite.Components;
-using Demosite.Helpers;
+using Demosite.Models;
 using Demosite.Models.Pages;
 using Demosite.ViewModels.Builders;
+using Microsoft.AspNetCore.Mvc;
 using QA.DotNetCore.Engine.Routing;
 using System;
 
@@ -26,7 +26,15 @@ namespace Demosite.Controllers
 
         public IActionResult Details(int id)
         {
-            var vm = NewsPageViewModelBuilder.BuildDetails(CurrentItem, id, CurrentItem.DetailsText);
+            var vm = NewsPageViewModelBuilder.BuildDetails(CurrentItem, id, CurrentItem.DetailsText, CurrentItem.CategoryId);
+            if(vm == null)
+            {
+                ErrorViewModel error = new ErrorViewModel()
+                {
+                    RequestId = "Запрашиваемвая Вами страница не найдена, пожалуйста проверьте корректность запрашиваемых данных"
+                };
+                return View("Error", error);
+            }
             return View(vm);
         }
 
