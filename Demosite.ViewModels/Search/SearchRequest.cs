@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Demosite.ViewModels.Interface;
 
 namespace Demosite.ViewModels;
 

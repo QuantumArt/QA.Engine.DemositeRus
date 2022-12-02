@@ -11,6 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 namespace Demosite.Controllers;
+[Route("[controller]/[action]")]
 public class SearchPageController : ContentControllerBase<SearchPage>
 {
 	private readonly ISearchService _searchService;
@@ -24,24 +25,31 @@ public class SearchPageController : ContentControllerBase<SearchPage>
 
     }
 
-	public async Task<IActionResult> Index([FromQuery] string query, CancellationToken token)
+	public IActionResult Index()
 	{
-		int pageNumber = Request.CurrentPaginationPageNumber();
-		pageNumber--; // start from zero page
-		int itemsPerPage = _settings.SearchPaginatedItemsCount;
-
-		if (itemsPerPage <= 0)
-		{
-			throw new ArgumentException("Can't find items per page count", nameof(itemsPerPage));
-		}
-
-		SearchResponse response = await _searchService.SearchAsync(
-			query,
-			itemsPerPage,
-			pageNumber * itemsPerPage,
-			token);
-		SearchResult result = new(response, itemsPerPage);
-
-		return View(result);
+		return View();
 	}
+
+    [HttpGet]
+    public async Task<IActionResult> Search([FromQuery] string query, CancellationToken token)
+    {
+        int pageNumber = Request.CurrentPaginationPageNumber();
+        pageNumber--; // start from zero page
+        int itemsPerPage = _settings.SearchPaginatedItemsCount;
+
+        if (itemsPerPage <= 0)
+        {
+            throw new ArgumentException("Can't find items per page count", nameof(itemsPerPage));
+        }
+
+        SearchResponse response = await _searchService.SearchAsync(
+            query,
+            itemsPerPage,
+            pageNumber * itemsPerPage,
+            token);
+        SearchResult result = new(response, itemsPerPage);
+
+        return View(result);
+    }
+
 }

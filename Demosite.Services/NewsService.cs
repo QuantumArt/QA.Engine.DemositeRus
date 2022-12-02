@@ -57,18 +57,17 @@ namespace Demosite.Services
         {
             return MemoryCache.GetFromCache<NewsPostDto>(GetCacheKey(id, categoryId), () =>
             {
-                var query = (QpDataContext as PostgreQpDataContext).NewsPosts
-                 .Include(c => c.Category);
-                NewsPost result = null;
+                var query = (QpDataContext as PostgreQpDataContext).NewsPosts.AsNoTracking();
                 if (categoryId.HasValue)
                 {
-                    result = query.FirstOrDefault(bp => bp.Id == id && bp.Category.Id == categoryId.Value);
+                    query = query.Where(bp => bp.Id == id && bp.Category.Id == categoryId.Value);
                 }
                 else
                 {
-                    result = query.FirstOrDefault(bp => bp.Id == id);
+                    query = query.Where(bp => bp.Id == id);
                 }
-                return Map(result);
+                query = query.Include(c => c.Category);
+                return Map(query.FirstOrDefault());
             });
 
         }

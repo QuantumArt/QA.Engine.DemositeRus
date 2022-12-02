@@ -31,12 +31,16 @@
       "wwwroot/js/fancybox.umd.js",
       "wwwroot/js/event-slider.js",
       "wwwroot/js/report-slider.js",
-      "wwwroot/js/feedback-form.js"
+      "wwwroot/js/feedback-form.js",
+      "wwwroot/js/search/search-default-config/default-config.js",
+      "wwwroot/js/search/autoComplete.min.js",
+      "wwwroot/js/search/search-on-header.js",
+      "wwwroot/js/search/search-on-results.js"
     ],
     // Optionally specify minification options
     "minify": {
-      "enabled": true,
-      "renameLocals": true
+      "enabled": false,
+      "renameLocals": false
     },
     // Optionally generate .map file
     "sourceMap": false

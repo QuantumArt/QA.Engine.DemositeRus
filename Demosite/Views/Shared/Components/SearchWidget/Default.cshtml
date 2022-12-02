@@ -1,0 +1,19 @@
+﻿@using Demosite.ViewModels
+@model SearchBarViewModel
+
+<div class="page">
+    <section class="page__section">
+        <form id="search-form"
+              method="get"
+              action="/SearchPage/search"
+              class="w-100"
+              autocomplete="off">
+            <div class="search-input">
+                <input asp-for="Query" required minlength="3" maxlength="100" class="form-control" size="16" id="autoComplete" type="search" dir="ltr" spellcheck=false autocorrect="off" autocomplete="off" autocapitalize="off">
+            </div>
+            <button class="btn btn-light rounded-end" type="submit">Найти</button>
+        </form>
+    </section>
+</div>
+
+
