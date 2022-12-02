@@ -1,10 +1,10 @@
-using Demosite.Services.Search;
+using Demosite.Interfaces;
 using Provider.Search;
 using Provider.Search.DTO.Response;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace WebUI.Services.Search;
+namespace Demosite.Services.Search;
 
 public class SearchService : ISearchService
 {

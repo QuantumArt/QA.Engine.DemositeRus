@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace Demosite.Components
 {
-    public class SearchWidgetViewComponent : WidgetComponentBase<SearchWidget>
+    public class SearchBarWidgetViewComponent : WidgetComponentBase<SearchBarWidget>
     {
-        public override Task<IViewComponentResult> RenderAsync(SearchWidget widget, IDictionary<string, object> arguments)
+        public override Task<IViewComponentResult> RenderAsync(SearchBarWidget widget, IDictionary<string, object> arguments)
         {
             var seacrh = new SearchBarViewModel("");
             return Task.FromResult<IViewComponentResult>(View(seacrh));

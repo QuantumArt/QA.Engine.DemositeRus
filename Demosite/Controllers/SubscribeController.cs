@@ -1,12 +1,8 @@
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Demosite.Helpers;
 using Demosite.Interfaces;
-using Demosite.Interfaces.Dto;
-using Demosite.Services.Settings;
 using Demosite.ViewModels;
 using Demosite.ViewModels.Builders;
-using System;
+using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 namespace Demosite.Controllers

@@ -12,6 +12,4 @@ public class SearchSettings
 
 	[Required]
 	public string CompletionPath { get; set; } = default!;
-
-    public int SearchPaginatedItemsCount { get; set; }
 }

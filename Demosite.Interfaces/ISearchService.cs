@@ -2,7 +2,7 @@ using Provider.Search.DTO.Response;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Demosite.Services.Search;
+namespace Demosite.Interfaces;
 
 public interface ISearchService
 {

@@ -2,6 +2,6 @@ using QA.DotNetCore.Engine.QpData;
 
 namespace Demosite.Models.Widgets
 {
-    public class SearchWidget : AbstractWidget
+    public class SearchBarWidget : AbstractWidget
     {}
 }

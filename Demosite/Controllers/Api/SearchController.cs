@@ -1,4 +1,4 @@
-using Demosite.Services.Search;
+using Demosite.Interfaces;
 using Demosite.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System;

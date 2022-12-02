@@ -15,7 +15,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Npgsql;
 using Provider.Search;
@@ -35,7 +34,6 @@ using SixLaborsCaptcha.Mvc.Core;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using WebUI.Services.Search;
 using CacheTagUtilities = Demosite.Templates.CacheTagUtilities;
 
 namespace Demosite

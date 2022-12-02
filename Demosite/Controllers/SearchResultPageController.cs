@@ -1,9 +1,8 @@
 using Demosite.Helpers;
-using Demosite.Services.Search;
+using Demosite.Interfaces;
 using Demosite.ViewModels;
 using emosite.Models.Pages;
 using Microsoft.AspNetCore.Mvc;
-using Provider.Search;
 using Provider.Search.DTO.Response;
 using QA.DotNetCore.Engine.Routing;
 using System;
@@ -12,16 +11,16 @@ using System.Threading.Tasks;
 
 namespace Demosite.Controllers;
 [Route("[controller]/[action]")]
-public class SearchPageController : ContentControllerBase<SearchPage>
+public class SearchResultPageController : ContentControllerBase<SearchResultPage>
 {
 	private readonly ISearchService _searchService;
-    private readonly SearchSettings _settings;
+    private readonly ISiteSettingsProvider _siteSettingsProvider;
 
-    public SearchPageController(ISearchService searchService,
-                                SearchSettings settings)
+    public SearchResultPageController(ISearchService searchService,
+                                ISiteSettingsProvider siteSettingsProvider)
 	{
 		_searchService = searchService;
-        _settings = settings;
+        _siteSettingsProvider = siteSettingsProvider;
 
     }
 
@@ -35,7 +34,7 @@ public class SearchPageController : ContentControllerBase<SearchPage>
     {
         int pageNumber = Request.CurrentPaginationPageNumber();
         pageNumber--; // start from zero page
-        int itemsPerPage = _settings.SearchPaginatedItemsCount;
+        int itemsPerPage = await _siteSettingsProvider.GetSearchPaginatedItemsCountAsync(token);
 
         if (itemsPerPage <= 0)
         {
@@ -49,7 +48,7 @@ public class SearchPageController : ContentControllerBase<SearchPage>
             token);
         SearchResult result = new(response, itemsPerPage);
 
-        return View(result);
+        return View("Index", result);
     }
 
 }
