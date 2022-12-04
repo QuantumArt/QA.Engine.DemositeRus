@@ -2,7 +2,7 @@
 //import autoComplete from "@tarekraafat/autocomplete.js";
 
 if ($("#autoComplete").length) {
-  const resultsPageInputConfig = {
+  let resultsPageInputConfig = {
     selector: "#autoComplete",
     events: {
       input: {

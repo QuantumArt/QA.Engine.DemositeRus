@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Npgsql;
 using Provider.Search;
@@ -61,6 +62,8 @@ namespace Demosite
             }
             qpSettings.ConnectionString = Configuration.GetConnectionString("DatabaseQPPostgre");
             services.AddSingleton(qpSettings);
+
+            services.AddScoped<ISiteSettingsProvider, SiteSettingsProvider>();
 
             //структура сайта виджетной платформы
             services.AddSiteStructureEngine(options =>

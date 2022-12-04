@@ -24,7 +24,6 @@ public class SearchController : Controller
 	public async Task<IActionResult> Complete([FromBody] SearchRequest request, CancellationToken token)
 	{
 		var result = await _searchService.CompleteAsync(request.Query, token);
-        Console.WriteLine("Запрос автодополнения ---------> " + request.Query);
 		return Ok(result);
 	}
 }

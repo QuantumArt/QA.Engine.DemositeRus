@@ -25,7 +25,7 @@ public interface ISiteSettingsProvider
 	/// </summary>
 	/// <param name="cancellationToken"></param>
 	/// <returns></returns>
-	Task<int> NewsPaginatedItemsCountAsync(CancellationToken cancellationToken);
+	Task<int> NewsPaginatedItemsCountAsync(CancellationToken cancellationToken = default);
 
 	/// <summary>
 	/// Количество элементов в результатах поиска на одной странице

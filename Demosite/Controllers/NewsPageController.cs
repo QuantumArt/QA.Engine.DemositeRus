@@ -1,25 +1,32 @@
 using Demosite.Components;
+using Demosite.Interfaces;
 using Demosite.Models;
 using Demosite.Models.Pages;
 using Demosite.ViewModels.Builders;
 using Microsoft.AspNetCore.Mvc;
 using QA.DotNetCore.Engine.Routing;
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Demosite.Controllers
 {
     public class NewsPageController : ContentControllerBase<NewsPage>
     {
         private NewsPageViewModelBuilder NewsPageViewModelBuilder { get; }
-        public NewsPageController(NewsPageViewModelBuilder newsPageViewModelBuilder)
+        private ISiteSettingsProvider SiteSettingsProvider { get; }
+        public NewsPageController(NewsPageViewModelBuilder newsPageViewModelBuilder,
+                                  ISiteSettingsProvider siteSettings)
         {
             this.NewsPageViewModelBuilder = newsPageViewModelBuilder;
+            this.SiteSettingsProvider = siteSettings;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             var categoryId = CurrentItem.CategoryId;
             var year = DateTime.Now.Year;
-            var vm = NewsPageViewModelBuilder.BuildList(CurrentItem, year: year, categoryId: categoryId);
+            var itemsOnPage = await SiteSettingsProvider.NewsPaginatedItemsCountAsync();
+            var vm = NewsPageViewModelBuilder.BuildList(CurrentItem, year: year, categoryId: categoryId, count: itemsOnPage);
             return View(vm);
         }
 
