@@ -10,23 +10,22 @@
 
 @if (Model.MaxValue > 1)
 {
-  <div class="pagination">
-        @if (Model.Current > 1)
-        {
-            <div class="pagination__arrow pagination__arrow--prev"></div>
-        }
+    <div class="pagination">
         <ul class="pagination__list">
-            <li class="pagination__list-item">
-                <a href="@GetPageUrl(Model.Current - 1)"
+            @if (Model.Current > 1)
+            {
+                <li class="page-item">
+                    <a href="@GetPageUrl(Model.Current - 1)"
                class="page-link @(Model.IsMovePreviousAvailable ? string.Empty : "disabled")"
                aria-label="Previous">
-                    <span aria-hidden="true">«</span>
-                </a>
-            </li>
+                        <div class="pagination__arrow pagination__arrow--prev"></div>
+                    </a>
+                </li>
+            }
 
             @for (var pageNumber = Model.MinValue; pageNumber <= Model.MaxValue; pageNumber++)
             {
-                <li class="page-item @(pageNumber == Model.Current ? "pagination__list-item--current" : string.Empty)" aria-current="page">
+                <li class="pagination__list-item @(pageNumber == Model.Current ? "pagination__list-item--current" : string.Empty)" aria-current="page">
                     <a href="@GetPageUrl(pageNumber)" class="page-link">
                         <span aria-hidden="true">@pageNumber</span>
                     </a>
@@ -36,7 +35,7 @@
             <li class="page-item">
                 <a href="@GetPageUrl(Model.Current + 1)"
                class="page-link @(Model.IsMoveNextAvailable ? string.Empty : "disabled")"
-               aria-label="Next"><span aria-hidden="true">»</span></a>
+               aria-label="Next"><div class="pagination__arrow pagination__arrow--next"></div></a>
             </li>
         </ul>
   </div>

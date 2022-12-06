@@ -13,7 +13,7 @@ if ($("#autoComplete").length) {
         selection: (event) => {
           const selection = event.detail.selection.value;
           autoCompleteJSResultsPage.input.value = selection;
-          autoCompleteJSResultsPage.input.form.submit();
+         // autoCompleteJSResultsPage.input.form.submit();
         },
         navigate: (event) => {
           autoCompleteJSResultsPage.input.value =
