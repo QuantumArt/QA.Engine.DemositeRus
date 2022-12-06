@@ -16,12 +16,6 @@ spec:
     spec:
       containers:
       - env:
-        - name: ConnectionStrings__DatabaseQPPostgre
-          value: "Server=#{postgre.db.server}#;Database=#{postgre.db.name}#;User Id=#{postgre.db.user}#;Password=#{postgre.db.password}#"
-        - name: QpSettings__IsStage
-          value: "#{isStage}#"
-        - name: NewsNotificationServiceConfig__BaseURLNewsService
-          value: "#{notificationService.baseUrlService}#"
         - configMapRef:
             name: #{configmapName}#
         image: "||registry||/#{imageName}#:||version||"
