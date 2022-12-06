@@ -40,7 +40,7 @@ namespace Demosite.Helpers
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             var settings = filterContext.HttpContext.RequestServices.GetService<CaptchaSettings>();
-            if(!settings.CaptchaIsActive)
+            if(!settings.IsActive)
             {
                 return;
             }

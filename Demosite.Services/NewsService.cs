@@ -58,7 +58,7 @@ namespace Demosite.Services
             return MemoryCache.GetFromCache<NewsPostDto>(GetCacheKey(id, categoryId), () =>
             {
                 var query = (QpDataContext as PostgreQpDataContext).NewsPosts
-                 .Include(c => c.Category);
+                                                                   .Include(c => c.Category);
                 NewsPost result = null;
                 if (categoryId.HasValue)
                 {
