@@ -27,13 +27,9 @@ namespace Demosite.Controllers
         public IActionResult Details(int id)
         {
             var vm = NewsPageViewModelBuilder.BuildDetails(CurrentItem, id, CurrentItem.DetailsText, CurrentItem.CategoryId);
-            if(vm == null)
+            if (vm == null)
             {
-                ErrorViewModel error = new ErrorViewModel()
-                {
-                    RequestId = "Запрашиваемвая Вами страница не найдена, пожалуйста проверьте корректность запрашиваемых данных"
-                };
-                return View("Error", error);
+                return NotFound();
             }
             return View(vm);
         }

@@ -53,7 +53,7 @@ namespace Demosite.Middlewares.Captcha
             }
             catch (Exception ex)
             {
-                logger.LogInformation("captcha error: " + ex.Message);
+                logger.LogError("captcha error: " + ex.Message);
             }
         }
 

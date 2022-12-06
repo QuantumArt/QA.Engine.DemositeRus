@@ -31,6 +31,7 @@ using SixLabors.Fonts;
 using SixLaborsCaptcha.Mvc.Core;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using CacheTagUtilities = Demosite.Templates.CacheTagUtilities;
 
 namespace Demosite
@@ -196,9 +197,15 @@ namespace Demosite
             else
             {
                 app.UseExceptionHandler("/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.            
             }
 
+            app.UseStatusCodePages(ctx =>
+            {
+                if (ctx.HttpContext.Response.StatusCode > 400)
+                    ctx.HttpContext.Response.Redirect("/Error");
+
+                return Task.CompletedTask;
+            });
 
             app.UseStaticFiles();
             app.UseSession();
