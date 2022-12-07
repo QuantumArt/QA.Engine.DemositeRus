@@ -29,7 +29,7 @@ namespace Demosite.Services
         private EmailNotificationSettings _settings { get; }
         private ILogger<EmailNotificationService> _logger { get; }
         private string nameService => nameof(EmailNotificationService);
-        private string logoFileName = "";
+        private string logoFileName = "demo-logo.jpeg";
         private INotificationTemplateEngine _notificationTemplateEngine { get; }
         private IWebHostEnvironment _environment { get; }
         public const string checkEmailName = "Demosite.Services.EmailTemplates.CheckEmail.cshtml";
