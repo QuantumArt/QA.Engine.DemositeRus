@@ -14,10 +14,6 @@ namespace Demosite.Middlewares.Captcha
 
         public async Task Invoke(HttpContext context, CaptchaSettings captchaSettings, ISixLaborsCaptchaModule sixLaborsCaptcha, ILogger<CaptchaImageMiddleware> logger)
         {
-            if (!captchaSettings.IsActive)
-            {
-                return;
-            }
             context.Response.GetTypedHeaders().CacheControl = new Microsoft.Net.Http.Headers.CacheControlHeaderValue()
             {
                 NoCache = true,

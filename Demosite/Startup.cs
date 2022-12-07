@@ -226,7 +226,13 @@ namespace Demosite
                 endpoints.MapSiteStructureControllerRoute();
                 endpoints.MapControllers();
             });
-            app.UseCaptchaImage("/captcha");
+
+            var captchaIsActive = Configuration.GetSection("CaptchaSettings").GetSection("IsActive").Get<bool>();
+            if(captchaIsActive)
+            {
+                app.UseCaptchaImage("/captcha");
+            }
+
             PostgreQpDataContext.SetHttpContextAccessor(app.ApplicationServices.GetRequiredService<IHttpContextAccessor>());
         }
     }
