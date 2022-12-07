@@ -19,31 +19,18 @@ public class SearchService : ISearchService
 
 	public async Task<string[]> CompleteAsync(string query, CancellationToken token)
 	{
-		var userRoles = await GetUserRolesAsync(token);
-
+		var userRoles = GetUserRolesAsync(token);
 		return await _searchProvider.CompleteAsync(query, userRoles, token);
 	}
 
 	public async Task<SearchResponse> SearchAsync(string query, int limit, int offset, CancellationToken token)
 	{
-		var userRoles = await GetUserRolesAsync(token);
+		var userRoles = GetUserRolesAsync(token);
 		return await _searchProvider.SearchAsync(query, userRoles, limit, offset, token);
 	}
 
-	private async Task<string[]> GetUserRolesAsync(CancellationToken token)
+	private string[] GetUserRolesAsync(CancellationToken token)
 	{
-		//var roleIds = _jwtDataAccessor.Roles;
-
-		//if (!roleIds.Any())
-		//{
-		//	return new string[1] { DefaultRole };
-		//}
-
-		//var userRoles = await _rolesProvider.GetRolesByIdAsync(roleIds, token);
-		//userRoles = userRoles.Append(DefaultRole);
-
-		//return userRoles.ToArray();
-
         return new string[1] { DefaultRole };
     }
 }
