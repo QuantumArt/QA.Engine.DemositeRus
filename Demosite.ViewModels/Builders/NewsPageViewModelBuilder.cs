@@ -16,12 +16,11 @@ namespace Demosite.ViewModels.Builders
             this.NewsService = newsService;
         }
 
-        public NewsPageViewModel BuildList(IAbstractPage newsPage, int? year = null, int? month = null, int? categoryId = null, int page = 1, int count = 10)
+        public NewsPageViewModel BuildList(IAbstractPage newsPage, int? year = null, int? month = null, int? categoryId = null, int pageNumber = 1, int count = 10)
         {
-            var rand = new Random();
             var vm = new NewsPageViewModel { Header = newsPage.Title };
             var news = NewsService.GetAllPosts(year, month, categoryId);
-            vm.Items.AddRange(news.Skip((page - 1) * count)
+            vm.Items.AddRange(news.Skip((pageNumber - 1) * count)
                                   .Take(count)
                                   .Select(p => new NewsItemInListViewModel
                                   {
@@ -38,7 +37,7 @@ namespace Demosite.ViewModels.Builders
             {
                 vm.PageCount++;
             }
-            vm.CurrentPage = page;
+            vm.CurrentPage = pageNumber;
             vm.BreadCrumbs = newsPage.GetBreadCrumbs();
             return vm;
         }

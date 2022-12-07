@@ -135,10 +135,11 @@ namespace Demosite
             //сервис рассылки новостей
             services.AddScoped<IWarmUp, WarmUp>();
             var notificationIsActive = Configuration.GetSection("NewsNotificationServiceConfig").GetSection("NotificationServiceIsActive").Get<bool>();
-            EmailNotificationSettings newsNotificationServiceSettings = new EmailNotificationSettings() { NotificationServiceIsActive = notificationIsActive };
+            var newsNotificationServiceSettings = notificationIsActive
+                ? Configuration.GetSection("NewsNotificationServiceConfig").Get<EmailNotificationSettings>()
+                : new EmailNotificationSettings() {NotificationServiceIsActive = notificationIsActive } ;
             if (newsNotificationServiceSettings.NotificationServiceIsActive)
             {
-                newsNotificationServiceSettings = Configuration.GetSection("NewsNotificationServiceConfig").Get<EmailNotificationSettings>();
                 services.AddHostedService<EmailNotificationHostedService>();
             }
             services.AddSingleton(newsNotificationServiceSettings);
@@ -151,11 +152,12 @@ namespace Demosite
             services.AddSingleton(engine);
 
             //Captcha
-            var captchaIsActive = Configuration.GetSection("CaptchaSettings").GetSection("CaptchaIsActive").Get<bool>();
-            CaptchaSettings captchaSettings = new CaptchaSettings() { CaptchaIsActive = captchaIsActive };
-            if(captchaSettings.CaptchaIsActive)
+            var captchaIsActive = Configuration.GetSection("CaptchaSettings").GetSection("IsActive").Get<bool>();
+            CaptchaSettings captchaSettings = captchaIsActive
+                ? Configuration.GetSection("CaptchaSettings").Get<CaptchaSettings>()
+                : new CaptchaSettings() { IsActive = captchaIsActive };
+            if(captchaSettings.IsActive)
             {
-                captchaSettings = Configuration.GetSection("CaptchaSettings").Get<CaptchaSettings>();
                 var colors = captchaSettings.GetColors();
                 services.AddSixLabCaptcha(x =>
                 {
@@ -206,7 +208,6 @@ namespace Demosite
             else
             {
                 app.UseExceptionHandler("/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.            
             }
 
             app.UseStatusCodePages(ctx =>

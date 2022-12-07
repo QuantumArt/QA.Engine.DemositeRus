@@ -4,7 +4,7 @@ namespace Demosite.Services.Settings
 {
     public class CaptchaSettings
     {
-        public bool CaptchaIsActive { get; set; }
+        public bool IsActive { get; set; }
         public string DefaultKey { get; set; }
         public BackgroundNoiseLevel BackgroundNoiseLevel { get; set; }
         public byte DrawLineNoise { get; set; }

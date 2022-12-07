@@ -148,7 +148,7 @@ namespace Demosite.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError(nameService + $": error dusring send check email: {ex.Message}", ex);
+                _logger.LogError(nameService + $": error during send check email: {ex.Message}", ex);
             }
             try
             {

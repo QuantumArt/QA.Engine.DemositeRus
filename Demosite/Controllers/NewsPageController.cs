@@ -34,7 +34,7 @@ namespace Demosite.Controllers
         public IActionResult Details(int id)
         {
             var vm = NewsPageViewModelBuilder.BuildDetails(CurrentItem, id, CurrentItem.DetailsText, CurrentItem.CategoryId);
-            if(vm == null)
+            if (vm == null)
             {
                 return NotFound();
             }

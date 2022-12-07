@@ -14,7 +14,7 @@ namespace Demosite.Middlewares.Captcha
 
         public async Task Invoke(HttpContext context, CaptchaSettings captchaSettings, ISixLaborsCaptchaModule sixLaborsCaptcha, ILogger<CaptchaImageMiddleware> logger)
         {
-            if (!captchaSettings.CaptchaIsActive)
+            if (!captchaSettings.IsActive)
             {
                 return;
             }
@@ -53,7 +53,7 @@ namespace Demosite.Middlewares.Captcha
             }
             catch (Exception ex)
             {
-                logger.LogInformation("captcha error: " + ex.Message);
+                logger.LogError("captcha error: " + ex.Message);
             }
         }
 
