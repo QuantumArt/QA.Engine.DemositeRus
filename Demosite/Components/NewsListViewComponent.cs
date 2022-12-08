@@ -10,9 +10,9 @@ namespace Demosite.Components
     public class NewsListViewComponent : ViewComponent
     {
         private NewsPageViewModelBuilder NewsPageViewModelBuilder { get; }
-        private ISiteSettingsProvider SiteSettingsProvider { get; }
+        private ISiteSettingsService SiteSettingsProvider { get; }
         public NewsListViewComponent(NewsPageViewModelBuilder newsPageViewModelBuilder,
-                                     ISiteSettingsProvider siteSettings)
+                                     ISiteSettingsService siteSettings)
         {
             this.NewsPageViewModelBuilder = newsPageViewModelBuilder;
             this.SiteSettingsProvider = siteSettings;   

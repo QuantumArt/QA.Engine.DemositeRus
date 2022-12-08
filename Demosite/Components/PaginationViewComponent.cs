@@ -12,9 +12,9 @@ namespace Demosite.Components;
 
 public class PaginationViewComponent : ViewComponent
 {
-	private readonly ISiteSettingsProvider _siteSettingsProvider;
+	private readonly ISiteSettingsService _siteSettingsProvider;
 
-	public PaginationViewComponent(ISiteSettingsProvider siteSettingsProvider)
+	public PaginationViewComponent(ISiteSettingsService siteSettingsProvider)
 	{
 		_siteSettingsProvider = siteSettingsProvider;
 	}

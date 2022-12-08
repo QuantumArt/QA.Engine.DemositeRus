@@ -14,9 +14,9 @@ namespace Demosite.Controllers
     public class NewsPageController : ContentControllerBase<NewsPage>
     {
         private NewsPageViewModelBuilder NewsPageViewModelBuilder { get; }
-        private ISiteSettingsProvider SiteSettingsProvider { get; }
+        private ISiteSettingsService SiteSettingsProvider { get; }
         public NewsPageController(NewsPageViewModelBuilder newsPageViewModelBuilder,
-                                  ISiteSettingsProvider siteSettings)
+                                  ISiteSettingsService siteSettings)
         {
             this.NewsPageViewModelBuilder = newsPageViewModelBuilder;
             this.SiteSettingsProvider = siteSettings;

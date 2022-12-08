@@ -14,14 +14,14 @@ using CacheTagUtilities = Demosite.Templates.CacheTagUtilities;
 
 namespace Demosite.Services;
 
-public class SiteSettingsProvider : ISiteSettingsProvider
+public class SiteSettingsService : ISiteSettingsService
 {
     private readonly IDbContext _context;
     public readonly ICacheService _memoryCache;
     private readonly CacheTagUtilities _cacheTagUtilities;
 	private readonly QpExtSettings _qpSettings;
 
-	public SiteSettingsProvider(
+	public SiteSettingsService(
         IDbContext context,
         ICacheService cacheProvider,
 		CacheTagUtilities cacheTagUtilities,
@@ -102,7 +102,7 @@ public class SiteSettingsProvider : ISiteSettingsProvider
 		CancellationToken cancellationToken)
 	{
 		const string settingsCacheKey =
-			nameof(SiteSettingsProvider) + "." + nameof(GetSiteSettings);
+			nameof(SiteSettingsService) + "." + nameof(GetSiteSettings);
 
         return _memoryCache.GetFromCache< Task<IDictionary<string, SiteSettingDto>>>(settingsCacheKey, async () =>
         {

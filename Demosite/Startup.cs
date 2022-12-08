@@ -63,7 +63,7 @@ namespace Demosite
             qpSettings.ConnectionString = Configuration.GetConnectionString("DatabaseQPPostgre");
             services.AddSingleton(qpSettings);
 
-            services.AddScoped<ISiteSettingsProvider, SiteSettingsProvider>();
+            services.AddScoped<ISiteSettingsService, SiteSettingsService>();
 
             //структура сайта виджетной платформы
             services.AddSiteStructureEngine(options =>

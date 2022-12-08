@@ -6,4 +6,3 @@ namespace Demosite.Postgre.DAL
     {
     }
 }
-

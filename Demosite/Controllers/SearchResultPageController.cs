@@ -14,10 +14,10 @@ namespace Demosite.Controllers;
 public class SearchResultPageController : ContentControllerBase<SearchResultPage>
 {
 	private readonly ISearchService _searchService;
-    private readonly ISiteSettingsProvider _siteSettingsProvider;
+    private readonly ISiteSettingsService _siteSettingsProvider;
 
     public SearchResultPageController(ISearchService searchService,
-                                ISiteSettingsProvider siteSettingsProvider)
+                                ISiteSettingsService siteSettingsProvider)
 	{
 		_searchService = searchService;
         _siteSettingsProvider = siteSettingsProvider;

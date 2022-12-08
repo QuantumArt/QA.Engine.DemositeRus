@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Demosite.Interfaces;
 
-public interface ISiteSettingsProvider
+public interface ISiteSettingsService
 {
 
 	/// <summary>
