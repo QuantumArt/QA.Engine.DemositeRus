@@ -18,6 +18,7 @@ using System.Net;
 using System.Net.Mail;
 using System.Reflection;
 using System.Threading.Tasks;
+using Quantumart.QPublishing.Helpers;
 
 namespace Demosite.Services
 {
@@ -28,7 +29,7 @@ namespace Demosite.Services
         private EmailNotificationSettings _settings { get; }
         private ILogger<EmailNotificationService> _logger { get; }
         private string nameService => nameof(EmailNotificationService);
-        private string logoFileName = "";
+        private string logoFileName = "demo-logo.jpeg";
         private INotificationTemplateEngine _notificationTemplateEngine { get; }
         private IWebHostEnvironment _environment { get; }
         public const string checkEmailName = "Demosite.Services.EmailTemplates.CheckEmail.cshtml";
@@ -87,13 +88,18 @@ namespace Demosite.Services
 
         public async Task<SubscriptionStatus> AddSubscriber(NewsSubscriber subscriber)
         {
+            SubscriptionStatus result = new SubscriptionStatus()
+            {
+                Success = true,
+                Message = ""
+            };
             _logger.LogInformation(nameService + $": add new email to subscibe: {subscriber.Email}");
             subscriber.Email = subscriber.Email.ToLower();
             var newSubscriber = new EmailNewsSubscriber();
             if (subscriber.Email.Length == 0)
             {
                 var message = "email address is required";
-                _logger.LogInformation(nameService+ ": " + message);
+                _logger.LogInformation(nameService + ": " + message);
                 return new SubscriptionStatus()
                 {
                     Success = false,
@@ -101,10 +107,10 @@ namespace Demosite.Services
                     Message = message
                 };
             }
-            if(subscriber.NewsCategory.Length == 0)
+            if (subscriber.NewsCategory.Length == 0)
             {
-                var message =  "news category is required";
-                _logger.LogInformation(nameService +": " + message);
+                var message = "news category is required";
+                _logger.LogInformation(nameService + ": " + message);
                 return new SubscriptionStatus()
                 {
                     Success = false,
@@ -144,7 +150,12 @@ namespace Demosite.Services
             }
             try
             {
-                await SendCheckEmail(newSubscriber);
+                if(!(await SendCheckEmail(newSubscriber) == SmtpStatusCode.Ok))
+                {
+                    result.Success = false;
+                    result.TypeError = "email";
+                    result.Message = "Ошибка отправки тестового письма, пожалуйста попробуйте повторить позже или введите другой адресс";
+                }
             }
             catch (Exception ex)
             {
@@ -158,11 +169,7 @@ namespace Demosite.Services
             {
                 throw;
             }
-            return new SubscriptionStatus()
-            {
-                Success = true,
-                Message = ""
-            };
+            return result;
         }
 
         public async Task<(bool isConfirm, string text)> ConfirmedSubscribe(string confirmcode)
@@ -177,7 +184,7 @@ namespace Demosite.Services
             {
                 return (false, "This email is already subscribed to news.");
             }
-            else if(subscriber != null && subscriber.ConfirmCodeSendDate.HasValue && subscriber.ConfirmCodeSendDate.Value.Add(_settings.EmailConfirmationExpirationTime) < DateTime.Now)
+            else if (subscriber != null && subscriber.ConfirmCodeSendDate.HasValue && subscriber.ConfirmCodeSendDate.Value.Add(_settings.EmailConfirmationExpirationTime) < DateTime.Now)
             {
                 return (false, "This email is already subscribed to news.");
             }
@@ -230,9 +237,9 @@ namespace Demosite.Services
             await SendEmailsToSubscribers(request);
         }
 
-        private async Task SendCheckEmail(EmailNewsSubscriber subscriber)
+        private async Task<SmtpStatusCode> SendCheckEmail(EmailNewsSubscriber subscriber)
         {
-            
+            SmtpStatusCode status = SmtpStatusCode.Ok;
             string base64ImageRepresentation = await GetConvertedLogoImage(logoFileName);
             string body = "";
             var model = new EmailModel()
@@ -267,13 +274,15 @@ namespace Demosite.Services
             {
                 try
                 {
-                    await SendEmailAsync(new[] { envelope }, SmtpClient, "Email Confirmation", false);
+                    status = (await SendEmailAsync(new[] { envelope }, SmtpClient, "Email Confirmation", false)).status;
                 }
                 catch (Exception ex)
                 {
                     _logger.LogError(nameService + $": error during send email with check code: {ex.Message}", ex);
                 }
             }
+
+            return status;
         }
 
         private async Task<int?> CreateDistribution()
@@ -460,11 +469,11 @@ namespace Demosite.Services
                     }
                     await dbContext.SaveChangesAsync();
                 }
-            }   
+            }
         }
         private async Task<(SmtpStatusCode status, int distributionId)> SendEmailAsync(Envelope[] envelopes, SmtpClient client, string subject, bool saveContext = true)
         {
-            (SmtpStatusCode status, int distributionId) result = (SmtpStatusCode.Ok, -1);
+            (SmtpStatusCode status, int distributionId) result = (SmtpStatusCode.Ok, envelopes[0].DistributionId);
             //рассылка писем
 
             foreach (var envelope in envelopes)
@@ -525,8 +534,6 @@ namespace Demosite.Services
                     await dbContext.SaveChangesAsync();
                 }
             }
-            result = (SmtpStatusCode.Ok, envelopes[0].DistributionId);
-
             return result;
         }
 
@@ -584,7 +591,7 @@ namespace Demosite.Services
         private SmtpClient GetClient()
         {
             var credential = new NetworkCredential(this._settings.EmailSender.UserName, this._settings.EmailSender.Password);
-            if(!string.IsNullOrEmpty(this._settings.EmailSender.Domain))
+            if (!string.IsNullOrEmpty(this._settings.EmailSender.Domain))
             {
                 credential.Domain = this._settings.EmailSender.Domain;
             }
