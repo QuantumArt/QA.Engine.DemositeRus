@@ -1,5 +1,3 @@
-//import searchPageConfig from "./search-default-config/search-page-config";
-//import autoComplete from "@tarekraafat/autocomplete.js";
 
 if ($("#autoComplete").length) {
   let resultsPageInputConfig = {

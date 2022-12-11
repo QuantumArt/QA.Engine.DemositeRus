@@ -12,7 +12,7 @@ namespace Demosite.Components
     {
         public override Task<IViewComponentResult> RenderAsync(SearchBarWidget widget, IDictionary<string, object> arguments)
         {
-            var seacrh = new SearchBarViewModel(null);
+            var seacrh = new SearchBarViewModel();
             return Task.FromResult<IViewComponentResult>(View(seacrh));
         }
     }

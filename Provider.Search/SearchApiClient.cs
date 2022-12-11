@@ -13,11 +13,11 @@ public class SearchApiClient
 
 	public SearchApiClient(
 		HttpClient client,
-		SearchSettings settings,
-		ILogger<SearchApiClient> logger)
+        IOptions<SearchSettings> settings,
+        ILogger<SearchApiClient> logger)
 	{
-		_settings = settings;
-		client.BaseAddress = new Uri(_settings.BaseUrl);
+		_settings = settings.Value;
+        client.BaseAddress = new Uri(_settings.BaseUrl);
 		_client = client;
 		_logger = logger;
 	}
@@ -42,11 +42,11 @@ public class SearchApiClient
 			_settings.BaseUrl,
 			path);
 
-		var response = await _client.PostAsync(path, JsonContent.Create(request), token);
+        var response = await _client.PostAsync(path, JsonContent.Create(request), token);
 
 		response = response.EnsureSuccessStatusCode();
 
-		var result = await response.Content.ReadAsAsync<TResponse>(token);
+        var result = await response.Content.ReadAsAsync<TResponse>(token);
 
 		if (result is null)
 		{

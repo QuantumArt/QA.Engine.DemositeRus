@@ -1,4 +1,4 @@
-﻿using Provider.Search.DTO.Response;
+using Provider.Search.DTO.Response;
 
 namespace Provider.Search;
 
@@ -21,5 +21,5 @@ public interface ISearchProvider
 	/// <param name="limit">Сколько выбирать элементов (для пейджинга)</param>
 	/// <param name="offset">Сколько элементов пропустить при выборке (для пейджинга)</param>
 	/// <returns></returns>
-	Task<SearchResponse> SearchAsync(string request, string[] roles, int limit, int offset, CancellationToken token);
+	Task<SearchResponse> SearchAsync(string request, string[] roles, int limit, int offset, int? ifFoundLte, CancellationToken token);
 }

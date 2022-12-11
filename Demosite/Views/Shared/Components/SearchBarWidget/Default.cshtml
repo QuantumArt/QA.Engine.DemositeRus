@@ -1,17 +1,13 @@
 ﻿@using Demosite.ViewModels
 @model SearchBarViewModel
 
-<form id="search-form"
-      method="get"
-      action="/SearchResultPage/search"
-      class="form"
-      autocomplete="off">
+<form asp-action="Search" asp-controller="SearchResultPage" asp-antiforgery="false">
     <div class="form__row">
-
-            <div class="search-input">
-                <input asp-for="Query" required minlength="3" maxlength="100" class="form-control" size="16" id="autoComplete" type="search" dir="ltr" spellcheck=false autocorrect="off" autocomplete="off" autocapitalize="off">
-            </div>
-            <button class="btn btn-light rounded-end" type="submit">Найти</button>
+        <div class="search-input">
+            <input asp-for="Query" required minlength="3" maxlength="100" class="form-control" size="16" id="autoComplete">
+            <input type="checkbox" name="WithCorrect" value="true" checked style="display:none" />
+        </div>
+        <button class="btn btn-light rounded-end" type="submit">Найти</button>
     </div>
 </form>
 

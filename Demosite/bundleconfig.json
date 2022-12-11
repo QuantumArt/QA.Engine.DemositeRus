@@ -32,7 +32,7 @@
       "wwwroot/js/event-slider.js",
       "wwwroot/js/report-slider.js",
       "wwwroot/js/feedback-form.js",
-      "wwwroot/js/search/autoComplete.min.js",
+      "wwwroot/js/search/autoComplete.js",
       "wwwroot/js/search/search-on-results.js"
     ],
     // Optionally specify minification options

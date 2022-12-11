@@ -179,11 +179,8 @@ namespace Demosite
             services.AddMemoryCache();
             services.AddScoped<ICacheService, CacheService>();
 
-            SearchSettings searchSettings = Configuration.GetSection("Search").Get<SearchSettings>();
-            services.AddSingleton(searchSettings);
+            services.AddSearch(Configuration);
             services.AddScoped<ISearchService, SearchService>();
-            services.AddHttpClient<SearchApiClient>();
-            services.AddScoped<ISearchProvider, SearchProvider>();
 
             services.AddControllersWithViews(options =>
             {

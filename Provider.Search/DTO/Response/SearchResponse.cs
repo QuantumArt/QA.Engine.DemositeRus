@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 
 namespace Provider.Search.DTO.Response;
 
@@ -13,10 +13,14 @@ public class SearchResponse
 	[JsonPropertyName("documents")]
 	public SearchResultDocument[]? Documents { get; }
 
-	public SearchResponse(int status, int totalCount, SearchResultDocument[]? documents)
+    [JsonPropertyName("queryсorrection")]
+    public QueryCorrection QueryCorrection { get; }
+
+    public SearchResponse(int status, int totalCount, SearchResultDocument[]? documents, QueryCorrection correction)
 	{
 		Status = status;
 		TotalCount = totalCount;
 		Documents = documents;
+        QueryCorrection = correction;
 	}
 }

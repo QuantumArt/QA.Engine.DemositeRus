@@ -13,7 +13,11 @@ public class SearchResult
 
 	public IEnumerable<Document> Documents { get; } = default!;
 
-	public SearchResult(SearchResponse response, int itemsPerPage)
+    public SearchCorrection SearchCorrection { get; }
+
+    public string OriginalQuery { get; }
+
+    public SearchResult(SearchResponse response, int itemsPerPage, string originalQuery)
 	{
 		DocumentsCount = response.TotalCount;
 		PagesCount = (response.TotalCount + itemsPerPage - 1) / itemsPerPage;
@@ -35,5 +39,12 @@ public class SearchResult
 				x.Description ?? string.Empty,
 				x.Category ?? string.Empty))
 			.ToArray();
-	}
+
+        if(response.QueryCorrection != null)
+        {
+            var correction = response.QueryCorrection;
+            SearchCorrection = new SearchCorrection(correction.Text, correction.Snippet, correction.ResultsAreCorrected);
+        }
+        OriginalQuery = originalQuery;
+    }
 }

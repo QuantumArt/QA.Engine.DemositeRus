@@ -8,8 +8,14 @@ public class SearchBarViewModel : ISearchModel
 	[Display(Prompt = "Поиск")]
 	public string Query { get; }
 
-	public SearchBarViewModel(string? query)
+    public bool WithCorrection { get; }
+
+    public SearchBarViewModel() : this(string.Empty, false)
+    {  }
+
+    public SearchBarViewModel(string? query, bool? withCorrection)
 	{
 		Query = query ?? string.Empty;
+        WithCorrection = withCorrection ?? false;
 	}
 }

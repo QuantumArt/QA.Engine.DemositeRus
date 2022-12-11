@@ -1,4 +1,4 @@
-﻿using Provider.Search.DTO.Request;
+using Provider.Search.DTO.Request;
 using Provider.Search.DTO.Response;
 
 namespace Provider.Search;
@@ -12,9 +12,9 @@ public class SearchProvider : ISearchProvider
 		_searchClient = httpClient;
 	}
 
-	public async Task<SearchResponse> SearchAsync(string request, string[] roles, int limit, int offset, CancellationToken token)
+	public async Task<SearchResponse> SearchAsync(string request, string[] roles, int limit, int offset, int? ifFoundLte, CancellationToken token)
 	{
-		SearchRequest searchRequest = new(request, roles, limit, offset);
+		SearchRequest searchRequest = new(request, roles, limit, offset, ifFoundLte);
 
 		return await _searchClient.SearchAsync(searchRequest, token);
 	}

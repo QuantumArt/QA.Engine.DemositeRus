@@ -6,6 +6,11 @@
         <div class="flex-grow-1 px-3 pt-3">
             <div class="ps-3">
                 <h1 class="fs-3 text-center mb-4">Поиск по сайту</h1>
+                @if (Model.SearchCorrection?.ResultsAreCorrected == true)
+                {
+                    <p class="fs-6 text-secondary mb-0">Показаны результаты по запросу:  @Html.Raw(Model.SearchCorrection.Snippet)</p>
+                    <p class="fs-6 text-secondary mb-0">Искать вместо этого:  <a href='@Url.Action("Search", "SearchResultPage", new {query = Model.OriginalQuery, withCorrect = false})'>@Model.OriginalQuery</a> </p>
+                }
                 <p class="fs-6 text-secondary mb-0">Результаты поиска: @(Model != null ? @Model.DocumentsCount : "0")</p>
             </div>
             @if (Model?.DocumentsCount > 0)
