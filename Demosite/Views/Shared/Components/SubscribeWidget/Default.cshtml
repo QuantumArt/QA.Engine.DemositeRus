@@ -1,82 +1,85 @@
-﻿@using  Demosite.Services.Settings;
+﻿@using Demosite.Services.Settings;
 @inject CaptchaSettings captchaSettings
 @model List<Demosite.ViewModels.CategoriesListViewModel>
 
 <div class="page">
-  <section class="page__section">
-    <div class="wrapper">
-      <div class="page__block">
-        <div class="page__text center">
-          <div class="subscribe">
-            <form class="form">
-              <div class="form__row">
-                <div class="form__field">
-                  <div class="form__group">
-                    <div class="radio">
-                      <label class="radio__label">
-                        <input class="radio__input" type="radio" checked name="gender" value="m"><span class="radio__marker"></span><span class="radio__text">Уважаемый</span>
-                      </label>
+    <section class="page__section">
+        <div class="wrapper">
+            <div class="page__block">
+                <div class="page__text center">
+                    <div class="subscribe">
+                        <form class="form">
+                            <div class="form__row">
+                                <div class="form__field">
+                                    <div class="form__group">
+                                        <div class="radio">
+                                            <label class="radio__label">
+                                                <input class="radio__input" type="radio" checked name="gender" value="m"><span class="radio__marker"></span><span class="radio__text">Уважаемый</span>
+                                            </label>
+                                        </div>
+                                        <div class="radio">
+                                            <label class="radio__label">
+                                                <input class="radio__input" type="radio" name="gender" value="f"><span class="radio__marker"></span><span class="radio__text">Уважаемая</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form__row">
+                                <div class="form__field">
+                                    <input class="input" type="text" name="firstName" placeholder="Имя*">
+                                </div>
+                                <div class="form__field">
+                                    <input class="input" type="text" name="lastName" placeholder="Фамилия*">
+                                </div>
+                            </div>
+                            <div class="form__row">
+                                <div class="form__field">
+                                    <input class="input" type="text" name="company" placeholder="Компания*">
+                                </div>
+                                <div class="form__field">
+                                    <input class="input" type="text" name="email" placeholder="Email*">
+                                </div>
+                            </div>
+                            <div class="form__row">
+                                <div class="form__field">
+                                    <div class="form__group" id="newsCategory" name="checkboxes">
+                                        @foreach (var category in Model)
+                                        {
+                                            <div class="checkbox">
+                                                <label class="checkbox__label">
+                                                    <input class="checkbox__input" type="checkbox" checked value=@category.Id><span class="checkbox__marker"></span><span class="checkbox__text">@category.Title</span>
+                                                </label>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form__row">
+                                <div class="form__field">
+                                    <div class="form__group">
+                                        @if (captchaSettings.IsActive)
+                                        {
+                                            <div class="form__captcha" data-captcha data-captcha-defaultkey="@captchaSettings.DefaultKey">
+                                                <div class="form__captcha-code">
+                                                    <img class="img-rounded" src='/captcha' alt="" />
+                                                </div>
+                                                <div class="form__captcha-input">
+                                                    <input class="input" type="text" name="tokencaptcha" placeholder="Код с каптчи">
+                                                </div>
+                                                <div class="form__captcha-btn">
+                                                    <button class="button button--refresh" value="captcha"><img src="~/static/images/refresh.svg" alt=""></button>
+                                                </div>
+                                            </div>
+                                        }
+                                        <button class="button" value="subscribe" name="action_subscribe">Подписаться</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
                     </div>
-                    <div class="radio">
-                      <label class="radio__label">
-                        <input class="radio__input" type="radio" name="gender" value="f"><span class="radio__marker"></span><span class="radio__text">Уважаемая</span>
-                      </label>
-                    </div>
-                  </div>
                 </div>
-              </div>
-              <div class="form__row">
-                <div class="form__field">
-                  <input class="input" type="text" name="firstName" placeholder="Имя*">
-                </div>
-                <div class="form__field">
-                  <input class="input" type="text" name="lastName" placeholder="Фамилия*">
-                </div>
-              </div>
-              <div class="form__row">
-                <div class="form__field">
-                  <input class="input" type="text" name="company" placeholder="Компания*">
-                </div>
-                <div class="form__field">
-                  <input class="input" type="text" name="email" placeholder="Email*">
-                </div>
-              </div>
-              <div class="form__row">
-                <div class="form__field">
-                  <div class="form__group" id="newsCategory" name="checkboxes">
-                    @foreach (var category in Model)
-                    {
-                      <div class="checkbox">
-                        <label class="checkbox__label">
-                          <input class="checkbox__input" type="checkbox" checked value=@category.Id><span class="checkbox__marker"></span><span class="checkbox__text">@category.Title</span>
-                        </label>
-                      </div>
-                    }
-                  </div>
-                </div>
-              </div>
-              <div class="form__row">
-                <div class="form__field">
-                  <div class="form__group">
-                    <div class="form__captcha" data-captcha data-captcha-defaultkey="@captchaSettings.DefaultKey">
-                      <div class="form__captcha-code">
-                        <img class="img-rounded" src='/captcha' alt="" />
-                      </div>
-                      <div class="form__captcha-input">
-                        <input class="input" type="text" name="tokencaptcha" placeholder="Код с каптчи">
-                      </div>
-                      <div class="form__captcha-btn">
-                        <button class="button button--refresh" value="captcha"><img src="~/static/images/refresh.svg" alt=""></button>
-                      </div>
-                    </div>
-                    <button class="button" value="subscribe" name="action_subscribe">Подписаться</button>
-                  </div>
-                </div>
-              </div>
-            </form>
-          </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </section>
+    </section>
 </div>

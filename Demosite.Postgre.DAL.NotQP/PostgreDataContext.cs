@@ -27,11 +27,8 @@ namespace Demosite.Postgre.DAL.NotQP
             entity.Property(e => e.Company).HasColumnName("company");
             entity.Property(e => e.Email).HasColumnName("email");
             entity.Property(e => e.IsActive).HasColumnName("is_active");
-            entity.Property(e => e.Country).HasColumnName("country");
-            entity.Property(e => e.Activity).HasColumnName("activity");
             entity.Property(e => e.ConfirmCode).HasColumnName("confirm_code");
             entity.Property(e => e.ConfirmCodeSendDate).HasColumnName("confirm_code_send_date");
-            entity.Property(e => e.Gender).HasColumnName("gender");
             entity.Property(e => e.NewsCategory).HasConversion(v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
                                                                v => JsonSerializer.Deserialize<int[]>(v, (JsonSerializerOptions)null))
                                                 .HasColumnName("news_category");
