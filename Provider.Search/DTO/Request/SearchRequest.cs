@@ -17,19 +17,20 @@ public class SearchRequest
     [JsonPropertyName("$offset")]
     public int Offset { get; }
 
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("$where")]
     public RolesFilter? Filter { get; }
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("$correct")]
-    public Correction Correct { get; }
+    public Correction? Correct { get; }
 
-    public SearchRequest(string query, string[] roles, int limit = 20, int offset = 0, int? ifFoundLte = null)
+    public SearchRequest(string query, string[]? roles, int limit = 20, int offset = 0, int? ifFoundLte = null)
     {
         Query = query;
         Limit = limit;
         Offset = offset;
-        Filter = new(roles);
+        if (roles != null) Filter = new(roles);
         if (ifFoundLte.HasValue) Correct = new(ifFoundLte.Value);
     }
 }
