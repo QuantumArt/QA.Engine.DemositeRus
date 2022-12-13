@@ -1,0 +1,4 @@
+<ng-container *ngIf="pageDetails$ | async as pageDetails">
+  <qa-widget-zone zone="Content" [nodeId]="pageDetails.id"></qa-widget-zone>
+  <qa-widget-zone zone="ContentBelow" [nodeId]="pageDetails.id"></qa-widget-zone>
+</ng-container>
