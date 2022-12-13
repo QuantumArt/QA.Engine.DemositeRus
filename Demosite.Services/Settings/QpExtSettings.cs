@@ -6,7 +6,7 @@ namespace Demosite.Services.Settings;
 
 public class QpExtSettings : QpSettings
 {
-	[Required]
-	public string Url { get; set; } = default!;
-	public TimeSpan ContentCacheExpiration { get; set; }
+    [Required]
+    public string Url { get; set; } = default!;
+    public TimeSpan ContentCacheExpiration { get; set; }
 }

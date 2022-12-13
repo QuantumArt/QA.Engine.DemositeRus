@@ -1,29 +1,29 @@
-using Microsoft.EntityFrameworkCore;
 using Demosite.Interfaces;
 using Demosite.Interfaces.Dto;
 using Demosite.Postgre.DAL;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Demosite.Services
 {
-    public class ReportsService: IReportsService
+    public class ReportsService : IReportsService
     {
-        private PostgreQpDataContext qpDataContext { get; }
+        private readonly PostgreQpDataContext _qpDataContext;
         public ReportsService(IDbContext context)
         {
-            qpDataContext = context as PostgreQpDataContext;
+            _qpDataContext = context as PostgreQpDataContext;
         }
         public IEnumerable<ReportDto> GetAllReports()
         {
-            var results = qpDataContext.Reports.OrderByDescending(e => e.ReportDate)
+            Report[] results = _qpDataContext.Reports.OrderByDescending(e => e.ReportDate)
                                                .Include(e => e.Files.OrderBy(e => e.SortOrder ?? 10))
                                                .ToArray();
             return results.Select(Map).ToArray();
         }
         public IEnumerable<ReportDto> GetReports(IEnumerable<int> idsReport)
         {
-            var results = qpDataContext.Reports.Where(r => idsReport.Contains(r.Id))
+            Report[] results = _qpDataContext.Reports.Where(r => idsReport.Contains(r.Id))
                                                .OrderByDescending(e => e.ReportDate)
                                                .Include(e => e.Files.OrderBy(e => e.SortOrder ?? 10))
                                                .ToArray();
@@ -32,15 +32,8 @@ namespace Demosite.Services
 
         public ReportDto GetReport(int? id)
         {
-            if(id.HasValue)
-            {
-                return Map(qpDataContext.Reports.Include(r => r.Files).FirstOrDefault(r => r.Id == id.Value));
-            }
-            else
-            {
-                return null;
-            }
-            
+            return id.HasValue ? Map(_qpDataContext.Reports.Include(r => r.Files).FirstOrDefault(r => r.Id == id.Value)) : null;
+
         }
 
         private ReportDto Map(Postgre.DAL.Report model)
@@ -54,7 +47,7 @@ namespace Demosite.Services
                 ReportFiles = model.Files.Select(Map).ToArray()
             };
         }
-        private ReportFileDto Map (Postgre.DAL.ReportFile file)
+        private ReportFileDto Map(Postgre.DAL.ReportFile file)
         {
             return new ReportFileDto()
             {
@@ -65,6 +58,6 @@ namespace Demosite.Services
             };
         }
 
-        
+
     }
 }

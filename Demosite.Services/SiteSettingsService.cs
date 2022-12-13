@@ -2,7 +2,6 @@ using Demosite.Interfaces;
 using Demosite.Interfaces.Dto;
 using Demosite.Postgre.DAL;
 using Demosite.Services.Settings;
-using Demosite.Templates;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using System;
@@ -38,32 +37,30 @@ public class SiteSettingsService : ISiteSettingsService
     /// </summary>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public Task<int> PaginationViewCountAsync(CancellationToken cancellationToken) =>
-        GetSiteSettings("PaginationViewCount", default(int), cancellationToken);
-
-    /// <summary>
-    /// Количество элементов в списках ресурсов на одной странице
-    /// </summary>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
-    public Task<int> ResourcesPaginatedItemsCountAsync(CancellationToken cancellationToken) =>
-        GetSiteSettings("ResourcesPaginatedItemsCount", default(int), cancellationToken);
+    public Task<int> PaginationViewCountAsync(CancellationToken cancellationToken)
+    {
+        return GetSiteSettings("PaginationViewCount", default(int), cancellationToken);
+    }
 
     /// <summary>
     /// Количество элементов в списках новостей на одной странице
     /// </summary>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public Task<int> NewsPaginatedItemsCountAsync(CancellationToken cancellationToken) =>
-        GetSiteSettings("NewsPaginatedItemsCount", default(int), cancellationToken);
+    public Task<int> NewsPaginatedItemsCountAsync(CancellationToken cancellationToken)
+    {
+        return GetSiteSettings("NewsPaginatedItemsCount", default(int), cancellationToken);
+    }
 
     /// <summary>
     /// Количество элементов в результатах поиска на одной странице
     /// </summary>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public Task<int> GetSearchPaginatedItemsCountAsync(CancellationToken cancellationToken) =>
-        GetSiteSettings("SearchPaginatedItemsCount", default(int), cancellationToken);
+    public Task<int> GetSearchPaginatedItemsCountAsync(CancellationToken cancellationToken)
+    {
+        return GetSiteSettings("SearchPaginatedItemsCount", default(int), cancellationToken);
+    }
 
 
     /// <summary>
@@ -71,8 +68,10 @@ public class SiteSettingsService : ISiteSettingsService
     /// </summary>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public Task<int?> GetSearchFoundLteAsync(CancellationToken cancellationToken) =>
-        GetSiteSettings("SearchFoundLteCount", default(int?), cancellationToken);
+    public Task<int?> GetSearchFoundLteAsync(CancellationToken cancellationToken)
+    {
+        return GetSiteSettings("SearchFoundLteCount", default(int?), cancellationToken);
+    }
 
     /// <summary>
     /// Получить значение из настроек сайта
@@ -86,7 +85,7 @@ public class SiteSettingsService : ISiteSettingsService
     private async Task<T> GetSiteSettings<T>(string name, T defaultValue,
         CancellationToken cancellationToken)
     {
-        var siteSettings = await GetSiteSettings(cancellationToken);
+        IDictionary<string, SiteSettingDto> siteSettings = await GetSiteSettings(cancellationToken);
 
         if (!siteSettings.TryGetValue(name, out SiteSettingDto? setting))
         {
@@ -115,7 +114,7 @@ public class SiteSettingsService : ISiteSettingsService
 
         return _memoryCache.GetFromCache<Task<IDictionary<string, SiteSettingDto>>>(settingsCacheKey, async () =>
         {
-            var settings = await (_context as PostgreQpDataContext).SiteSettings
+            SiteSetting[] settings = await (_context as PostgreQpDataContext).SiteSettings
                 .AsNoTracking()
                 .ToArrayAsync(cancellationToken);
 
@@ -130,7 +129,7 @@ public class SiteSettingsService : ISiteSettingsService
             return defaultValue;
         }
 
-        var objResult = ConvertSettingValue(settingValue);
+        object objResult = ConvertSettingValue(settingValue);
 
         return objResult is null
             ? defaultValue
@@ -138,41 +137,31 @@ public class SiteSettingsService : ISiteSettingsService
 
         static object? ConvertSettingValue(string? settingValue)
         {
-            var type = typeof(T);
+            Type type = typeof(T);
             if (type == typeof(string))
             {
                 return Convert.ToString(settingValue);
             }
 
-            if (type == typeof(double) || type == typeof(double?))
-            {
-                return Convert.ToDouble(settingValue);
-            }
-
-            if (type == typeof(int) || type == typeof(int?))
-            {
-                return Convert.ToInt32(settingValue);
-            }
-
-            if (type == typeof(long) || type == typeof(long?))
-            {
-                return Convert.ToInt64(settingValue);
-            }
-
-            if (type == typeof(DateTime) || type == typeof(DateTime?))
-            {
-                return Convert.ToDateTime(settingValue);
-            }
-
-            return type == typeof(bool) || type == typeof(bool?)
+            return type == typeof(double) || type == typeof(double?)
+                ? Convert.ToDouble(settingValue)
+                : type == typeof(int) || type == typeof(int?)
+                ? Convert.ToInt32(settingValue)
+                : type == typeof(long) || type == typeof(long?)
+                ? Convert.ToInt64(settingValue)
+                : type == typeof(DateTime) || type == typeof(DateTime?)
+                ? Convert.ToDateTime(settingValue)
+                : type == typeof(bool) || type == typeof(bool?)
                 ? Convert.ToBoolean(settingValue)
                 : settingValue;
         }
     }
 
     public static SiteSettingDto Map(SiteSetting siteSetting)
-    => new(siteSetting.Key,
-        siteSetting.TypeExact,
-        siteSetting.StringValue,
-        siteSetting.ImageValueUrl);
+    {
+        return new(siteSetting.Key,
+            siteSetting.TypeExact,
+            siteSetting.StringValue,
+            siteSetting.ImageValueUrl);
+    }
 }

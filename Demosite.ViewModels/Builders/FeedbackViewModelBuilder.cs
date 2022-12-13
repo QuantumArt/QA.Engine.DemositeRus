@@ -7,23 +7,23 @@ namespace Demosite.ViewModels.Builders
 {
     public class FeedbackViewModelBuilder
     {
-        private IFeedbackService _feedbackService { get; }
+        private readonly IFeedbackService _feedbackService;
         public FeedbackViewModelBuilder(IFeedbackService feedbackService)
         {
-            this._feedbackService = feedbackService;
+            _feedbackService = feedbackService;
         }
         public async Task<bool> SendFeedback(FeedbackViewModel model)
         {
             bool result = false;
             SmtpStatusCode status = await _feedbackService.SendFeedback(Map(model));
-            if(status == SmtpStatusCode.Ok)
+            if (status == SmtpStatusCode.Ok)
             {
                 result = true;
             }
             return result;
         }
 
-        private FeedbackDto Map (FeedbackViewModel feedback)
+        private FeedbackDto Map(FeedbackViewModel feedback)
         {
             return new FeedbackDto()
             {

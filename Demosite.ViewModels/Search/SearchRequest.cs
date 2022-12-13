@@ -1,15 +1,15 @@
-using System.ComponentModel.DataAnnotations;
 using Demosite.ViewModels.Interface;
+using System.ComponentModel.DataAnnotations;
 
-namespace Demosite.ViewModels;
+namespace Demosite.ViewModels.Search;
 
 public class SearchRequest : ISearchModel
 {
-	[Required]
-	[MinLength(3)]
-	public string Query { get; set; } = default!;
+    [Required]
+    [MinLength(3)]
+    public string Query { get; set; } = default!;
 
-	public int Limit { get; set; } = 20;
+    public int Limit { get; set; } = 20;
 
-	public int Offset { get; set; }
+    public int Offset { get; set; }
 }

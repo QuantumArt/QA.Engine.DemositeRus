@@ -6,8 +6,8 @@ namespace Demosite.Postgre.DAL;
 
 public partial class SiteSetting
 {
-	public SettingType TypeExact =>
-		Enum.TryParse(Type, true, out SettingType exact)
-			? exact
-			: default;
+    public SettingType TypeExact =>
+        Enum.TryParse(Type, true, out SettingType exact)
+            ? exact
+            : default;
 }

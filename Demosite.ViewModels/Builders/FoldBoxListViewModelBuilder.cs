@@ -6,35 +6,35 @@ namespace Demosite.ViewModels.Builders
 {
     public class FoldBoxListViewModelBuilder
     {
-        private IFoldBoxListService FoldBoxListService { get; }
+        private readonly IFoldBoxListService _foldBoxListService;
 
         public FoldBoxListViewModelBuilder(IFoldBoxListService foldBoxListService)
         {
-            this.FoldBoxListService = foldBoxListService;
+            _foldBoxListService = foldBoxListService;
         }
 
         public FoldBoxListViewModel Build(IEnumerable<int> ids, string type)
         {
-            var result = new FoldBoxListViewModel
+            FoldBoxListViewModel result = new()
             {
                 WidgetType = type.Length > 0 ? type : "Default"
             };
 
-            var items = FoldBoxListService.GetItems(ids).OrderBy(i => i.SortOrder).ToList();
+            List<Interfaces.Dto.FoldBoxListItemDto> items = _foldBoxListService.GetItems(ids).OrderBy(i => i.SortOrder).ToList();
             result.Items.AddRange(items.Select(Map).ToList());
             return result;
         }
 
         private FoldBoxListItemViewModel Map(Interfaces.Dto.FoldBoxListItemDto item)
         {
-            if (item == null)
-                return null;
-            return new FoldBoxListItemViewModel
-            {
-                Id = item.Id,
-                Title = item.Title,
-                Text = item.Text
-            };
+            return item == null
+                ? null
+                : new FoldBoxListItemViewModel
+                {
+                    Id = item.Id,
+                    Title = item.Title,
+                    Text = item.Text
+                };
         }
     }
 }

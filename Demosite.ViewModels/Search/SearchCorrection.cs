@@ -1,4 +1,4 @@
-namespace Demosite.ViewModels
+namespace Demosite.ViewModels.Search
 {
     public class SearchCorrection
     {

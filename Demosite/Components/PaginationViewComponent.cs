@@ -12,57 +12,57 @@ namespace Demosite.Components;
 
 public class PaginationViewComponent : ViewComponent
 {
-	private readonly ISiteSettingsService _siteSettingsProvider;
+    private readonly ISiteSettingsService _siteSettingsProvider;
 
-	public PaginationViewComponent(ISiteSettingsService siteSettingsProvider)
-	{
-		_siteSettingsProvider = siteSettingsProvider;
-	}
+    public PaginationViewComponent(ISiteSettingsService siteSettingsProvider)
+    {
+        _siteSettingsProvider = siteSettingsProvider;
+    }
 
-	public async Task<IViewComponentResult> InvokeAsync(int pagesCount)
-	{
-		var currentPage = Request.CurrentPaginationPageNumber();
-		var paginationViewCount =
-			await _siteSettingsProvider.PaginationViewCountAsync(HttpContext.RequestAborted);
+    public async Task<IViewComponentResult> InvokeAsync(int pagesCount)
+    {
+        int currentPage = Request.CurrentPaginationPageNumber();
+        int paginationViewCount =
+            await _siteSettingsProvider.PaginationViewCountAsync(HttpContext.RequestAborted);
 
-		var (minValue, maxValue) = Interval(paginationViewCount, pagesCount, currentPage);
-		var model = new PaginationViewModel
-		{
-			Current = currentPage,
-			MinValue = minValue,
-			MaxValue = maxValue,
-			BaseQuery = GetBaseQueryString(HttpContext)
-		};
-		return View(model);
-	}
+        (int minValue, int maxValue) = Interval(paginationViewCount, pagesCount, currentPage);
+        PaginationViewModel model = new()
+        {
+            Current = currentPage,
+            MinValue = minValue,
+            MaxValue = maxValue,
+            BaseQuery = GetBaseQueryString(HttpContext)
+        };
+        return View(model);
+    }
 
-	private static (int, int) Interval(int paginationViewCount, int total, int current)
-	{
-		var near = paginationViewCount / 2;
+    private static (int, int) Interval(int paginationViewCount, int total, int current)
+    {
+        int near = paginationViewCount / 2;
 
-		var expectedMinValue = current - near;
-		var expectedMaxValue = current + near;
+        int expectedMinValue = current - near;
+        int expectedMaxValue = current + near;
 
-		var minValue = Math.Max(expectedMinValue, 1);
-		var minValueDelta = minValue - expectedMinValue;
-		var maxValue = Math.Min(expectedMaxValue + minValueDelta, total);
-		return (minValue, maxValue);
-	}
+        int minValue = Math.Max(expectedMinValue, 1);
+        int minValueDelta = minValue - expectedMinValue;
+        int maxValue = Math.Min(expectedMaxValue + minValueDelta, total);
+        return (minValue, maxValue);
+    }
 
-	private static QueryString GetBaseQueryString(HttpContext context)
-	{
-		var builder = new QueryBuilder();
+    private static QueryString GetBaseQueryString(HttpContext context)
+    {
+        QueryBuilder builder = new();
 
-		foreach ((var key, var values) in context.Request.Query)
-		{
-			if (key.Equals(Constants.BindNames.Pagination, StringComparison.OrdinalIgnoreCase))
-			{
-				continue;
-			}
+        foreach ((string key, Microsoft.Extensions.Primitives.StringValues values) in context.Request.Query)
+        {
+            if (key.Equals(Constants.BindNames.Pagination, StringComparison.OrdinalIgnoreCase))
+            {
+                continue;
+            }
 
-			builder.Add(key, values.AsEnumerable());
-		}
+            builder.Add(key, values.AsEnumerable());
+        }
 
-		return builder.ToQueryString();
-	}
+        return builder.ToQueryString();
+    }
 }

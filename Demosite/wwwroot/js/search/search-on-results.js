@@ -11,7 +11,6 @@ if ($("#autoComplete").length) {
         selection: (event) => {
           const selection = event.detail.selection.value;
           autoCompleteJSResultsPage.input.value = selection;
-         // autoCompleteJSResultsPage.input.form.submit();
         },
         navigate: (event) => {
           autoCompleteJSResultsPage.input.value =
@@ -35,8 +34,8 @@ if ($("#autoComplete").length) {
         const response = await fetch(url, options);
 
         if (response.ok) {
-          const result = await response.text();
-          return JSON.parse(result);
+          const result = await response.json();
+          return result;
         }
       },
     },

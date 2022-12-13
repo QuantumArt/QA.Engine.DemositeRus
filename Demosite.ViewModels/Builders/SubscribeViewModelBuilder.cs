@@ -8,22 +8,21 @@ namespace Demosite.ViewModels.Builders
 {
     public class SubscribeViewModelBuilder
     {
+        private readonly IEmailNotificationService _notificationService;
         public SubscribeViewModelBuilder(IEmailNotificationService emailNotification)
         {
-            this._notificationService = emailNotification;
+            _notificationService = emailNotification;
         }
-
-        private IEmailNotificationService _notificationService { get; }
 
         public SubscribeViewModel BuildForm(IAbstractItem widget)
         {
-            var vm = new SubscribeViewModel { Title = widget.Title };
-            return vm;
+            SubscribeViewModel viewModel = new() { Title = widget.Title };
+            return viewModel;
         }
 
         public async Task<SubscriptionStatus> AddSubscriber(SubscribeViewModel subscriber)
         {
-            var result = await _notificationService.AddSubscriber(Map(subscriber));
+            SubscriptionStatus result = await _notificationService.AddSubscriber(Map(subscriber));
             return result;
         }
         private NewsSubscriber Map(SubscribeViewModel subscribe)

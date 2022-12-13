@@ -1,7 +1,6 @@
 using Demosite.Interfaces;
-using Demosite.ViewModels;
+using Demosite.ViewModels.Search;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -11,19 +10,19 @@ namespace Demosite.Controllers.Api;
 [Route("[controller]/[action]")]
 public class SearchController : Controller
 {
-	private readonly ISearchService _searchService;
+    private readonly ISearchService _searchService;
 
-	public SearchController(ISearchService searchProvider)
-	{
-		_searchService = searchProvider;
-	}
+    public SearchController(ISearchService searchProvider)
+    {
+        _searchService = searchProvider;
+    }
 
-	[Produces("application/json")]
-	[HttpPost]
-	[IgnoreAntiforgeryToken]
-	public async Task<IActionResult> Complete([FromBody] SearchRequest request, CancellationToken token)
-	{
-		var result = await _searchService.CompleteAsync(request.Query, token);
-		return Ok(result);
-	}
+    [Produces("application/json")]
+    [HttpPost]
+    [IgnoreAntiforgeryToken]
+    public async Task<IActionResult> Complete([FromBody] SearchRequest request, CancellationToken token)
+    {
+        string[] result = await _searchService.CompleteAsync(request.Query, token);
+        return Ok(result);
+    }
 }

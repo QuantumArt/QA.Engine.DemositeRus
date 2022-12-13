@@ -14,13 +14,6 @@ public interface ISiteSettingsService
     Task<int> PaginationViewCountAsync(CancellationToken cancellationToken);
 
     /// <summary>
-    /// Количество элементов в списках ресурсов на одной странице
-    /// </summary>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
-    Task<int> ResourcesPaginatedItemsCountAsync(CancellationToken cancellationToken);
-
-    /// <summary>
     /// Количество элементов в списках новостей на одной странице
     /// </summary>
     /// <param name="cancellationToken"></param>

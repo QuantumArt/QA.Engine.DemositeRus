@@ -1,11 +1,10 @@
-﻿@using Demosite.ViewModels
-@model SearchBarViewModel
+﻿@using Demosite.ViewModels.SearchBar;
+@model SearchBarViewModel;
 
-<form asp-action="Search" asp-controller="SearchResultPage" asp-antiforgery="false">
+<form asp-action="Search" asp-controller="SearchResultPage" asp-antiforgery="false" asp-route-withCorrect = "true">
     <div class="form__row">
         <div class="search-input">
             <input asp-for="Query" required minlength="3" maxlength="100" class="form-control" size="16" id="autoComplete">
-            <input type="checkbox" name="WithCorrect" value="true" checked style="display:none" />
         </div>
         <button class="btn btn-light rounded-end" type="submit">Найти</button>
     </div>

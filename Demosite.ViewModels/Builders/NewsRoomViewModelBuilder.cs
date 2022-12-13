@@ -6,28 +6,28 @@ namespace Demosite.ViewModels.Builders
 {
     public class NewsRoomViewModelBuilder
     {
-        private INewsService NewsService { get; }
+        private readonly INewsService _newsService;
 
         public NewsRoomViewModelBuilder(INewsService newsService)
         {
-            this.NewsService = newsService;
+            _newsService = newsService;
         }
 
         public NewsRoomViewModel BuildBlocks(IAbstractItem widget)
         {
-            var vm = new NewsRoomViewModel { Title = widget.Title };
-            vm.Blocks.AddRange(NewsService.GetCategories().Where(c => c.ShowOnStart).OrderBy(o => o.SortOrder).Select(Map).ToArray());
-            return vm;
+            NewsRoomViewModel viewModel = new() { Title = widget.Title };
+            viewModel.Blocks.AddRange(_newsService.GetCategories().Where(c => c.ShowOnStart).OrderBy(o => o.SortOrder).Select(Map).ToArray());
+            return viewModel;
         }
 
         private NewsRoomBlockViewModel Map(Interfaces.Dto.NewsCategoryDto newsCategory)
         {
-            var newsBlock = new NewsRoomBlockViewModel
+            NewsRoomBlockViewModel newsBlock = new()
             {
                 Title = newsCategory.AlternativeTitle,
                 Url = $"/news_and_events/{newsCategory.Alias}"
             };
-            newsBlock.Items.AddRange(NewsService.GetAllPosts(categoryId: newsCategory.Id)
+            newsBlock.Items.AddRange(_newsService.GetAllPosts(categoryId: newsCategory.Id)
                                                 .Take(3)
                                                 .Select(p => Map(p, newsCategory.Alias))
                                                 .ToArray());

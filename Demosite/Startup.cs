@@ -15,7 +15,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Npgsql;
 using Provider.Search;
@@ -111,7 +110,7 @@ namespace Demosite
 
             services.AddScoped<CacheTagUtilities>();
             var cascheTagService = services.AddCacheTagServices();
-            if(qpSettings.IsStage)
+            if (qpSettings.IsStage)
             {
                 cascheTagService.WithInvalidationByMiddleware(@"^.*\/.+\.[a-zA-Z0-9]+$");
             }
@@ -137,7 +136,7 @@ namespace Demosite
             var notificationIsActive = Configuration.GetSection("NewsNotificationServiceConfig").GetSection("NotificationServiceIsActive").Get<bool>();
             var newsNotificationServiceSettings = notificationIsActive
                 ? Configuration.GetSection("NewsNotificationServiceConfig").Get<EmailNotificationSettings>()
-                : new EmailNotificationSettings() {NotificationServiceIsActive = notificationIsActive } ;
+                : new EmailNotificationSettings() { NotificationServiceIsActive = notificationIsActive };
             if (newsNotificationServiceSettings.NotificationServiceIsActive)
             {
                 services.AddHostedService<EmailNotificationHostedService>();
@@ -156,7 +155,7 @@ namespace Demosite
             CaptchaSettings captchaSettings = captchaIsActive
                 ? Configuration.GetSection("CaptchaSettings").Get<CaptchaSettings>()
                 : new CaptchaSettings() { IsActive = captchaIsActive };
-            if(captchaSettings.IsActive)
+            if (captchaSettings.IsActive)
             {
                 var colors = captchaSettings.GetColors();
                 services.AddSixLabCaptcha(x =>
@@ -173,7 +172,7 @@ namespace Demosite
                         x.TextColor = colors;
                     }
                 });
-            } 
+            }
             services.AddSingleton(captchaSettings);
 
             services.AddMemoryCache();
@@ -197,7 +196,6 @@ namespace Demosite
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -236,7 +234,7 @@ namespace Demosite
             });
 
             var captchaIsActive = Configuration.GetSection("CaptchaSettings").GetSection("IsActive").Get<bool>();
-            if(captchaIsActive)
+            if (captchaIsActive)
             {
                 app.UseCaptchaImage("/captcha");
             }

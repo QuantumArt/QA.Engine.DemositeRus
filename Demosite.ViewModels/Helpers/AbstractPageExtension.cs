@@ -9,7 +9,7 @@ namespace Demosite.ViewModels.Helpers
         {
             if (currentPage is IStartPage)
                 return new List<BreadCrumbViewModel>();
-            var breadCrumbs = currentPage.Parent.GetBreadCrumbs();
+            List<BreadCrumbViewModel> breadCrumbs = currentPage.Parent.GetBreadCrumbs();
             breadCrumbs.Add(new BreadCrumbViewModel
             {
                 Text = currentPage.Title,

@@ -1,7 +1,3 @@
-using LinqKit;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using Demosite.Interfaces;
 using Demosite.Interfaces.Dto;
 using Demosite.Interfaces.Dto.Enums;
@@ -10,6 +6,10 @@ using Demosite.Postgre.DAL.NotQP;
 using Demosite.Postgre.DAL.NotQP.Models;
 using Demosite.Services.Models;
 using Demosite.Services.Settings;
+using LinqKit;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -18,22 +18,21 @@ using System.Net;
 using System.Net.Mail;
 using System.Reflection;
 using System.Threading.Tasks;
-using Quantumart.QPublishing.Helpers;
 
 namespace Demosite.Services
 {
     public class EmailNotificationService : IEmailNotificationService
     {
-        private PostgreDataContext dbContext { get; }
-        private INewsService _newsService { get; }
-        private EmailNotificationSettings _settings { get; }
-        private ILogger<EmailNotificationService> _logger { get; }
+        private readonly PostgreDataContext _dbContext;
+        private readonly INewsService _newsService;
+        private readonly EmailNotificationSettings _settings;
+        private readonly ILogger<EmailNotificationService> _logger;
         private string nameService => nameof(EmailNotificationService);
-        private string logoFileName = "demo-logo.jpeg";
-        private INotificationTemplateEngine _notificationTemplateEngine { get; }
-        private IWebHostEnvironment _environment { get; }
-        public const string checkEmailName = "Demosite.Services.EmailTemplates.CheckEmail.cshtml";
-        public const string newsEmailName = "Demosite.Services.EmailTemplates.NewsEmail.cshtml";
+        private readonly string _logoFileName = "demo-logo.jpeg";
+        private readonly INotificationTemplateEngine _notificationTemplateEngine;
+        private readonly IWebHostEnvironment _environment;
+        public const string CHECK_EMAIL_NAME = "Demosite.Services.EmailTemplates.CheckEmail.cshtml";
+        public const string NEWS_EMAIL_NAME = "Demosite.Services.EmailTemplates.NewsEmail.cshtml";
         public EmailNotificationService(IDbContextNotQP dbContext,
                                         INewsService newsService,
                                         EmailNotificationSettings settings,
@@ -41,19 +40,19 @@ namespace Demosite.Services
                                         INotificationTemplateEngine notificationTemplateEngine,
                                         IWebHostEnvironment hostingEnvironment)
         {
-            this.dbContext = dbContext as PostgreDataContext;
-            this._newsService = newsService;
-            this._settings = settings;
-            this._logger = logger;
-            this._notificationTemplateEngine = notificationTemplateEngine;
-            this._environment = hostingEnvironment;
+            this._dbContext = dbContext as PostgreDataContext;
+            _newsService = newsService;
+            _settings = settings;
+            _logger = logger;
+            _notificationTemplateEngine = notificationTemplateEngine;
+            _environment = hostingEnvironment;
         }
         public async Task BackgroundSendEmails()
         {
             _logger.LogInformation(nameService + " is starting");
-            var distributionId = await CreateDistribution();
-            var distributionIdsNotCompleted = await CheckErrorDistribution();
-            var isHaveNotCompleted = distributionIdsNotCompleted.Any();
+            int? distributionId = await CreateDistribution();
+            int[] distributionIdsNotCompleted = await CheckErrorDistribution();
+            bool isHaveNotCompleted = distributionIdsNotCompleted.Any();
             if (distributionId.HasValue)
             {
                 distributionIdsNotCompleted = distributionIdsNotCompleted.Append(distributionId.Value)
@@ -74,7 +73,7 @@ namespace Demosite.Services
         public async Task CheckIncompleledDistributions()
         {
             _logger.LogInformation(nameService + $": send all unsent email to subscibers");
-            var distributionIdsNotCompleted = await CheckErrorDistribution();
+            int[] distributionIdsNotCompleted = await CheckErrorDistribution();
             foreach (int id in distributionIdsNotCompleted)
             {
                 await CreateAndSendEnvelope(new EnvelopeParameterRequest()
@@ -88,17 +87,17 @@ namespace Demosite.Services
 
         public async Task<SubscriptionStatus> AddSubscriber(NewsSubscriber subscriber)
         {
-            SubscriptionStatus result = new SubscriptionStatus()
+            SubscriptionStatus result = new()
             {
                 Success = true,
                 Message = ""
             };
             _logger.LogInformation(nameService + $": add new email to subscibe: {subscriber.Email}");
             subscriber.Email = subscriber.Email.ToLower();
-            var newSubscriber = new EmailNewsSubscriber();
+            EmailNewsSubscriber newSubscriber = new();
             if (subscriber.Email.Length == 0)
             {
-                var message = "email address is required";
+                string message = "email address is required";
                 _logger.LogInformation(nameService + ": " + message);
                 return new SubscriptionStatus()
                 {
@@ -109,7 +108,7 @@ namespace Demosite.Services
             }
             if (subscriber.NewsCategory.Length == 0)
             {
-                var message = "news category is required";
+                string message = "news category is required";
                 _logger.LogInformation(nameService + ": " + message);
                 return new SubscriptionStatus()
                 {
@@ -118,11 +117,11 @@ namespace Demosite.Services
                     Message = message
                 };
             }
-            var existSubscriber = await dbContext.EmailNewsSubscribers.Where(s => s.Email == subscriber.Email)
+            EmailNewsSubscriber existSubscriber = await _dbContext.EmailNewsSubscribers.Where(s => s.Email == subscriber.Email)
                                                            .FirstOrDefaultAsync();
             if (existSubscriber != null && existSubscriber.IsActive)
             {
-                var message = "this email address is already subscribed";
+                string message = "this email address is already subscribed";
                 _logger.LogInformation(nameService + ": " + message + $": {subscriber.Email}");
                 return new SubscriptionStatus()
                 {
@@ -146,11 +145,11 @@ namespace Demosite.Services
                 newSubscriber = Map(subscriber);
                 newSubscriber.ConfirmCode = Guid.NewGuid().ToString().ToLower();
                 newSubscriber.ConfirmCodeSendDate = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc);
-                dbContext.EmailNewsSubscribers.Add(newSubscriber);
+                _ = _dbContext.EmailNewsSubscribers.Add(newSubscriber);
             }
             try
             {
-                if(!(await SendCheckEmail(newSubscriber) == SmtpStatusCode.Ok))
+                if (!(await SendCheckEmail(newSubscriber) == SmtpStatusCode.Ok))
                 {
                     result.Success = false;
                     result.TypeError = "email";
@@ -163,9 +162,9 @@ namespace Demosite.Services
             }
             try
             {
-                await dbContext.SaveChangesAsync();
+                _ = await _dbContext.SaveChangesAsync();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }
@@ -175,7 +174,7 @@ namespace Demosite.Services
         public async Task<(bool isConfirm, string text)> ConfirmedSubscribe(string confirmcode)
         {
             confirmcode = confirmcode.ToLower();
-            var subscriber = await dbContext.EmailNewsSubscribers.FirstOrDefaultAsync(s => s.ConfirmCode == confirmcode);
+            EmailNewsSubscriber subscriber = await _dbContext.EmailNewsSubscribers.FirstOrDefaultAsync(s => s.ConfirmCode == confirmcode);
             if (subscriber == null)
             {
                 return (false, "We're sorry, but this subscription confirmation email is no longer valid. Please try again later.");
@@ -189,17 +188,17 @@ namespace Demosite.Services
                 return (false, "This email is already subscribed to news.");
             }
             subscriber.IsActive = true;
-            await dbContext.SaveChangesAsync();
+            _ = await _dbContext.SaveChangesAsync();
             return (true, "Your subscription has been confirmed.");
         }
 
         public async Task<SubscriptionStatus> UnSubscribe(string guid)
         {
             guid = guid.ToLower();
-            var subscriber = await dbContext.EmailNewsSubscribers.FirstOrDefaultAsync(s => s.ConfirmCode == guid);
+            EmailNewsSubscriber subscriber = await _dbContext.EmailNewsSubscribers.FirstOrDefaultAsync(s => s.ConfirmCode == guid);
             if (subscriber == null)
             {
-                var message = " Not find subscriber for unsubscribe";
+                string message = " Not find subscriber for unsubscribe";
                 _logger.LogInformation(nameService + message + $" Confirm Code to unsubscribe: {guid}");
                 return new SubscriptionStatus()
                 {
@@ -216,7 +215,7 @@ namespace Demosite.Services
                 };
             }
             subscriber.IsActive = false;
-            await dbContext.SaveChangesAsync();
+            _ = await _dbContext.SaveChangesAsync();
             return new SubscriptionStatus()
             {
                 Success = true,
@@ -226,7 +225,7 @@ namespace Demosite.Services
 
         private async Task<int[]> CheckErrorDistribution()
         {
-            var result = await dbContext.Distributions.Where(d => d.Status == SendStatus.Processing || d.Status == SendStatus.Error)
+            int[] result = await _dbContext.Distributions.Where(d => d.Status == SendStatus.Processing || d.Status == SendStatus.Error)
                                                       .Select(d => d.Id)
                                                       .ToArrayAsync();
             return result;
@@ -240,30 +239,28 @@ namespace Demosite.Services
         private async Task<SmtpStatusCode> SendCheckEmail(EmailNewsSubscriber subscriber)
         {
             SmtpStatusCode status = SmtpStatusCode.Ok;
-            string base64ImageRepresentation = await GetConvertedLogoImage(logoFileName);
+            string base64ImageRepresentation = await GetConvertedLogoImage(_logoFileName);
             string body = "";
-            var model = new EmailModel()
+            EmailModel model = new()
             {
                 Subscriber = new Subscriber(),
                 NewsPosts = new NewsPostDto[0],
                 BaseUrl = _settings.BaseURLNewsService + @"/subscribe/confirmedsubscribe?confirmcode=" + subscriber.ConfirmCode,
                 LogoImage = base64ImageRepresentation
             };
-            using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(checkEmailName))
+            using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(CHECK_EMAIL_NAME))
             {
-                using (StreamReader reader = new StreamReader(stream))
+                using StreamReader reader = new(stream);
+                try
                 {
-                    try
-                    {
-                        body = await _notificationTemplateEngine.BuildMessage(checkEmailName, await reader.ReadToEndAsync(), model);
-                    }
-                    catch (Exception ex)
-                    {
-                        _logger.LogError(nameService + $": error RazorLight during create email body: {ex.Message}", ex);
-                    }
+                    body = await _notificationTemplateEngine.BuildMessage(CHECK_EMAIL_NAME, await reader.ReadToEndAsync(), model);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(nameService + $": error RazorLight during create email body: {ex.Message}", ex);
                 }
             }
-            var envelope = new Envelope()
+            Envelope envelope = new()
             {
                 Body = body,
                 Subscriber = subscriber,
@@ -293,7 +290,7 @@ namespace Demosite.Services
                 //получить дату последней рассылки
                 DateTime lastDateSend = DateTime.Now.Subtract(_settings.SendTimeInterval);
                 //получить новые новости с даты последней расылки
-                var newNews = _newsService.GetAllPosts(new PostRequest()
+                IEnumerable<NewsPostDto> newNews = _newsService.GetAllPosts(new PostRequest()
                 {
                     FromDate = lastDateSend,
                 });
@@ -302,14 +299,14 @@ namespace Demosite.Services
                     _logger.LogInformation(nameService + $": not found new news");
                     return null;
                 }
-                var newDistribution = new Distribution()
+                Distribution newDistribution = new()
                 {
                     NewsIds = newNews.Select(n => n.Id).ToArray(),
                     Status = SendStatus.Created,
                     Created = DateTime.Now
                 };
-                dbContext.Distributions.Add(newDistribution);
-                await dbContext.SaveChangesAsync();
+                _ = _dbContext.Distributions.Add(newDistribution);
+                _ = await _dbContext.SaveChangesAsync();
                 _logger.LogInformation(nameService + $": new Distribution create, ID: {newDistribution.Id}");
                 return newDistribution.Id;
             }
@@ -322,7 +319,7 @@ namespace Demosite.Services
         private async Task CreateEnvelopes(int distributionId)
         {
             _logger.LogInformation(nameService + $": creating a list envelope");
-            var distribution = await dbContext.Distributions
+            Distribution distribution = await _dbContext.Distributions
                                               .FirstOrDefaultAsync(d => d.Id == distributionId);
             if (distribution == null)
             {
@@ -330,8 +327,8 @@ namespace Demosite.Services
                 return;
             }
             distribution.Status = SendStatus.Processing;
-            await dbContext.SaveChangesAsync();
-            var news = (_newsService.GetPosts(distribution.NewsIds))
+            _ = await _dbContext.SaveChangesAsync();
+            NewsPostDto[] news = _newsService.GetPosts(distribution.NewsIds)
                                    .OrderByDescending(n => n.PostDate)
                                    .ToArray();
             if (news.Length == 0)
@@ -339,12 +336,12 @@ namespace Demosite.Services
                 _logger.LogInformation(nameService + $": not found new news to send");
                 return;
             }
-            string base64ImageRepresentation = await GetConvertedLogoImage(logoFileName);
-            var query = dbContext.EmailNewsSubscribers
+            string base64ImageRepresentation = await GetConvertedLogoImage(_logoFileName);
+            IQueryable<EmailNewsSubscriber> query = _dbContext.EmailNewsSubscribers
                         .AsNoTracking()
                         .Where(s => s.IsActive);
             //для поиска недосозданных рассылок в рамках текущего distribution
-            int? lastSendIdSubscriber = await dbContext.Envelopes.Where(e => e.DistributionId == distributionId)
+            int? lastSendIdSubscriber = await _dbContext.Envelopes.Where(e => e.DistributionId == distributionId)
                                                                  .Select(e => e.SubscriberId)
                                                                  .OrderBy(e => e)
                                                                  .LastOrDefaultAsync();
@@ -364,8 +361,8 @@ namespace Demosite.Services
                     _logger.LogInformation(nameService + $": not found subscribers for send news");
                     break;
                 }
-                List<Envelope> envelopes = new List<Envelope>(subscribers.Length);
-                foreach (var subscriber in subscribers)
+                List<Envelope> envelopes = new(subscribers.Length);
+                foreach (EmailNewsSubscriber subscriber in subscribers)
                 {
                     try
                     {
@@ -385,28 +382,28 @@ namespace Demosite.Services
                     {
                         _logger.LogError(nameService + $": error during add envelope: {ex.Message}", ex);
                         distribution.Status = SendStatus.Error;
-                        await dbContext.SaveChangesAsync();
+                        _ = await _dbContext.SaveChangesAsync();
                         return;
                     }
                 }
-                dbContext.Envelopes.AddRange(envelopes);
-                await dbContext.SaveChangesAsync();
+                _dbContext.Envelopes.AddRange(envelopes);
+                _ = await _dbContext.SaveChangesAsync();
                 _logger.LogInformation(nameService + $": new envelopes was saved");
             };
             distribution.Status = SendStatus.Sending;
-            await dbContext.SaveChangesAsync();
+            _ = await _dbContext.SaveChangesAsync();
         }
 
         private async Task SendEmailsToSubscribers(EnvelopeParameterRequest request)
         {
             _logger.LogInformation(nameService + $": start sending mail");
-            var predicate = PredicateBuilder.New<Envelope>(true);
+            ExpressionStarter<Envelope> predicate = PredicateBuilder.New<Envelope>(true);
             predicate = predicate.And(e => e.Status == SendStatus.Created);
             if (request.IncludeEnvelopeNotSending)
             {
                 predicate = predicate.Or(e => e.Status == SendStatus.Error);
             }
-            var queryEnvelopes = dbContext.Envelopes.Where(predicate);
+            IQueryable<Envelope> queryEnvelopes = _dbContext.Envelopes.Where(predicate);
             if (!request.IncludeEnvelopesWithExceededSend)
             {
                 queryEnvelopes = queryEnvelopes.Where(e => e.NumberOfAttempts <= _settings.NumberOfAttemptsSending);
@@ -421,54 +418,45 @@ namespace Demosite.Services
             }
             int envelopesLength = await queryEnvelopes.CountAsync();
             queryEnvelopes = queryEnvelopes.OrderBy(e => e.Id);
-            using (SmtpClient SmtpClient = GetClient())
+            using SmtpClient SmtpClient = GetClient();
+            for (int i = 0; i < envelopesLength; i += _settings.MailingPacketSize)
             {
-                for (int i = 0; i < envelopesLength; i += _settings.MailingPacketSize)
+                Envelope[] envelopes = await queryEnvelopes.Skip(i)
+                                     .Take(_settings.MailingPacketSize)
+                                     .Include(e => e.Subscriber)
+                                     .ToArrayAsync();
+                if (envelopes.Length == 0)
                 {
-                    var envelopes = await queryEnvelopes.Skip(i)
-                                         .Take(_settings.MailingPacketSize)
-                                         .Include(e => e.Subscriber)
-                                         .ToArrayAsync();
-                    if (envelopes.Length == 0)
-                    {
-                        break;
-                    }
-                    var distribution = await dbContext.Distributions.FirstOrDefaultAsync(d => d.Id == envelopes[0].DistributionId);
-                    if (distribution == null)
-                    {
-                        _logger.LogInformation(nameService + $": distribution with id: {envelopes[0].DistributionId} not find");
-                    }
-                    if (envelopes.Length == 0)
-                    {
-                        _logger.LogInformation(nameService + $": not new envelopes to send");
-                        return;
-                    }
-                    try
-                    {
-                        (SmtpStatusCode status, int distributionId) result = await SendEmailAsync(envelopes, SmtpClient, _settings.Subject);
-                        if (distribution != null)
-                        {
-                            if (result.status == SmtpStatusCode.ServiceNotAvailable)
-                            {
-                                distribution.Status = SendStatus.Error;
-                            }
-                            else
-                            {
-                                distribution.Status = SendStatus.Completed;
-                            }
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        _logger.LogError(nameService + $": an error occurred while sending emails : {ex.Message}", ex);
-                        return;
-                    }
-                    finally
-                    {
-                        SmtpClient.Dispose();
-                    }
-                    await dbContext.SaveChangesAsync();
+                    break;
                 }
+                Distribution distribution = await _dbContext.Distributions.FirstOrDefaultAsync(d => d.Id == envelopes[0].DistributionId);
+                if (distribution == null)
+                {
+                    _logger.LogInformation(nameService + $": distribution with id: {envelopes[0].DistributionId} not find");
+                }
+                if (envelopes.Length == 0)
+                {
+                    _logger.LogInformation(nameService + $": not new envelopes to send");
+                    return;
+                }
+                try
+                {
+                    (SmtpStatusCode status, int distributionId) = await SendEmailAsync(envelopes, SmtpClient, _settings.Subject);
+                    if (distribution != null)
+                    {
+                        distribution.Status = status == SmtpStatusCode.ServiceNotAvailable ? SendStatus.Error : SendStatus.Completed;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(nameService + $": an error occurred while sending emails : {ex.Message}", ex);
+                    return;
+                }
+                finally
+                {
+                    SmtpClient.Dispose();
+                }
+                _ = await _dbContext.SaveChangesAsync();
             }
         }
         private async Task<(SmtpStatusCode status, int distributionId)> SendEmailAsync(Envelope[] envelopes, SmtpClient client, string subject, bool saveContext = true)
@@ -476,9 +464,9 @@ namespace Demosite.Services
             (SmtpStatusCode status, int distributionId) result = (SmtpStatusCode.Ok, envelopes[0].DistributionId);
             //рассылка писем
 
-            foreach (var envelope in envelopes)
+            foreach (Envelope envelope in envelopes)
             {
-                var message = new MailMessage();
+                MailMessage message = new();
                 message.To.Add(new MailAddress(envelope.Subscriber.Email));
                 message.Subject = subject;
                 message.From = new MailAddress(_settings.From);
@@ -531,7 +519,7 @@ namespace Demosite.Services
                 }
                 if (saveContext)
                 {
-                    await dbContext.SaveChangesAsync();
+                    _ = await _dbContext.SaveChangesAsync();
                 }
             }
             return result;
@@ -540,7 +528,7 @@ namespace Demosite.Services
         private async Task<string> CreateBodyEmail(NewsPostDto[] newsArray, EmailNewsSubscriber subscriber, string logoImageBASE64)
         {
             string body = "";
-            var model = new EmailModel()
+            EmailModel model = new()
             {
                 Subscriber = new Subscriber()
                 {
@@ -554,18 +542,16 @@ namespace Demosite.Services
                 BaseUrl = _settings.BaseURLNewsService,
                 LogoImage = logoImageBASE64
             };
-            using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(newsEmailName))
+            using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(NEWS_EMAIL_NAME))
             {
-                using (StreamReader reader = new StreamReader(stream))
+                using StreamReader reader = new(stream);
+                try
                 {
-                    try
-                    {
-                        body = await _notificationTemplateEngine.BuildMessage(newsEmailName, await reader.ReadToEndAsync(), model);
-                    }
-                    catch (Exception ex)
-                    {
-                        _logger.LogError(nameService + $": error RazorLight during create email body: {ex.Message}", ex);
-                    }
+                    body = await _notificationTemplateEngine.BuildMessage(NEWS_EMAIL_NAME, await reader.ReadToEndAsync(), model);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(nameService + $": error RazorLight during create email body: {ex.Message}", ex);
                 }
             }
             return body;
@@ -573,10 +559,10 @@ namespace Demosite.Services
 
         private async Task<string> GetConvertedLogoImage(string filename)
         {
-            string base64ImageRepresentation = "";
+            string base64ImageRepresentation;
             try
             {
-                var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resource", filename);
+                string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resource", filename);
                 byte[] imageArray = await File.ReadAllBytesAsync(path);
                 base64ImageRepresentation = "data:image/jpeg;base64," + Convert.ToBase64String(imageArray);
             }
@@ -590,16 +576,16 @@ namespace Demosite.Services
 
         private SmtpClient GetClient()
         {
-            var credential = new NetworkCredential(this._settings.EmailSender.UserName, this._settings.EmailSender.Password);
-            if (!string.IsNullOrEmpty(this._settings.EmailSender.Domain))
+            NetworkCredential credential = new(_settings.EmailSender.UserName, _settings.EmailSender.Password);
+            if (!string.IsNullOrEmpty(_settings.EmailSender.Domain))
             {
-                credential.Domain = this._settings.EmailSender.Domain;
+                credential.Domain = _settings.EmailSender.Domain;
             }
-            var client = new SmtpClient(this._settings.EmailSender.SmtpServer, this._settings.EmailSender.SmtpPort)
+            SmtpClient client = new(_settings.EmailSender.SmtpServer, _settings.EmailSender.SmtpPort)
             {
                 UseDefaultCredentials = false,
                 Credentials = credential,
-                EnableSsl = this._settings.EmailSender.UseSsl
+                EnableSsl = _settings.EmailSender.UseSsl
             };
             return client;
         }

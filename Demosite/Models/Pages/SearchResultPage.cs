@@ -1,6 +1,6 @@
 using QA.DotNetCore.Engine.QpData;
 
-namespace emosite.Models.Pages;
+namespace Demosite.Models.Pages;
 
 public class SearchResultPage : AbstractPage
 {

@@ -1,30 +1,29 @@
+using Demosite.Interfaces;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using System;
-using Demosite.Interfaces;
 
 namespace Demosite.Services
 {
-    public class CacheService: ICacheService
+    public class CacheService : ICacheService
     {
-        private IMemoryCache _memoryCache { get; }
-        private int _cacheDuration { get; }
+        private readonly IMemoryCache _memoryCache;
+        private readonly int _cacheDuration;
         public CacheService(IMemoryCache memoryCache,
                             IConfiguration config)
         {
-            this._memoryCache = memoryCache;
-            this._cacheDuration = int.Parse(config["Cache:Duration"]);
+            _memoryCache = memoryCache;
+            _cacheDuration = int.Parse(config["Cache:Duration"]);
         }
 
         public T GetFromCache<T>(string key, Func<T> query)
         {
-            T result = default(T);
-            if (!_memoryCache.TryGetValue(key, out result))
+            if (!_memoryCache.TryGetValue(key, out T result))
             {
                 result = query();
                 if (result != null)
                 {
-                    _memoryCache.Set(key, result, new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromSeconds(_cacheDuration)));
+                    _ = _memoryCache.Set(key, result, new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromSeconds(_cacheDuration)));
                 }
             }
             return result;

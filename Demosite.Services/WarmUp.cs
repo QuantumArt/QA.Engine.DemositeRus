@@ -1,57 +1,46 @@
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Demosite.Interfaces;
 using Demosite.Interfaces.Dto;
 using Demosite.Postgre.DAL.NotQP.Models;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Demosite.Services
 {
-    public class WarmUp :IWarmUp
+    public class WarmUp : IWarmUp
     {
-        private INotificationTemplateEngine _engine { get; }
-        private ILogger<WarmUp> _logger { get; }
-        private IServiceProvider _serviceProvider { get; }
+        private readonly IServiceProvider _serviceProvider;
         private string nameService => nameof(WarmUp);
         public WarmUp(IServiceProvider serviceProvider)
         {
-            this._serviceProvider = serviceProvider;
+            _serviceProvider = serviceProvider;
         }
         public async Task WarmpUpEmail(CancellationToken cancellationToken = default)
         {
-            var model = new EmailModel()
+            EmailModel model = new()
             {
                 Subscriber = new Subscriber(),
                 NewsPosts = new NewsPostDto[0],
                 BaseUrl = "",
                 LogoImage = ""
             };
-            using (var scope = _serviceProvider.CreateScope())
+            using IServiceScope scope = _serviceProvider.CreateScope();
+            INotificationTemplateEngine engine = scope.ServiceProvider.GetService<INotificationTemplateEngine>();
+            ILogger<WarmUp> logger = scope.ServiceProvider.GetService<ILogger<WarmUp>>();
+            using Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(EmailNotificationService.CHECK_EMAIL_NAME);
+            using StreamReader reader = new(stream);
+            try
             {
-                var engine = scope.ServiceProvider.GetService<INotificationTemplateEngine>();
-                var logger = scope.ServiceProvider.GetService<ILogger<WarmUp>>();
-                using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(EmailNotificationService.checkEmailName))
-                {
-                    using (StreamReader reader = new StreamReader(stream))
-                    {
-                        try
-                        {
-                            await engine.BuildMessage(EmailNotificationService.checkEmailName, await reader.ReadToEndAsync(), model);
-                        }
-                        catch (Exception ex)
-                        {
-                            logger.LogError(nameService + $": error RazorLight during create email body: {ex.Message}", ex);
-                        }
-                    }
-                }
-            }    
+                await engine.BuildMessage(EmailNotificationService.CHECK_EMAIL_NAME, await reader.ReadToEndAsync(), model);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(nameService + $": error RazorLight during create email body: {ex.Message}", ex);
+            }
         }
     }
 }
