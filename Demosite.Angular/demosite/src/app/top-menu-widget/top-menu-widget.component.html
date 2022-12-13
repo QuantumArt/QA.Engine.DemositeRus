@@ -27,7 +27,9 @@
                 <div *ngIf="item.children?.length" class="nav__submenu">
                   <div class="wrapper">
                     <div class="nav__submenu-group">
-                      <ul class="menu" [style.display]="'block'" [@openClose]="item.isOpened ? 'open' : 'closed'">
+                      <ul class="menu"
+                          [style.display]="'block'"
+                          [@openClose]="item.isOpened || (isDesktop$ | async) ? 'open' : 'closed'">
                         <li *ngFor="let subcol of item.children; trackBy: trackById"
                             class="menu__item" [class.is-open]="subcol.isOpened">
                           <div class="menu-category">
@@ -40,7 +42,7 @@
                           </div>
                           <ul *ngIf="item.children?.length" class="menu"
                               [style.display]="'block'"
-                              [@openClose]="subcol.isOpened ? 'open' : 'closed'">
+                              [@openClose]="subcol.isOpened || (isDesktop$ | async) ? 'open' : 'closed'">
                             <li *ngFor="let subitem of subcol.children; trackBy: trackById" class="menu__item">
                               <a class="menu-link"
                                  [attr.href]="subitem.href"

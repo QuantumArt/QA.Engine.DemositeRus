@@ -17,6 +17,7 @@ import { SitemapPageModule } from './sitemap-page';
 import { StartPageModule } from './start-page';
 import { TextPageModule } from './text-page';
 import { TopMenuWidgetComponent, TopMenuWidgetModule } from './top-menu-widget';
+import { NewsRoomWidgetComponent, NewsRoomWidgetModule } from './news-room-widget';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { TopMenuWidgetComponent, TopMenuWidgetModule } from './top-menu-widget';
     HtmlWidgetModule,
     MediaPageModule,
     NewsPageModule,
+    NewsRoomWidgetModule,
     RedirectPageModule,
     SearchPageModule,
     SitemapPageModule,
@@ -42,6 +44,7 @@ import { TopMenuWidgetComponent, TopMenuWidgetModule } from './top-menu-widget';
       widgetMapping: new Map<string, Type<WidgetComponent>>([
         ['html_widget', HtmlWidgetComponent],
         ['banner_widget', BannerWidgetComponent],
+        ['newsroom_widget', NewsRoomWidgetComponent],
         ['top_menu_widget', TopMenuWidgetComponent]
       ]),
     }),

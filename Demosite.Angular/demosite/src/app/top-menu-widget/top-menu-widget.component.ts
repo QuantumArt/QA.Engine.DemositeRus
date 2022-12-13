@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component, Input, TrackByFunction } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit, TrackByFunction } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { WidgetDetails } from '@quantumart/qa-engine-page-structure-angular';
+import { WidgetComponent, WidgetDetails } from '@quantumart/qa-engine-page-structure-angular';
 import { UiService } from './ui.service';
 import { TopMenuElement, TopMenuWidgetService } from './top-menu-widget.service';
 
@@ -32,16 +32,17 @@ export interface TopMenuWidgetDetails extends WidgetDetails {
     ]),
   ]
 })
-export class TopMenuWidgetComponent {
+export class TopMenuWidgetComponent implements WidgetComponent {
   @Input() public widget!: TopMenuWidgetDetails;
 
   public menuOpened = false;
-  public items$ = this.topMenuWidgetService.buildTopMenu();
+  public readonly items$ = this.topMenuWidgetService.buildTopMenu();
+  public readonly isDesktop$ = this.uiService.observeOnDesktopBreakpoint();
   public readonly trackById: TrackByFunction<TopMenuElement> = (_, item) => item.id;
 
   constructor(
     private readonly uiService: UiService,
-    private readonly topMenuWidgetService: TopMenuWidgetService
+    private readonly topMenuWidgetService: TopMenuWidgetService,
   ) {
   }
 

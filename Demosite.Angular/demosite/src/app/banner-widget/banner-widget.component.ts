@@ -1,16 +1,15 @@
 ﻿import {
   ChangeDetectionStrategy,
   Component,
-  ElementRef,
   Inject,
   Input,
-  PLATFORM_ID, TrackByFunction,
-  ViewChild,
+  PLATFORM_ID,
+  TrackByFunction,
   ViewEncapsulation
 } from '@angular/core';
 import { Observable } from 'rxjs';
 import SwiperCore, { Autoplay, Pagination } from 'swiper';
-import { WidgetDetails } from '@quantumart/qa-engine-page-structure-angular';
+import { WidgetComponent, WidgetDetails } from '@quantumart/qa-engine-page-structure-angular';
 import { BannerItem, BannerWidgetService } from './banner-widget.service';
 import { isPlatformBrowser } from '@angular/common';
 
@@ -29,8 +28,9 @@ export interface BannerWidgetDetails extends WidgetDetails {
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [BannerWidgetService]
 })
-export class BannerWidgetComponent {
-  @Input() public set widget(widget: BannerWidgetDetails) {
+export class BannerWidgetComponent implements WidgetComponent {
+  @Input()
+  public set widget(widget: BannerWidgetDetails) {
     if (widget.swipedelay) {
       this.swipeDelay = widget.swipedelay * 1000;
     }
@@ -39,8 +39,6 @@ export class BannerWidgetComponent {
       this.items$ = this.bannerWidgetService.getBanners(widget.banneritemids);
     }
   }
-
-  @ViewChild('slider') public readonly sliderRef!: ElementRef<HTMLElement>;
 
   public readonly isPlatformBrowser = isPlatformBrowser(this.platformId);
   public readonly trackById: TrackByFunction<BannerItem> = (_, item) => item.id;

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { WidgetDetails } from '@quantumart/qa-engine-page-structure-angular';
+import { WidgetComponent, WidgetDetails } from '@quantumart/qa-engine-page-structure-angular';
 
 export interface HtmlWidgetDetails extends WidgetDetails {
   html: string;
@@ -10,7 +10,7 @@ export interface HtmlWidgetDetails extends WidgetDetails {
   templateUrl: './html-widget.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HtmlWidgetComponent {
+export class HtmlWidgetComponent implements WidgetComponent {
   @Input()
   public set widget(value: HtmlWidgetDetails) {
     this.details = value;

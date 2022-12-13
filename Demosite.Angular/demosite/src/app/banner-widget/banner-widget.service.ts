@@ -22,7 +22,7 @@ interface BannersQueryResult {
     items: {
       id: number;
       text?: string;
-      sortOrder?: number;
+      sortOrder: number;
       image?: string;
       uRL?: string;
     }[];
@@ -34,6 +34,7 @@ export interface BannerItem {
   text?: string;
   url?: string;
   imageUrl?: string;
+  sortOrder: number;
 }
 
 @Injectable()
@@ -48,12 +49,24 @@ export class BannerWidgetService {
         variables: { ids }
       })
       .valueChanges.pipe(
-        map(result => result.data?.bannerItems?.items?.map(({ id, text, uRL, image }) => ({
-          id,
-          text,
-          url: uRL,
-          imageUrl: image
-        })) ?? [])
+        map(result => {
+          if (!result.data?.bannerItems?.items?.length) {
+            return [];
+          }
+
+          const banners = result.data.bannerItems.items
+            .map(({ id, text, uRL, image, sortOrder }) => ({
+              id,
+              text,
+              url: uRL,
+              imageUrl: image,
+              sortOrder
+            }));
+
+          banners.sort((a, b) => a.sortOrder - b.sortOrder);
+
+          return banners;
+        })
       );
   }
 }
