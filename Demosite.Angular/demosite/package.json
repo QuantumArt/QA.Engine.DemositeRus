@@ -23,10 +23,13 @@
     "@angular/platform-browser-dynamic": "~13.3.0",
     "@angular/platform-server": "~13.3.0",
     "@angular/router": "~13.3.0",
+    "@apollo/client": "3.6.9",
     "@nguniversal/express-engine": "^13.1.1",
     "@quantumart/qa-engine-page-structure-angular": "^0.2.5",
+    "apollo-angular": "^3.0.1",
     "express": "^4.15.2",
     "rxjs": "~7.5.0",
+    "swiper": "^8.4.5",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"
   },

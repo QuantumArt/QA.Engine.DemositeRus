@@ -1,0 +1,34 @@
+﻿<section class="page__section">
+  <div class="wrapper">
+    <div class="banner-slider">
+      <div class="banner-slider__box">
+        <div *ngIf="items$ | async as items" class="banner-slider__slides">
+          <swiper
+            [enabled]="isPlatformBrowser"
+            [direction]="'horizontal'"
+            [slidesPerView]="1"
+            [spaceBetween]="1"
+            [loop]="true"
+            [autoplay]="{
+              delay: swipeDelay,
+              disableOnInteraction: false
+            }"
+            [pagination]="{
+              clickable: true
+            }"
+          >
+            <ng-template swiperSlide *ngFor="let item of items; trackBy: trackById">
+              <div *ngIf="!item.imageUrl else bannerImage" [innerHTML]="item.text"></div>
+              <ng-template #bannerImage>
+                <a class="banner-slider__item" [attr.href]="item.url || '#'">
+                  <img class="banner-slider__image-desktop" [attr.src]="item.imageUrl">
+                  <img class="banner-slider__image-mobile" [attr.src]="item.imageUrl">
+                </a>
+              </ng-template>
+            </ng-template>
+          </swiper>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
