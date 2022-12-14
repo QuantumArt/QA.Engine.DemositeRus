@@ -30,12 +30,7 @@ namespace Demosite.ViewModels.Builders
                                       CategoryName = p.Category.Title,
                                       Url = $"{newsPage.GetUrl()}/details/{p.Id}"
                                   }));
-            int newsCount = news.Count();
-            viewModel.PageCount = newsCount / count;
-            if (newsCount % count > 0)
-            {
-                viewModel.PageCount++;
-            }
+            viewModel.PageCount = (news.Count() + count - 1) / count;
             viewModel.CurrentPage = pageNumber;
             viewModel.BreadCrumbs = newsPage.GetBreadCrumbs();
             return viewModel;
