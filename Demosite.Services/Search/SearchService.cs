@@ -22,10 +22,10 @@ public class SearchService : ISearchService
         return await _searchProvider.CompleteAsync(query, userRoles, token);
     }
 
-    public async Task<SearchResponse> SearchAsync(string query, int limit, int offset, int? ifFoundLte, CancellationToken token)
+    public async Task<SearchResponse> SearchAsync(string query, int limit, int offset, int? ifFoundLte, bool withCorrect, CancellationToken token)
     {
         string[] userRoles = GetUserRolesAsync(token);
-        return await _searchProvider.SearchAsync(query, userRoles, limit, offset, ifFoundLte, token);
+        return await _searchProvider.SearchAsync(query, userRoles, limit, offset, ifFoundLte, withCorrect, token);
     }
 
     private string[] GetUserRolesAsync(CancellationToken token)

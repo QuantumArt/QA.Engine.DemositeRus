@@ -20,7 +20,8 @@ public interface ISearchProvider
     /// <param name="roles">Список ролей доступных пользователю для поиска только в доступных ему данных</param>
     /// <param name="limit">Сколько выбирать элементов (для пейджинга)</param>
     /// <param name="offset">Сколько элементов пропустить при выборке (для пейджинга)</param>
-    /// <param name="ifFoundLte">Применять исправление искомого запроса при поиске результатов, если изначально было найдено документов меньше указанного параметра</param>
+    /// <param name="ifFoundLte">Нижний порог  начиная с которого исходный запрос будет корректироваться</param>
+    /// <param name="withCorrect">Применять ли исправление искомого запроса при поиске результатов, если нет то результаты будут для исходного запроса но в результатах будет предложение для исправления самого запроса</param>
     /// <returns></returns>
-    Task<SearchResponse> SearchAsync(string request, string[] roles, int limit, int offset, int? ifFoundLte, CancellationToken token);
+    Task<SearchResponse> SearchAsync(string request, string[] roles, int limit, int offset, int? ifFoundLte, bool withCorrect, CancellationToken token);
 }

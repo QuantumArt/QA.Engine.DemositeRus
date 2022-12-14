@@ -11,10 +11,10 @@ public class SearchProvider : ISearchProvider
         _searchClient = httpClient;
     }
 
-    public async Task<SearchResponse> SearchAsync(string request, string[] roles, int limit, int offset, int? ifFoundLte, CancellationToken token)
+    public async Task<SearchResponse> SearchAsync(string request, string[] roles, int limit, int offset, int? ifFoundLte, bool withCorrect, CancellationToken token)
     {
-        SearchRequest searchRequest = new(request, null, limit, offset, ifFoundLte);
-
+        SearchRequest searchRequest = new(request, null, limit, offset, ifFoundLte, withCorrect);
+        
         return await _searchClient.SearchAsync(searchRequest, token);
     }
 

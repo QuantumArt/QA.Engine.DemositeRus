@@ -24,12 +24,12 @@ public class SearchRequest
     [JsonPropertyName("$correct")]
     public Correction? Correct { get; }
 
-    public SearchRequest(string query, string[]? roles, int limit = 20, int offset = 0, int? ifFoundLte = null)
+    public SearchRequest(string query, string[]? roles, int limit = 20, int offset = 0, int? ifFoundLte = null, bool withCorrect = false)
     {
         Query = query;
         Limit = limit;
         Offset = offset;
         if (roles != null) Filter = new(roles);
-        if (ifFoundLte.HasValue) Correct = new(ifFoundLte.Value);
+        if (ifFoundLte.HasValue) Correct = new(ifFoundLte.Value, withCorrect);
     }
 }

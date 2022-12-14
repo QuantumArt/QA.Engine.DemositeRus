@@ -2,7 +2,7 @@ using QA.DotNetCore.Engine.Persistent.Interfaces.Settings;
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Demosite.Services.Settings
+namespace Demosite.Services.Settings;
 public class QpExtSettings : QpSettings
 {
     [Required]

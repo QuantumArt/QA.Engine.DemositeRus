@@ -15,11 +15,11 @@ public class SearchResponse
     [JsonPropertyName("queryCorrection")]
     public QueryCorrection QueryCorrection { get; }
 
-    public SearchResponse(int status, int totalCount, SearchResultDocument[]? documents, QueryCorrection correction)
+    public SearchResponse(int status, int totalCount, SearchResultDocument[]? documents, QueryCorrection queryCorrection)
     {
         Status = status;
         TotalCount = totalCount;
         Documents = documents;
-        QueryCorrection = correction;
+        QueryCorrection = queryCorrection;
     }
 }

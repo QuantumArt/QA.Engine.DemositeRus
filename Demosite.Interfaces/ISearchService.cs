@@ -6,6 +6,6 @@ namespace Demosite.Interfaces;
 
 public interface ISearchService
 {
-    Task<SearchResponse> SearchAsync(string query, int limit, int offset, int? ifFoundLte, CancellationToken token);
+    Task<SearchResponse> SearchAsync(string query, int limit, int offset, int? ifFoundLte, bool withCorrect, CancellationToken token);
     Task<string[]> CompleteAsync(string query, CancellationToken token);
 }

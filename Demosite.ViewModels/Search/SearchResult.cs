@@ -10,14 +10,22 @@ public class SearchResult
     public int PagesCount { get; }
     public IEnumerable<Document> Documents { get; } = default!;
     public SearchCorrection SearchCorrection { get; }
-    public string OriginalQuery { get; }
     public SearchResult(SearchResponse response, int itemsPerPage, string originalQuery)
     {
         DocumentsCount = response.TotalCount;
         PagesCount = (response.TotalCount + itemsPerPage - 1) / itemsPerPage;
 
+        if (response.QueryCorrection != null)
+        {
+            QueryCorrection correction = response.QueryCorrection;
+            SearchCorrection = new SearchCorrection(correction.Text, correction.Snippet, originalQuery, correction.ResultsAreCorrected);
+        }
+
         if (response.TotalCount == 0)
+        {
+            Documents = Array.Empty<Document>();
             return;
+        }
 
         if (response.Documents is null or { Length: 0 })
             throw new ArgumentException("Elastic found some results but return empty result set.", nameof(response.Documents));
@@ -29,12 +37,5 @@ public class SearchResult
                 x.Description ?? string.Empty,
                 x.Category ?? string.Empty))
             .ToArray();
-
-        if (response.QueryCorrection != null)
-        {
-            QueryCorrection correction = response.QueryCorrection;
-            SearchCorrection = new SearchCorrection(correction.Text, correction.Snippet, correction.ResultsAreCorrected);
-        }
-        OriginalQuery = originalQuery;
     }
 }

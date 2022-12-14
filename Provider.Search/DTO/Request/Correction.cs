@@ -4,12 +4,17 @@ namespace Provider.Search.DTO.Request
 {
     public class Correction
     {
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("$results")]
         public CorrectionLimit Result { get; }
 
-        public Correction(int ifFoundLte)
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        [JsonPropertyName("$query")]
+        public CorrectionLimit Query { get; }
+        public Correction(int ifFoundLte, bool withCorrect)
         {
-            Result = new CorrectionLimit(ifFoundLte);
+            if (withCorrect) Result = new CorrectionLimit(ifFoundLte);
+            if (!withCorrect) Query = new CorrectionLimit(ifFoundLte);
         }
     }
 }
