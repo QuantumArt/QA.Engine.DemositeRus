@@ -250,4 +250,3 @@ npm-debug.log.*
 **/appsettings.*.json
 projectfiles.tar
 *.EasyRun.json
-*.min.*

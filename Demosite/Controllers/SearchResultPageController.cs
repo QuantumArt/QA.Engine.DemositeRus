@@ -26,7 +26,6 @@ public class SearchResultPageController : ContentControllerBase<SearchResultPage
         _searchService = searchService;
         _siteSettingsProvider = siteSettingsProvider;
         _logger = logger;
-
     }
 
     public IActionResult Index()
