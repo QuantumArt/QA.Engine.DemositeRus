@@ -19,7 +19,7 @@ export class TopMenuWidgetService {
   }
 
   public buildTopMenu(): Observable<TopMenuElement[]> {
-    return this.menuService.buildMenu().pipe(
+    return this.menuService.buildMenu(3).pipe(
       switchMap(menu => this.openedElements$.pipe(map(openedElements => ({ menu, openedElements })))),
       map(({ menu, openedElements }) => this.mapToTopMenu(menu, openedElements, 3).children)
     );

@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
-import { WidgetDetails } from '@quantumart/qa-engine-page-structure-angular';
+import { MenuService, WidgetDetails } from '@quantumart/qa-engine-page-structure-angular';
 
 export interface SitemapPageDetails extends WidgetDetails {
   title: string;
@@ -19,6 +19,8 @@ export class SitemapPageComponent {
     map(data => data['details'] as SitemapPageDetails),
   );
 
-  constructor(private readonly activatedRoute: ActivatedRoute) {
+  public readonly siteStructureRoot$ = this.menuService.buildMenu(5);
+
+  constructor(private readonly activatedRoute: ActivatedRoute, private readonly menuService: MenuService) {
   }
 }
