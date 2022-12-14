@@ -18,6 +18,7 @@ import { StartPageModule } from './start-page';
 import { TextPageModule } from './text-page';
 import { TopMenuWidgetComponent, TopMenuWidgetModule } from './top-menu-widget';
 import { NewsRoomWidgetComponent, NewsRoomWidgetModule } from './news-room-widget';
+import { FoldboxListWidgetComponent, FoldboxListWidgetModule } from './foldbox-list-widget';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { NewsRoomWidgetComponent, NewsRoomWidgetModule } from './news-room-widge
     ApolloModule,
     AppRoutingModule,
     BannerWidgetModule,
+    FoldboxListWidgetModule,
     HtmlWidgetModule,
     MediaPageModule,
     NewsPageModule,
@@ -44,6 +46,7 @@ import { NewsRoomWidgetComponent, NewsRoomWidgetModule } from './news-room-widge
       widgetMapping: new Map<string, Type<WidgetComponent>>([
         ['html_widget', HtmlWidgetComponent],
         ['banner_widget', BannerWidgetComponent],
+        ['foldboxlist_widget', FoldboxListWidgetComponent],
         ['newsroom_widget', NewsRoomWidgetComponent],
         ['top_menu_widget', TopMenuWidgetComponent]
       ]),

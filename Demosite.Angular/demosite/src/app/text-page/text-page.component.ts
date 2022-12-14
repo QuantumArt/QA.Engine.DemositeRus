@@ -7,6 +7,7 @@ import { WidgetDetails } from '@quantumart/qa-engine-page-structure-angular';
 export interface TextPageDetails extends WidgetDetails {
   title: string;
   text: string;
+  hidetitle: boolean;
 }
 
 @Component({

@@ -1,32 +1,66 @@
-﻿import { AfterViewInit, Directive, ElementRef, OnDestroy } from '@angular/core';
+﻿import { AfterViewInit, Directive, ElementRef, Input, OnDestroy } from '@angular/core';
+import { isVisible, slideDown, slideStop, slideUp } from 'slide-anim';
 import { EventHandlerCollection } from '../../utils';
 
 @Directive({
   selector: '[qaFoldboxBehavior]'
 })
 export class FoldboxDirective implements AfterViewInit, OnDestroy {
+  @Input() public foldboxToggleAllSelector?: string;
+
+  private opened = false;
   private readonly eventHandlers = new EventHandlerCollection();
 
   constructor(private readonly hostEl: ElementRef<HTMLElement>) {
   }
 
   public ngAfterViewInit(): void {
-    this.hostEl.nativeElement.querySelectorAll<HTMLElement>('[data-foldbox]').forEach(element => {
-      this.eventHandlers.add({
-        element,
-        type: 'click',
-        action: () => {
-          element.classList.toggle('active');
-          const foldboxBody = element.querySelector<HTMLElement>('[data-foldbox-body]');
-          if (foldboxBody) {
-            foldboxBody.style.display = foldboxBody.style.display === 'block' ? 'none' : 'block';
+    if (this.foldboxToggleAllSelector) {
+      this.hostEl.nativeElement.querySelectorAll<HTMLElement>(this.foldboxToggleAllSelector).forEach(element => {
+        this.eventHandlers.add({
+          element,
+          type: 'click',
+          action: () => {
+            this.hostEl.nativeElement.querySelectorAll<HTMLElement>('[data-foldbox]').forEach(element => {
+              this.toggle(element, this.opened);
+            });
+            this.opened = !this.opened;
           }
-        }
+        });
       });
-    });
+    } else {
+      this.hostEl.nativeElement.querySelectorAll<HTMLElement>('[data-foldbox]').forEach(element => {
+        this.eventHandlers.add({
+          element,
+          type: 'click',
+          action: () => {
+            this.toggle(element, isVisible(element));
+          }
+        });
+      });
+    }
   }
 
   public ngOnDestroy(): void {
     this.eventHandlers.removeAll();
+  }
+
+  private toggle(element: HTMLElement, opened: boolean): void {
+    if (!opened) {
+      element.classList.add('active');
+    } else {
+      element.classList.remove('active');
+    }
+
+    const body = element.querySelector<HTMLElement>('[data-foldbox-body]');
+    if (body) {
+      if (!opened) {
+        slideStop(body);
+        slideDown(body);
+      } else {
+        slideStop(body);
+        slideUp(body);
+      }
+    }
   }
 }

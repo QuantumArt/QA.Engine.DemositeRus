@@ -5,9 +5,10 @@ import { SafePipeModule } from '../pipes';
 import { FoldboxDirectiveModule } from '../behaviors';
 import { TextPageRoutingModule } from './text-page-routing.module';
 import { TextPageComponent } from './text-page.component';
+import { BreadcrumbsModule } from '../breadcrumbs/breadcrumbs.module';
 
 @NgModule({
-  imports: [CommonModule, TextPageRoutingModule, QaEnginePageStructureModule, SafePipeModule, FoldboxDirectiveModule],
+  imports: [CommonModule, TextPageRoutingModule, QaEnginePageStructureModule, SafePipeModule, FoldboxDirectiveModule, BreadcrumbsModule],
   declarations: [TextPageComponent],
 })
 export class TextPageModule {
