@@ -9,7 +9,6 @@ namespace Demosite.Services.Search;
 public class SearchService : ISearchService
 {
     private readonly ISearchProvider _searchProvider;
-
     private const string DEFAULT_ROLE = "Reader";
 
     public SearchService(ISearchProvider searchPrivuder)

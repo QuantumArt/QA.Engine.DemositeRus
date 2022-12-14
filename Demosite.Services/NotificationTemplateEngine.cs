@@ -7,7 +7,6 @@ namespace Demosite.Services
     public class NotificationTemplateEngine : INotificationTemplateEngine
     {
         private readonly RazorLightEngine _razorLight;
-
         public NotificationTemplateEngine(RazorLightEngine razorLight)
         {
             _razorLight = razorLight;

@@ -11,7 +11,6 @@ namespace Demosite.Controllers
     {
         private readonly AbstractItemStorage _provider;
         private static ILogger<TextPageController> _logger;
-
         public TextPageController(IAbstractItemStorageProvider abstractItemProvider, ILogger<TextPageController> logger)
         {
             _provider = abstractItemProvider.Get();

@@ -459,6 +459,7 @@ namespace Demosite.Services
                 _ = await _dbContext.SaveChangesAsync();
             }
         }
+
         private async Task<(SmtpStatusCode status, int distributionId)> SendEmailAsync(Envelope[] envelopes, SmtpClient client, string subject, bool saveContext = true)
         {
             (SmtpStatusCode status, int distributionId) result = (SmtpStatusCode.Ok, envelopes[0].DistributionId);

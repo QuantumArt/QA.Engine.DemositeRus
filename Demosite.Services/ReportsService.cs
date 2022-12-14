@@ -14,6 +14,7 @@ namespace Demosite.Services
         {
             _qpDataContext = context as PostgreQpDataContext;
         }
+
         public IEnumerable<ReportDto> GetAllReports()
         {
             Report[] results = _qpDataContext.Reports.OrderByDescending(e => e.ReportDate)
@@ -21,6 +22,7 @@ namespace Demosite.Services
                                                .ToArray();
             return results.Select(Map).ToArray();
         }
+
         public IEnumerable<ReportDto> GetReports(IEnumerable<int> idsReport)
         {
             Report[] results = _qpDataContext.Reports.Where(r => idsReport.Contains(r.Id))
@@ -47,6 +49,7 @@ namespace Demosite.Services
                 ReportFiles = model.Files.Select(Map).ToArray()
             };
         }
+
         private ReportFileDto Map(Postgre.DAL.ReportFile file)
         {
             return new ReportFileDto()
@@ -57,7 +60,5 @@ namespace Demosite.Services
                 FileUrl = file.FileUrl
             };
         }
-
-
     }
 }

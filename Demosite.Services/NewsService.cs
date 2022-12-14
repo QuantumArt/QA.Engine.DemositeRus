@@ -19,6 +19,7 @@ namespace Demosite.Services
             _qpDataContext = context;
             _memoryCache = memoryCache;
         }
+
         public IEnumerable<NewsPostDto> GetAllPosts(int? year = null, int? month = null, int? categoryId = null)
         {
             return _memoryCache.GetFromCache<IEnumerable<NewsPostDto>>(GetCacheKey(year, month, categoryId), () =>
@@ -44,7 +45,6 @@ namespace Demosite.Services
                                .Select(Map)
                                .ToArray();
                });
-
         }
 
         public IEnumerable<NewsCategoryDto> GetCategories()
@@ -62,7 +62,6 @@ namespace Demosite.Services
                 query = query.Include(c => c.Category);
                 return Map(query.FirstOrDefault());
             });
-
         }
 
         public NewsPostDto[] GetPosts(int[] ids)

@@ -1,7 +1,6 @@
 using System.Text.Json.Serialization;
 
 namespace Provider.Search.DTO.Response;
-
 public class SearchResponse
 {
     [JsonPropertyName("status")]

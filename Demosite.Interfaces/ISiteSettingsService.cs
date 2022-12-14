@@ -27,7 +27,6 @@ public interface ISiteSettingsService
     /// <returns></returns>
     Task<int> GetSearchPaginatedItemsCountAsync(CancellationToken cancellationToken);
 
-
     /// <summary>
     /// Если при поиске не найдено ни одного результата (или найдено мало), поисковая система может предложить исправление запроса
     /// </summary>

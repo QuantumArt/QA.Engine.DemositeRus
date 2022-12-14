@@ -72,7 +72,6 @@ public class UseTagHelper : UrlResolutionTagHelper
 
             output.Attributes.SetAttribute(name, pathWithFileVersion);
         }
-
         ProcessUrlAttribute(HREF_ATTRIBUTE_NAME, output);
         ProcessUrlAttribute(LEGACY_HREF_ATTRIBUTE_NAME, output);
     }

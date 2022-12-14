@@ -10,7 +10,6 @@ public class SearchApiClient
     private readonly HttpClient _client;
     private readonly ILogger<SearchApiClient> _logger;
     private readonly SearchSettings _settings;
-
     public SearchApiClient(
         HttpClient client,
         IOptions<SearchSettings> settings,

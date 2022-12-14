@@ -18,7 +18,6 @@ public class SearchResultPageController : ContentControllerBase<SearchResultPage
     private readonly ISearchService _searchService;
     private readonly ISiteSettingsService _siteSettingsProvider;
     private readonly ILogger<SearchResultPageController> _logger;
-
     public SearchResultPageController(ISearchService searchService,
                                 ISiteSettingsService siteSettingsProvider,
                                 ILogger<SearchResultPageController> logger)

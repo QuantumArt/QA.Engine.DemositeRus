@@ -11,7 +11,6 @@ namespace Demosite.Controllers.Api;
 public class SearchController : Controller
 {
     private readonly ISearchService _searchService;
-
     public SearchController(ISearchService searchProvider)
     {
         _searchService = searchProvider;

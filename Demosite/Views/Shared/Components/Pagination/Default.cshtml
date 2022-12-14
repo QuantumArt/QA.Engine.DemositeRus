@@ -51,7 +51,7 @@
         }
 
         return Model.BaseQuery
-            .Add(Constants.BindNames.Pagination, page.ToString())
+            .Add(Constants.BindNames.PAGINATION, page.ToString())
             .ToUriComponent();
     }
 }

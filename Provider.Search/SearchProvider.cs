@@ -6,7 +6,6 @@ namespace Provider.Search;
 public class SearchProvider : ISearchProvider
 {
     private readonly SearchApiClient _searchClient;
-
     public SearchProvider(SearchApiClient httpClient)
     {
         _searchClient = httpClient;

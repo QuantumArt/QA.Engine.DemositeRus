@@ -19,6 +19,7 @@ namespace Demosite.Services
         {
             _serviceProvider = serviceProvider;
         }
+
         public async Task WarmpUpEmail(CancellationToken cancellationToken = default)
         {
             EmailModel model = new()

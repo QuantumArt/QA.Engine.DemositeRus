@@ -9,5 +9,4 @@ namespace Demosite.Services.Settings
         public string Domain { get; set; }
         public bool UseSsl { get; set; }
     }
-
 }

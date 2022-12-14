@@ -55,7 +55,7 @@ public class PaginationViewComponent : ViewComponent
 
         foreach ((string key, Microsoft.Extensions.Primitives.StringValues values) in context.Request.Query)
         {
-            if (key.Equals(Constants.BindNames.Pagination, StringComparison.OrdinalIgnoreCase))
+            if (key.Equals(Constants.BindNames.PAGINATION, StringComparison.OrdinalIgnoreCase))
             {
                 continue;
             }

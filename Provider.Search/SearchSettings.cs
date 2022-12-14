@@ -1,7 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
 namespace Provider.Search;
-
 public class SearchSettings
 {
     [Required]

@@ -19,7 +19,6 @@ public class SiteSettingsService : ISiteSettingsService
     public readonly ICacheService _memoryCache;
     private readonly CacheTagUtilities _cacheTagUtilities;
     private readonly QpExtSettings _qpSettings;
-
     public SiteSettingsService(
         IDbContext context,
         ICacheService cacheProvider,
@@ -61,7 +60,6 @@ public class SiteSettingsService : ISiteSettingsService
     {
         return GetSiteSettings("SearchPaginatedItemsCount", default(int), cancellationToken);
     }
-
 
     /// <summary>
     /// Если при поиске найдено меньше, поисковая система может предложить исправление запроса
