@@ -2,11 +2,12 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { QaEnginePageStructureModule } from '@quantumart/qa-engine-page-structure-angular';
 import { SafePipeModule } from '../pipes';
+import { FoldboxDirectiveModule } from '../behaviors';
 import { TextPageRoutingModule } from './text-page-routing.module';
 import { TextPageComponent } from './text-page.component';
 
 @NgModule({
-  imports: [CommonModule, TextPageRoutingModule, QaEnginePageStructureModule, SafePipeModule],
+  imports: [CommonModule, TextPageRoutingModule, QaEnginePageStructureModule, SafePipeModule, FoldboxDirectiveModule],
   declarations: [TextPageComponent],
 })
 export class TextPageModule {
