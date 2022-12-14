@@ -4,19 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace Demosite.ViewModels.Search;
-
 public class SearchResult
 {
     public int DocumentsCount { get; }
-
     public int PagesCount { get; }
-
     public IEnumerable<Document> Documents { get; } = default!;
-
     public SearchCorrection SearchCorrection { get; }
-
     public string OriginalQuery { get; }
-
     public SearchResult(SearchResponse response, int itemsPerPage, string originalQuery)
     {
         DocumentsCount = response.TotalCount;
