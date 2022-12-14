@@ -1,5 +1,6 @@
 import { NgModule, Type } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { APOLLO_OPTIONS, ApolloModule } from 'apollo-angular';
 import { HttpLink } from 'apollo-angular/http';
 import { InMemoryCache } from '@apollo/client/core';
@@ -26,6 +27,7 @@ import { FoldboxListWidgetComponent, FoldboxListWidgetModule } from './foldbox-l
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
+    BrowserAnimationsModule,
     ApolloModule,
     AppRoutingModule,
     BannerWidgetModule,

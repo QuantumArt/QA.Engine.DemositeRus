@@ -5,7 +5,7 @@ import { FoldboxDirective } from './foldbox.directive';
 @NgModule({
   imports: [CommonModule],
   declarations: [FoldboxDirective],
-  exports: [FoldboxDirective],
+  exports: [FoldboxDirective]
 })
 export class FoldboxDirectiveModule {
 }
