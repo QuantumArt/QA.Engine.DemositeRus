@@ -16,7 +16,7 @@ namespace Demosite.Controllers
         }
         public IActionResult Index()
         {
-            IEnumerable<int> ids = CurrentItem.ReportsItemIds; ;
+            IEnumerable<int> ids = CurrentItem.ReportsItemIds;
             AnnualReportsPageViewModel viewModel = _modelBuilder.BuildForm(CurrentItem, ids);
             viewModel.CountReportsToShow = CurrentItem.CountReportToShow;
             return View(viewModel);

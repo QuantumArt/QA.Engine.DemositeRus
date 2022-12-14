@@ -7,7 +7,10 @@
         <div class="flex-grow-1 px-3 pt-3">
             <div class="ps-3">
                 <h1 class="fs-3 text-center mb-4">Поиск по сайту</h1>
-                @if (!string.IsNullOrEmpty(Model.SearchCorrection?.Text))
+                <div class="nav__search">
+                    @await Component.WidgetZone(Html, "SiteSearchHeaderZone")
+                </div>
+                @if (!string.IsNullOrEmpty(Model?.SearchCorrection?.Text))
                 {
                     var resultSearch = Model.SearchCorrection.ResultsAreCorrected ? Model.SearchCorrection.Snippet : Model.SearchCorrection.OriginalQuery;
                     var insteadSearch = Model.SearchCorrection.ResultsAreCorrected ? Model.SearchCorrection.OriginalQuery : Model.SearchCorrection.Text;
