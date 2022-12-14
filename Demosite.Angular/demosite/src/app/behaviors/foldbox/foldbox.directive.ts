@@ -1,5 +1,5 @@
 ﻿import { AfterViewInit, Directive, ElementRef, Input, OnDestroy } from '@angular/core';
-import { isVisible, slideDown, slideStop, slideUp } from 'slide-anim';
+import { slideDown, slideStop, slideUp } from 'slide-anim';
 import { EventHandlerCollection } from '../../utils';
 
 @Directive({
@@ -30,13 +30,16 @@ export class FoldboxDirective implements AfterViewInit, OnDestroy {
       });
     } else {
       this.hostEl.nativeElement.querySelectorAll<HTMLElement>('[data-foldbox]').forEach(element => {
-        this.eventHandlers.add({
-          element,
-          type: 'click',
-          action: () => {
-            this.toggle(element, isVisible(element));
-          }
-        });
+        const head = element.querySelector<HTMLElement>('[data-foldbox-head]');
+        if (head) {
+          this.eventHandlers.add({
+            element: head,
+            type: 'click',
+            action: () => {
+              this.toggle(element, element.className.includes('active'));
+            }
+          });
+        }
       });
     }
   }
