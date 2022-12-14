@@ -4,7 +4,10 @@
       <qa-breadcrumbs></qa-breadcrumbs>
     </div>
     <qa-widget-zone zone="Content" [nodeId]="pageDetails.id"></qa-widget-zone>
-    <div [innerHTML]="pageDetails.text | safe: 'html'" qaDialogBehavior qaFoldboxBehavior></div>
+    <div [innerHTML]="pageDetails.text | safe: 'html'"
+         qaDialogBehavior
+         qaFoldboxBehavior
+         qaTabsBehavior></div>
     <qa-widget-zone zone="ContentBelow" [nodeId]="pageDetails.id"></qa-widget-zone>
   </div>
 </ng-container>
