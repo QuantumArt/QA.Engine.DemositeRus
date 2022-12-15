@@ -15,6 +15,7 @@
                                 <div class="select__box">
                                     <select id="year">
                                         <option value="0">Все</option>
+                                        <option value="2023">2023</option>
                                         <option value="2022">2022</option>
                                         <option value="2021">2021</option>
                                     </select>
@@ -55,7 +56,7 @@
                                 <onscreen-article id="@item.Id" content-id="30757" title="@item.Title" published="@item.Published">
                                     <div class="news-list__item">
                                         <div class="card">
-                                            <div class="card__date">@item.Date.ToString("MMMM d, yyyy")</div>
+                                            <div class="card__date">@item.Date.ToString("dd MMMM yyyy")</div>
                                             <div class="card__title"><a href="@item.Url">@item.Title</a></div>
                                             <div class="card__descr">@item.Brief</div><a class="read-more card__read-more" href="@item.Url">Читать...</a>
                                         </div>

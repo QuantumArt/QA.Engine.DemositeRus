@@ -18,7 +18,7 @@ namespace Demosite.Controllers
         public async Task<IActionResult> SendFeedback([FromForm] FeedbackViewModel feedbackModel)
         {
             bool result = await _modelBuilder.SendFeedback(feedbackModel);
-            return Redirect($"{Request.Scheme}://{Request.Host}/feedback/feedbacksended?result={result}");
+            return Redirect($"/feedback/feedbacksended?result={result}");
         }
         [HttpGet("feedbacksended")]
         public IActionResult FeedbackSended([FromQuery] bool result)

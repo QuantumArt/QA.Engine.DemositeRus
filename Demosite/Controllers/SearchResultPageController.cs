@@ -37,8 +37,7 @@ public class SearchResultPageController : ContentControllerBase<SearchResultPage
         int pageNumber = Request.CurrentPaginationPageNumber();
         pageNumber--; // start from zero page
         int itemsPerPage = await _siteSettingsProvider.GetSearchPaginatedItemsCountAsync(token);
-        int? ifFoundLte = null;
-        ifFoundLte = await _siteSettingsProvider.GetSearchFoundLteAsync(token);
+        int? ifFoundLte = await _siteSettingsProvider.GetSearchFoundLteAsync(token);
 
         if (itemsPerPage <= 0)
         {
@@ -54,7 +53,7 @@ public class SearchResultPageController : ContentControllerBase<SearchResultPage
             token);
         SearchResult result = new(response, itemsPerPage, query);
 
-        foreach (var doc in result.Documents?.Where(d => string.IsNullOrEmpty(d.SearchUrl)))
+        foreach (var doc in result.Documents?.Where(d => string.IsNullOrWhiteSpace(d.SearchUrl)))
         {
             _logger.LogError($"For {doc.Title} from {doc.Category} parameter `SearchUrl` is Empty or Null");
         }

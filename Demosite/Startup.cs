@@ -51,6 +51,7 @@ namespace Demosite
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddHttpContextAccessor();
+            services.AddResponseCompression(options => options.EnableForHttps = true);
             var mvc = services.AddMvc().AddRazorRuntimeCompilation();
 
             services.AddLogging();
@@ -88,7 +89,7 @@ namespace Demosite
             services.AddScoped<INewsService, NewsService>();
             services.AddScoped<IFoldBoxListService, FoldBoxListService>();
             services.AddScoped<IMediaService, MediaService>();
-            services.AddScoped<IReportsService, ReportsService>();
+            services.AddScoped<IReportsService, ReportsService>(); 
             services.AddScoped<IFeedbackService, FeedbackService>();
             services.AddScoped<IBannerWidgetService, BannerWidgetService>();
 
@@ -213,7 +214,16 @@ namespace Demosite
                 return Task.CompletedTask;
             });
 
-            app.UseStaticFiles();
+            app.UseResponseCompression();
+
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                OnPrepareResponse = ctx =>
+                {
+                    // Cache static files for 30 days
+                    ctx.Context.Response.Headers.Append("Cache-Control", "public,max-age=2592000");
+                }
+            });
             app.UseSession();
             //включаем инвалидацию по кештегам QP
             app.UseCacheTagsInvalidation();

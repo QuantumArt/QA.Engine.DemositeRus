@@ -19,9 +19,8 @@ public class SearchController : Controller
     [Produces("application/json")]
     [HttpPost]
     [IgnoreAntiforgeryToken]
-    public async Task<IActionResult> Complete([FromBody] SearchRequest request, CancellationToken token)
+    public async Task<string[]> Complete([FromBody] SearchRequest request, CancellationToken token)
     {
-        string[] result = await _searchService.CompleteAsync(request.Query, token);
-        return Ok(result);
+        return await _searchService.CompleteAsync(request.Query, token);
     }
 }
