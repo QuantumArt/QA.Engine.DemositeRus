@@ -7,7 +7,8 @@
     <div [innerHTML]="pageDetails.text | safe: 'html'"
          qaDialogBehavior
          qaFoldboxBehavior
-         qaTabsBehavior></div>
+         qaTabsBehavior
+         (tabOpened)="initializeCardSlider($event)"></div>
     <qa-widget-zone zone="ContentBelow" [nodeId]="pageDetails.id"></qa-widget-zone>
   </div>
 </ng-container>

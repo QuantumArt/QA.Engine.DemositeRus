@@ -1,11 +1,15 @@
 ﻿import { Inject, Injectable } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { merge, Observable } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 import { WINDOW } from '../public-api';
 
-@Injectable()
+export type Breakpoint = 'smartphone' | 'tablet' | 'desktop';
+
+@Injectable({
+  providedIn: 'root'
+})
 export class UiService {
   constructor(
     @Inject(WINDOW) private readonly windowRef: Window,
@@ -14,8 +18,20 @@ export class UiService {
   ) {
   }
 
-  public observeOnDesktopBreakpoint(): Observable<boolean> {
-    return this.breakpointObserver.observe(['(min-width: 1024px)']).pipe(map(state => state.matches));
+  public observeOnBreakpoint(): Observable<Breakpoint> {
+    return this.breakpointObserver.observe(['(max-width: 767px)', '(max-width: 1023px)']).pipe(
+      map(state => {
+        if (state.breakpoints['(max-width: 767px)']) {
+          return 'smartphone';
+        }
+
+        if (state.breakpoints['(max-width: 1023px)']) {
+          return 'tablet'
+        }
+
+        return 'desktop';
+      })
+    );
   }
 
   public setBodyOverflow(value: 'hidden' | 'auto'): void {

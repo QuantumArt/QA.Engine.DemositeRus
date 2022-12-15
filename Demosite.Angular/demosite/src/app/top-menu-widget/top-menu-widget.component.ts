@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit, TrackByFunction } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, TrackByFunction } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import { map } from 'rxjs/operators';
 import { WidgetComponent, WidgetDetails } from '@quantumart/qa-engine-page-structure-angular';
-import { UiService } from './ui.service';
+import { UiService } from '../services';
 import { TopMenuElement, TopMenuWidgetService } from './top-menu-widget.service';
 
 export interface TopMenuWidgetDetails extends WidgetDetails {
@@ -12,7 +13,7 @@ export interface TopMenuWidgetDetails extends WidgetDetails {
   selector: 'qa-top-menu-widget',
   templateUrl: './top-menu-widget.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [UiService, TopMenuWidgetService],
+  providers: [TopMenuWidgetService],
   animations: [
     trigger('openClose', [
       state('open', style({
@@ -37,7 +38,7 @@ export class TopMenuWidgetComponent implements WidgetComponent {
 
   public menuOpened = false;
   public readonly items$ = this.topMenuWidgetService.buildTopMenu();
-  public readonly isDesktop$ = this.uiService.observeOnDesktopBreakpoint();
+  public readonly isDesktop$ = this.uiService.observeOnBreakpoint().pipe(map(state => state === 'desktop'));
   public readonly trackById: TrackByFunction<TopMenuElement> = (_, item) => item.id;
 
   constructor(

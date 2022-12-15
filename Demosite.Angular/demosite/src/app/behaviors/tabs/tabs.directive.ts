@@ -1,10 +1,16 @@
-﻿import { AfterViewInit, Directive, ElementRef, OnDestroy } from '@angular/core';
+﻿import { AfterViewInit, Directive, ElementRef, EventEmitter, OnDestroy, Output } from '@angular/core';
 import { EventHandlerCollection } from '../../utils';
+
+export interface TabOpenEventData {
+  bodyElement: HTMLElement;
+}
 
 @Directive({
   selector: '[qaTabsBehavior]'
 })
 export class TabsDirective implements AfterViewInit, OnDestroy {
+  @Output() tabOpened = new EventEmitter<TabOpenEventData>();
+
   private readonly eventHandlers = new EventHandlerCollection();
 
   constructor(private readonly hostEl: ElementRef<HTMLElement>) {
@@ -39,10 +45,11 @@ export class TabsDirective implements AfterViewInit, OnDestroy {
       .forEach(body => body.style.display = 'none');
 
     const id = element.getAttribute('data-tabs-nav-item');
-    const targetBody = tabsBlock.querySelector<HTMLElement>(`[data-tabs-item="${id}"]`);
+    const body = tabsBlock.querySelector<HTMLElement>(`[data-tabs-item="${id}"]`);
 
-    if (targetBody) {
-      targetBody.style.display = 'block';
+    if (body) {
+      body.style.display = 'block';
+      this.tabOpened.emit({ bodyElement: body });
     }
   }
 }
