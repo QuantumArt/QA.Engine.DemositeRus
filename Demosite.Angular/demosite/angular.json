@@ -26,6 +26,11 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
+            "allowedCommonJsDependencies": [
+              "mousetrap",
+              "hammerjs",
+              "@ks89/angular-modal-gallery"
+            ],
             "assets": [
               "src/favicon.ico",
               "src/assets",

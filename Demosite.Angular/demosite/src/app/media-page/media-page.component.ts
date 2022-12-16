@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { WidgetDetails } from '@quantumart/qa-engine-page-structure-angular';
-import { MediaEvent, MediaPageService } from './media-page.service';
+import { MediaPageService } from './media-page.service';
 
 export interface MediaPageDetails extends WidgetDetails {
   title: string;

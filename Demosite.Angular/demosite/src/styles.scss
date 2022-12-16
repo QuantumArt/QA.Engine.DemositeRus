@@ -32,6 +32,15 @@ $demosite-theme: mat.define-light-theme((
 // that you are using.
 @include mat.all-component-themes($demosite-theme);
 
+@import "~@angular/cdk/overlay-prebuilt.css";
+.ks-modal-gallery-backdrop {
+  background: #000 !important;
+  opacity: 0.85 !important;
+}
+.ks-modal-gallery-panel {
+  z-index: 90000 !important;
+}
+
 /* You can add global styles to this file, and also import other style files */
 @import "swiper/swiper-bundle.css";
 

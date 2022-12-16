@@ -1,0 +1,25 @@
+<div class="event">
+  <div [innerHTML]="item.text | safe: 'html'"></div>
+  <div class="event__gallery">
+    <div class="event__slider" data-es>
+      <div class="event__slider-track" data-es-slider>
+        <swiper
+          [slidesPerView]="'auto'"
+          [spaceBetween]="1">
+          <ng-template swiperSlide *ngFor="let image of item.images; let i = index">
+            <div class="event__slider-item">
+              <a [attr.href]="image.image" (click)="openGallery($event, item.id, item.images, i)">
+                <img [attr.src]="image.image" [attr.alt]="image.title">
+              </a>
+            </div>
+          </ng-template>
+        </swiper>
+      </div>
+      <div class="event__slider-footer">
+        <div class="event__slider-counter" data-es-counter></div>
+        <div class="event__slider-nav" data-es-nav></div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="item.textBelow" [innerHTML]="item.textBelow | safe: 'html'"></div>
+</div>
