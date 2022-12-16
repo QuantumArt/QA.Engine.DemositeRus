@@ -40,3 +40,6 @@ data:
   FeedbackSettings__Subject: "#{feedbackSettings.subject}#"
   FeedbackSettings__DestinationEmail: "#{feedbackSettings.destinationEmail}#"
   FeedbackSettings__FromEmail: "#{feedbackSettings.fromEmail}#"
+  Search__BaseUrl: "#{searchSettings.baseUrl}#"
+  Search__SearchPath: "#{searchSettings.searchPath}#"
+  Search__CompletionPath: "#{searchSettings.completionPath}#"
