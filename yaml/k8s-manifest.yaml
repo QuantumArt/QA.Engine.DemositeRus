@@ -15,12 +15,12 @@ spec:
         logging: enabled
     spec:
       containers:
-      - env:
+      - image: "||registry||/#{imageName}#:||version||"
+        name: #{appName}#
+        envFrom:
         - configMapRef:
             name: #{configmapName}#
-        image: "||registry||/#{imageName}#:||version||"
         imagePullPolicy: IfNotPresent
-        name: #{appName}#
         ports:
         - containerPort: 80
         resources:
