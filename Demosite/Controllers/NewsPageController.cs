@@ -23,9 +23,8 @@ namespace Demosite.Controllers
         public async Task<IActionResult> Index()
         {
             int? categoryId = CurrentItem.CategoryId;
-            int year = DateTime.Now.Year;
             int itemsOnPage = await _siteSettingsProvider.NewsPaginatedItemsCountAsync();
-            NewsPageViewModel viewModel = _newsPageViewModelBuilder.BuildList(CurrentItem, year: year, categoryId: categoryId, count: itemsOnPage);
+            NewsPageViewModel viewModel = _newsPageViewModelBuilder.BuildList(CurrentItem, categoryId: categoryId, count: itemsOnPage);
             return View(viewModel);
         }
 

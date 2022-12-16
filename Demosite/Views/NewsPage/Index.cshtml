@@ -1,5 +1,4 @@
-﻿
-@model Demosite.ViewModels.NewsPageViewModel
+﻿@model Demosite.ViewModels.NewsPageViewModel
 <main class="main">
     @await Component.WidgetZone(Html, "ContentAbove")
     <div class="page page-news" data-news-page>
@@ -15,9 +14,10 @@
                                 <div class="select__box">
                                     <select id="year">
                                         <option value="0">Все</option>
-                                        <option value="2023">2023</option>
-                                        <option value="2022">2022</option>
-                                        <option value="2021">2021</option>
+                                        @foreach (int year in Model.Items.Select(item => item.Date.Year).Distinct())
+                                        {
+                                            <option value="@year">@year</option>
+                                        }
                                     </select>
                                 </div>
                             </div>
