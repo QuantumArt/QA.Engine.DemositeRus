@@ -1,10 +1,7 @@
-using Microsoft.AspNetCore.Mvc;
 using Demosite.Models.Widgets;
-using Demosite.ViewModels;
+using Microsoft.AspNetCore.Mvc;
 using QA.DotNetCore.Engine.Widgets;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Demosite.Components

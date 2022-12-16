@@ -1,9 +1,9 @@
 using Demosite.Services.Settings;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
+using SixLaborsCaptcha.Core;
 using System;
 using System.Threading.Tasks;
-using SixLaborsCaptcha.Core;
-using Microsoft.Extensions.Logging;
 
 namespace Demosite.Middlewares.Captcha
 {
@@ -36,15 +36,12 @@ namespace Demosite.Middlewares.Captcha
 
             string captcha_key = Extensions.GetUniqueKey(captchaSettings.TextLength);
             // Без сессий мы нарисуем капчу, но не сможем ее проверить. Любое значение будет отвергаться.
-            if (context.Session != null)
-            {
-                context.Session.SetString(key, captcha_key);
-            }
+            context.Session?.SetString(key, captcha_key);
             context.Response.ContentType = "image/gif";
             context.Response.StatusCode = 200;
             try
             {
-                var imgText = sixLaborsCaptcha.Generate(captcha_key);
+                byte[] imgText = sixLaborsCaptcha.Generate(captcha_key);
                 await context.Response.Body.WriteAsync(imgText, 0, imgText.Length);
             }
             catch (Exception ex)

@@ -1,46 +1,43 @@
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 using Demosite.Interfaces;
 using Demosite.Interfaces.Dto;
 using Demosite.Services.Settings;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Demosite.Services
 {
     public class FeedbackService : IFeedbackService
     {
-        private ILogger<FeedbackService> _logger { get; }
+        private readonly ILogger<FeedbackService> _logger;
         private string nameService => nameof(EmailNotificationService);
-        private FeedbackSettings _feedbackSettings { get; }
-        private EmailSenderSettings _senderSettings { get; }
-        private EmailNotificationSettings _emailSettings { get; }
-        private INotificationTemplateEngine _notificationTemplateEngine { get; }
-        public const string feedbackEmail = "Demosite.Services.EmailTemplates.FeedbackEmail.cshtml";
+        private readonly FeedbackSettings _feedbackSettings;
+        private readonly EmailSenderSettings _senderSettings;
+        private readonly EmailNotificationSettings _emailSettings;
+        private readonly INotificationTemplateEngine _notificationTemplateEngine;
+        public const string FEEDBACK_EMAIL = "Demosite.Services.EmailTemplates.FeedbackEmail.cshtml";
         public FeedbackService(IConfiguration configuration,
                                ILogger<FeedbackService> logger,
                                EmailNotificationSettings settings,
                                INotificationTemplateEngine templateEngine)
         {
-            this._feedbackSettings = configuration.GetSection(nameof(FeedbackSettings)).Get<FeedbackSettings>();
-            this._senderSettings = settings.EmailSender;
-            this._emailSettings = settings;
-            this._logger = logger;
-            this._notificationTemplateEngine = templateEngine;
+            _feedbackSettings = configuration.GetSection(nameof(FeedbackSettings)).Get<FeedbackSettings>();
+            _senderSettings = settings.EmailSender;
+            _emailSettings = settings;
+            _logger = logger;
+            _notificationTemplateEngine = templateEngine;
         }
         public async Task<SmtpStatusCode> SendFeedback(FeedbackDto model)
         {
             SmtpStatusCode status = SmtpStatusCode.ServiceReady;
             using (SmtpClient SmtpClient = GetClient())
             {
-                var message = new MailMessage();
+                MailMessage message = new();
                 try
                 {
                     message.To.Add(new MailAddress(_feedbackSettings.DestinationEmail));
@@ -67,7 +64,7 @@ namespace Demosite.Services
                         status = ex.StatusCode;
                         await Task.Delay(_emailSettings.TimeIntervalOfAttemptsSending * i);
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         status = SmtpStatusCode.GeneralFailure;
                     }
@@ -77,16 +74,16 @@ namespace Demosite.Services
         }
         private SmtpClient GetClient()
         {
-            var credential = new NetworkCredential(this._senderSettings.UserName, this._senderSettings.Password);
-            if (!string.IsNullOrEmpty(this._senderSettings.Domain))
+            NetworkCredential credential = new(_senderSettings.UserName, _senderSettings.Password);
+            if (!string.IsNullOrEmpty(_senderSettings.Domain))
             {
-                credential.Domain = this._senderSettings.Domain;
+                credential.Domain = _senderSettings.Domain;
             }
-            var client = new SmtpClient(this._senderSettings.SmtpServer, this._senderSettings.SmtpPort)
+            SmtpClient client = new(_senderSettings.SmtpServer, _senderSettings.SmtpPort)
             {
                 UseDefaultCredentials = false,
                 Credentials = credential,
-                EnableSsl = this._senderSettings.UseSsl
+                EnableSsl = _senderSettings.UseSsl
             };
             return client;
         }
@@ -94,18 +91,16 @@ namespace Demosite.Services
         private async Task<string> CreateBody(FeedbackDto model)
         {
             string body = "";
-            using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(feedbackEmail))
+            using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(FEEDBACK_EMAIL))
             {
-                using (StreamReader reader = new StreamReader(stream))
+                using StreamReader reader = new(stream);
+                try
                 {
-                    try
-                    {
-                        body = await _notificationTemplateEngine.BuildMessage(feedbackEmail, await reader.ReadToEndAsync(), model);
-                    }
-                    catch (Exception ex)
-                    {
-                        _logger.LogError(nameService + $": error RazorLight during create email body: {ex.Message}", ex);
-                    }
+                    body = await _notificationTemplateEngine.BuildMessage(FEEDBACK_EMAIL, await reader.ReadToEndAsync(), model);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(nameService + $": error RazorLight during create email body: {ex.Message}", ex);
                 }
             }
             return body;

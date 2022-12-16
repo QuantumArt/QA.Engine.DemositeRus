@@ -24,14 +24,7 @@ namespace Demosite.Services.Settings
             Color[] result = new Color[Colors.Length];
             for (int i = 0; i < Colors.Length; i++)
             {
-                if (Color.TryParse(Colors[i], out Color newColor))
-                {
-                    result[i] = newColor;
-                }
-                else
-                {
-                    result[i] = Color.Black;
-                }
+                result[i] = Color.TryParse(Colors[i], out Color newColor) ? newColor : Color.Black;
             }
             return result;
         }

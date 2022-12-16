@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Provider.Search\Provider.Search.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="ICacheService.cs">
       <DependentUpon>QPDataContextGenerator.tt</DependentUpon>
     </Compile>

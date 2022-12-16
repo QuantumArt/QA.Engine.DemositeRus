@@ -1,8 +1,8 @@
-using Microsoft.EntityFrameworkCore;
 using Demosite.Interfaces;
 using Demosite.Interfaces.Dto;
 using Demosite.Interfaces.Dto.Request;
 using Demosite.Postgre.DAL;
+using Microsoft.EntityFrameworkCore;
 using QA.DotNetCore.Engine.Persistent.Interfaces.Settings;
 using System;
 using System.Collections.Generic;
@@ -12,18 +12,19 @@ namespace Demosite.Services
 {
     public class NewsService : INewsService
     {
-        public IDbContext QpDataContext { get; }
-        public ICacheService MemoryCache { get; }
+        private readonly IDbContext _qpDataContext;
+        private readonly ICacheService _memoryCache;
         public NewsService(QpSettings qpSettings, IDbContext context, ICacheService memoryCache)
         {
-            QpDataContext = context;
-            MemoryCache = memoryCache;
+            _qpDataContext = context;
+            _memoryCache = memoryCache;
         }
+
         public IEnumerable<NewsPostDto> GetAllPosts(int? year = null, int? month = null, int? categoryId = null)
         {
-            return MemoryCache.GetFromCache<IEnumerable<NewsPostDto>>(GetCacheKey(year, month, categoryId), () =>
+            return _memoryCache.GetFromCache<IEnumerable<NewsPostDto>>(GetCacheKey(year, month, categoryId), () =>
                {
-                   var query = (QpDataContext as PostgreQpDataContext).NewsPosts.AsNoTracking();
+                   IQueryable<NewsPost> query = (_qpDataContext as PostgreQpDataContext).NewsPosts.AsNoTracking();
 
                    if (year.HasValue)
                    {
@@ -44,37 +45,28 @@ namespace Demosite.Services
                                .Select(Map)
                                .ToArray();
                });
-
         }
 
         public IEnumerable<NewsCategoryDto> GetCategories()
         {
-            return (QpDataContext as PostgreQpDataContext).NewsCategories
+            return (_qpDataContext as PostgreQpDataContext).NewsCategories
                  .Select(Map).ToArray();
         }
 
         public NewsPostDto GetPost(int id, int? categoryId)
         {
-            return MemoryCache.GetFromCache<NewsPostDto>(GetCacheKey(id, categoryId), () =>
+            return _memoryCache.GetFromCache<NewsPostDto>(GetCacheKey(id, categoryId), () =>
             {
-                var query = (QpDataContext as PostgreQpDataContext).NewsPosts.AsNoTracking();
-                if (categoryId.HasValue)
-                {
-                    query = query.Where(bp => bp.Id == id && bp.Category.Id == categoryId.Value);
-                }
-                else
-                {
-                    query = query.Where(bp => bp.Id == id);
-                }
+                IQueryable<NewsPost> query = (_qpDataContext as PostgreQpDataContext).NewsPosts.AsNoTracking();
+                query = categoryId.HasValue ? query.Where(bp => bp.Id == id && bp.Category.Id == categoryId.Value) : query.Where(bp => bp.Id == id);
                 query = query.Include(c => c.Category);
                 return Map(query.FirstOrDefault());
             });
-
         }
 
         public NewsPostDto[] GetPosts(int[] ids)
         {
-            return (QpDataContext as PostgreQpDataContext).NewsPosts
+            return (_qpDataContext as PostgreQpDataContext).NewsPosts
                 .Include(c => c.Category)
                 .Where(p => ids.Contains(p.Id))
                 .Select(Map)
@@ -83,40 +75,38 @@ namespace Demosite.Services
 
         private NewsPostDto Map(Postgre.DAL.NewsPost post)
         {
-            if (post == null)
-                return null;
-
-            return new NewsPostDto
-            {
-                Id = post.Id,
-                Title = post.Title,
-                PostDate = post.PostDate.GetValueOrDefault(new DateTime(2001, 01, 01)),
-                Brief = post.Brief,
-                Text = post.Text,
-                Category = Map(post.Category),
-                Published = post.StatusTypeId == 143
-            };
+            return post == null
+                ? null
+                : new NewsPostDto
+                {
+                    Id = post.Id,
+                    Title = post.Title,
+                    PostDate = post.PostDate.GetValueOrDefault(new DateTime(2001, 01, 01)),
+                    Brief = post.Brief,
+                    Text = post.Text,
+                    Category = Map(post.Category),
+                    Published = post.StatusTypeId == 143
+                };
         }
 
         private NewsCategoryDto Map(Postgre.DAL.NewsCategory category)
         {
-            if (category == null)
-                return null;
-
-            return new NewsCategoryDto
-            {
-                Id = category.Id,
-                Title = category.Title,
-                AlternativeTitle = category.AlternativeTitle,
-                Alias = category.Alias,
-                ShowOnStart = category.ShowOnStart ?? false,
-                SortOrder = category.SortOrder
-            };
+            return category == null
+                ? null
+                : new NewsCategoryDto
+                {
+                    Id = category.Id,
+                    Title = category.Title,
+                    AlternativeTitle = category.AlternativeTitle,
+                    Alias = category.Alias,
+                    ShowOnStart = category.ShowOnStart ?? false,
+                    SortOrder = category.SortOrder
+                };
         }
 
         public IEnumerable<NewsPostDto> GetAllPosts(PostRequest request, int[] categoryIds = null)
         {
-            var query = (QpDataContext as PostgreQpDataContext).NewsPosts.AsNoTracking();
+            IQueryable<NewsPost> query = (_qpDataContext as PostgreQpDataContext).NewsPosts.AsNoTracking();
             if (request.FromDate.HasValue)
             {
                 query = query.Where(n => n.PostDate >= request.FromDate.Value);
@@ -136,12 +126,12 @@ namespace Demosite.Services
                         .ToArray();
         }
 
-        static private string GetCacheKey(int id, int? categoryId = null)
+        private static string GetCacheKey(int id, int? categoryId = null)
         {
             return $"news_post_{id}" + (categoryId.HasValue ? $"_category_{categoryId}" : $"_withoutcategory");
         }
 
-        static private string GetCacheKey(int? year = null, int? month = null, int? categoryId = null)
+        private static string GetCacheKey(int? year = null, int? month = null, int? categoryId = null)
         {
             return $"news_post_all_{(year.HasValue ? year.Value : string.Empty)}_{(month.HasValue ? month.Value : string.Empty)}_{(categoryId.HasValue ? categoryId.Value : string.Empty)}";
         }

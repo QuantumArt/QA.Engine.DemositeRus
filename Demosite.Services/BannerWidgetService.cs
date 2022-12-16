@@ -9,15 +9,15 @@ namespace Demosite.Services
 {
     public class BannerWidgetService : IBannerWidgetService
     {
-        private PostgreQpDataContext _dataContext { get; }
+        private readonly PostgreQpDataContext _dataContext;
         public BannerWidgetService(IDbContext context)
         {
-            this._dataContext = context as PostgreQpDataContext;
+            _dataContext = context as PostgreQpDataContext;
         }
 
         public IEnumerable<BannerItemDto> GetBanners(IEnumerable<int> ids)
         {
-            var result = _dataContext.BannerItems.Where(b => ids.Contains(b.Id))
+            BannerItem[] result = _dataContext.BannerItems.Where(b => ids.Contains(b.Id))
                                            .OrderBy(b => b.SortOrder ?? 0)
                                            .ToArray();
             return result.Select(Map).ToArray();

@@ -1,69 +1,75 @@
 ﻿@model Demosite.ViewModels.MenuViewModel
 <header class="header">
-  <div class="wrapper">
-    <div class="header__group">
-      <div class="logo"><a href="/home/"> <img src="/static/images/demo-logo.jpeg" alt="logo-image"></a></div>
-      <nav class="nav" data-nav="">
-        <div class="nav__burger" data-nav-burger=""><img src="/static/images/menu.svg" alt="menu"></div>
-        <div class="nav__box">
-          <div class="nav__close" data-nav-close=""><img src="/static/images/close.svg" alt="close menu"></div>
-          <div class="nav__menu">
-            <ul class="nav__list">
-              @foreach (var item in Model.Items)
-              {
-                <li class="nav__list-item" data-menu-item="" data-id="@item.Id">
-                  <div class="menu-category menu-category--main" data-menu-link="">
-
-                    @if (item.Children.Any())
-                    {
-                      <span class="menu-category__link">@item.Title</span>
-                      <span class="menu-category__arrow" data-menu-arrow=""></span>
-                    }
-                    else
-                    {
-                      <a class="menu-category__link" href="@item.Href">@item.Title</a>
-                    }
-                  </div>
-                  @if (item.Children.Any())
-                  {
-                    <div class="nav__submenu">
-                      <div class="wrapper">
-                        <div class="nav__submenu-group">
-                          <ul class="menu" data-parentid="@item.Id" >
-                            @foreach (var subcol in item.Children)
+    <div class="wrapper">
+        <div class="header__group">
+            <div class="logo"><a href="/home/"> <img src="/static/images/demo-logo.jpeg" alt="logo-image"></a></div>
+            <div class="nav__search">
+                @await Component.WidgetZone(Html, "SiteSearchHeaderZone")
+            </div>
+            <nav class="nav" data-nav="">
+                <div class="nav__burger" data-nav-burger=""><img src="/static/images/menu.svg" alt="menu"></div>
+                <div class="nav__box">
+                    <div class="nav__close" data-nav-close=""><img src="/static/images/close.svg" alt="close menu"></div>
+                    <div class="nav__menu">
+                        <ul class="nav__list">
+                            @foreach (var item in Model.Items)
                             {
-                              <li class="menu__item" data-menu-item="" data-id="@subcol.Id">
-                                <div class="menu-category " data-menu-link="">
-                                  <a class="menu-category__link" href="@subcol.Href">@subcol.Title</a>
-                                  @if (subcol.Children.Any())
-                                  {<span class="menu-category__arrow" data-menu-arrow=""></span>}
-                                </div>
-                                <ul class="menu" data-parentid="@subcol.Id">
-                                  @foreach (var subitem in subcol.Children)
-                                  {
-                                    <li class="menu__item" data-menu-item="" data-id="@subitem.Id">
-                                      <a class="menu-link" href="@subitem.Href">@subitem.Title</a>
-                                    </li>
-                                  }
+                                <li class="nav__list-item" data-menu-item="" data-id="@item.Id">
+                                    <div class="menu-category menu-category--main" data-menu-link="">
+
+                                        @if (item.Children.Any())
+                                        {
+                                            <span class="menu-category__link">@item.Title</span>
+                                            <span class="menu-category__arrow" data-menu-arrow=""></span>
+                                        }
+                                        else
+                                        {
+                                            <a class="menu-category__link" href="@item.Href">@item.Title</a>
+                                        }
+                                    </div>
+                                    @if (item.Children.Any())
+                                    {
+                                        <div class="nav__submenu">
+                                            <div class="wrapper">
+                                                <div class="nav__submenu-group">
+                                                    <ul class="menu" data-parentid="@item.Id">
+                                                        @foreach (var subcol in item.Children)
+                                                        {
+                                                            <li class="menu__item" data-menu-item="" data-id="@subcol.Id">
+                                                                <div class="menu-category " data-menu-link="">
+                                                                    <a class="menu-category__link" href="@subcol.Href">@subcol.Title</a>
+                                                                    @if (subcol.Children.Any())
+                                                                    {
+                                                                        <span class="menu-category__arrow" data-menu-arrow=""></span>
+                                                                    }
+                                                                </div>
+                                                                <ul class="menu" data-parentid="@subcol.Id">
+                                                                    @foreach (var subitem in subcol.Children)
+                                                                    {
+                                                                        <li class="menu__item" data-menu-item="" data-id="@subitem.Id">
+                                                                            <a class="menu-link" href="@subitem.Href">@subitem.Title</a>
+                                                                        </li>
+                                                                    }
 
 
-                                </ul>
-                              </li>
+                                                                </ul>
+                                                            </li>
+                                                        }
+
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+
+                                </li>
                             }
 
-                          </ul>
-                        </div>
-                      </div>
+                        </ul>
                     </div>
-                  }
-
-                </li>
-              }
-
-            </ul>
-          </div>
+                </div>
+            </nav>
+           
         </div>
-      </nav>
     </div>
-  </div>
 </header>

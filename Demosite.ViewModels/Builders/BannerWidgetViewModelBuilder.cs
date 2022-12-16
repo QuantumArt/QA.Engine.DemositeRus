@@ -1,30 +1,27 @@
 using Demosite.Interfaces;
 using Demosite.Interfaces.Dto;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Demosite.ViewModels.Builders
 {
     public class BannerWidgetViewModelBuilder
     {
-        private IBannerWidgetService _service { get; }
+        private readonly IBannerWidgetService _service;
         public BannerWidgetViewModelBuilder(IBannerWidgetService service)
         {
-            this._service = service;
+            _service = service;
         }
 
         public BannerListViewModel Build(IEnumerable<int> ids)
         {
-            var result = new BannerListViewModel();
-            var items = _service.GetBanners(ids).Select(Map).ToList();
+            BannerListViewModel result = new();
+            List<BannerItemViewModel> items = _service.GetBanners(ids).Select(Map).ToList();
             result.Items = items;
             return result;
         }
 
-        private BannerItemViewModel Map (BannerItemDto model)
+        private BannerItemViewModel Map(BannerItemDto model)
         {
             return new BannerItemViewModel()
             {

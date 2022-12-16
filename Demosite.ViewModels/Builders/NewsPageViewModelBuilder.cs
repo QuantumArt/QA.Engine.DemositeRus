@@ -1,26 +1,25 @@
 using Demosite.Interfaces;
+using Demosite.ViewModels.Helpers;
 using QA.DotNetCore.Engine.Abstractions;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using Demosite.ViewModels.Helpers;
 
 namespace Demosite.ViewModels.Builders
 {
     public class NewsPageViewModelBuilder
     {
-        private INewsService NewsService { get; }
+        private readonly INewsService _newsService;
 
         public NewsPageViewModelBuilder(INewsService newsService)
         {
-            this.NewsService = newsService;
+            _newsService = newsService;
         }
 
         public NewsPageViewModel BuildList(IAbstractPage newsPage, int? year = null, int? month = null, int? categoryId = null, int pageNumber = 1, int count = 10)
         {
-            var vm = new NewsPageViewModel { Header = newsPage.Title };
-            var news = NewsService.GetAllPosts(year, month, categoryId);
-            vm.Items.AddRange(news.Skip((pageNumber - 1) * count)
+            NewsPageViewModel viewModel = new() { Header = newsPage.Title };
+            IEnumerable<Interfaces.Dto.NewsPostDto> news = _newsService.GetAllPosts(year, month, categoryId);
+            viewModel.Items.AddRange(news.Skip((pageNumber - 1) * count)
                                   .Take(count)
                                   .Select(p => new NewsItemInListViewModel
                                   {
@@ -31,25 +30,20 @@ namespace Demosite.ViewModels.Builders
                                       CategoryName = p.Category.Title,
                                       Url = $"{newsPage.GetUrl()}/details/{p.Id}"
                                   }));
-            var newsCount = news.Count();
-            vm.PageCount = newsCount / count;
-            if (newsCount % count > 0)
-            {
-                vm.PageCount++;
-            }
-            vm.CurrentPage = pageNumber;
-            vm.BreadCrumbs = newsPage.GetBreadCrumbs();
-            return vm;
+            viewModel.PageCount = (news.Count() + count - 1) / count;
+            viewModel.CurrentPage = pageNumber;
+            viewModel.BreadCrumbs = newsPage.GetBreadCrumbs();
+            return viewModel;
         }
 
         public NewsDetailsViewModel BuildDetails(IAbstractPage newsPage, int id, string commonText, int? categoryId)
         {
-            var post = NewsService.GetPost(id, categoryId);
+            Interfaces.Dto.NewsPostDto post = _newsService.GetPost(id, categoryId);
             if (post == null)
             {
                 return null;
             }
-            var breadCrumbs = newsPage.GetBreadCrumbs();
+            List<BreadCrumbViewModel> breadCrumbs = newsPage.GetBreadCrumbs();
             breadCrumbs.Add(new BreadCrumbViewModel()
             {
                 Text = "Детальная информация"
@@ -69,7 +63,7 @@ namespace Demosite.ViewModels.Builders
 
         public List<CategoriesListViewModel> BuildCategories()
         {
-            return NewsService.GetCategories().Select(x => new CategoriesListViewModel
+            return _newsService.GetCategories().Select(x => new CategoriesListViewModel
             {
                 Id = x.Id,
                 Title = x.Title

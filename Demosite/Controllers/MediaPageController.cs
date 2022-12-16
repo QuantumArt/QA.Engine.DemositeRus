@@ -1,21 +1,22 @@
-using Microsoft.AspNetCore.Mvc;
 using Demosite.Models.Pages;
-using QA.DotNetCore.Engine.Routing;
+using Demosite.ViewModels;
 using Demosite.ViewModels.Builders;
+using Microsoft.AspNetCore.Mvc;
+using QA.DotNetCore.Engine.Routing;
 
 namespace Demosite.Controllers
 {
     public class MediaPageController : ContentControllerBase<MediaPage>
     {
-        private MediaPageViewModelBuilder modelBuilder { get; }
+        private readonly MediaPageViewModelBuilder _modelBuilder;
         public MediaPageController(MediaPageViewModelBuilder builder)
         {
-            this.modelBuilder = builder;
+            _modelBuilder = builder;
         }
         public IActionResult Index()
         {
-            var vm = modelBuilder.BuildList(CurrentItem);
-            return View(vm);
+            MediaPageViewModel viewModel = _modelBuilder.BuildList(CurrentItem);
+            return View(viewModel);
         }
     }
 }

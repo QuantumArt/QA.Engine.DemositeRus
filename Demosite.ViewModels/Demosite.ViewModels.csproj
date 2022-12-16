@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Demosite.Interfaces\Demosite.Interfaces.csproj" />
+    <ProjectReference Include="..\Provider.Search\Provider.Search.csproj" />
   </ItemGroup>
 
 </Project>

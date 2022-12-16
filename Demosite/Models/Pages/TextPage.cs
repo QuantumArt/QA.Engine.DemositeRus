@@ -4,8 +4,8 @@ namespace Demosite.Models.Pages
 {
     public class TextPage : AbstractPage
     {
-        public string Text { get { return GetDetail("Text", string.Empty); } }
+        public string Text => GetDetail("Text", string.Empty);
 
-        public bool HideTitle { get { return GetDetail("HideTitle", false); } }
+        public bool HideTitle => GetDetail("HideTitle", false);
     }
 }

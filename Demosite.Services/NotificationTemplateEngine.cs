@@ -1,30 +1,29 @@
+using Demosite.Interfaces;
 using RazorLight;
 using System.Threading.Tasks;
-using Demosite.Interfaces;
 
 namespace Demosite.Services
 {
     public class NotificationTemplateEngine : INotificationTemplateEngine
     {
-        public RazorLightEngine RazorLight { get; }
-
+        private readonly RazorLightEngine _razorLight;
         public NotificationTemplateEngine(RazorLightEngine razorLight)
         {
-            this.RazorLight = razorLight;
+            _razorLight = razorLight;
         }
 
         public async Task<string> BuildMessage<T>(string key, string template, T messageModel)
         {
             string result = "";
-            var cacheResult = RazorLight.Handler.Cache.RetrieveTemplate(key);
+            RazorLight.Caching.TemplateCacheLookupResult cacheResult = _razorLight.Handler.Cache.RetrieveTemplate(key);
             if (cacheResult.Success)
             {
-                var templatePage = cacheResult.Template.TemplatePageFactory();
-                result = await RazorLight.RenderTemplateAsync(templatePage, messageModel);
+                ITemplatePage templatePage = cacheResult.Template.TemplatePageFactory();
+                result = await _razorLight.RenderTemplateAsync(templatePage, messageModel);
             }
             else
             {
-                result = await RazorLight.CompileRenderStringAsync<T>(
+                result = await _razorLight.CompileRenderStringAsync<T>(
                 key,
                 template,
                 messageModel);

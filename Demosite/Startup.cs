@@ -5,6 +5,7 @@ using Demosite.Postgre.DAL;
 using Demosite.Postgre.DAL.NotQP;
 using Demosite.Services;
 using Demosite.Services.Hosted;
+using Demosite.Services.Search;
 using Demosite.Services.Settings;
 using Demosite.ViewModels.Builders;
 using Microsoft.AspNetCore.Builder;
@@ -16,6 +17,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Npgsql;
+using Provider.Search;
 using QA.DotNetCore.Engine.Abstractions;
 using QA.DotNetCore.Engine.Abstractions.OnScreen;
 using QA.DotNetCore.Engine.AbTesting.Configuration;
@@ -49,6 +51,7 @@ namespace Demosite
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddHttpContextAccessor();
+            services.AddResponseCompression(options => options.EnableForHttps = true);
             var mvc = services.AddMvc().AddRazorRuntimeCompilation();
 
             services.AddLogging();
@@ -59,6 +62,8 @@ namespace Demosite
             }
             qpSettings.ConnectionString = Configuration.GetConnectionString("DatabaseQPPostgre");
             services.AddSingleton(qpSettings);
+
+            services.AddScoped<ISiteSettingsService, SiteSettingsService>();
 
             //структура сайта виджетной платформы
             services.AddSiteStructureEngine(options =>
@@ -84,7 +89,7 @@ namespace Demosite
             services.AddScoped<INewsService, NewsService>();
             services.AddScoped<IFoldBoxListService, FoldBoxListService>();
             services.AddScoped<IMediaService, MediaService>();
-            services.AddScoped<IReportsService, ReportsService>();
+            services.AddScoped<IReportsService, ReportsService>(); 
             services.AddScoped<IFeedbackService, FeedbackService>();
             services.AddScoped<IBannerWidgetService, BannerWidgetService>();
 
@@ -106,7 +111,7 @@ namespace Demosite
 
             services.AddScoped<CacheTagUtilities>();
             var cascheTagService = services.AddCacheTagServices();
-            if(qpSettings.IsStage)
+            if (qpSettings.IsStage)
             {
                 cascheTagService.WithInvalidationByMiddleware(@"^.*\/.+\.[a-zA-Z0-9]+$");
             }
@@ -132,7 +137,7 @@ namespace Demosite
             var notificationIsActive = Configuration.GetSection("NewsNotificationServiceConfig").GetSection("NotificationServiceIsActive").Get<bool>();
             var newsNotificationServiceSettings = notificationIsActive
                 ? Configuration.GetSection("NewsNotificationServiceConfig").Get<EmailNotificationSettings>()
-                : new EmailNotificationSettings() {NotificationServiceIsActive = notificationIsActive } ;
+                : new EmailNotificationSettings() { NotificationServiceIsActive = notificationIsActive };
             if (newsNotificationServiceSettings.NotificationServiceIsActive)
             {
                 services.AddHostedService<EmailNotificationHostedService>();
@@ -151,7 +156,7 @@ namespace Demosite
             CaptchaSettings captchaSettings = captchaIsActive
                 ? Configuration.GetSection("CaptchaSettings").Get<CaptchaSettings>()
                 : new CaptchaSettings() { IsActive = captchaIsActive };
-            if(captchaSettings.IsActive)
+            if (captchaSettings.IsActive)
             {
                 var colors = captchaSettings.GetColors();
                 services.AddSixLabCaptcha(x =>
@@ -168,11 +173,14 @@ namespace Demosite
                         x.TextColor = colors;
                     }
                 });
-            } 
+            }
             services.AddSingleton(captchaSettings);
 
             services.AddMemoryCache();
             services.AddScoped<ICacheService, CacheService>();
+
+            services.AddSearch(Configuration);
+            services.AddScoped<ISearchService, SearchService>();
 
             services.AddControllersWithViews(options =>
             {
@@ -189,7 +197,6 @@ namespace Demosite
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -207,7 +214,16 @@ namespace Demosite
                 return Task.CompletedTask;
             });
 
-            app.UseStaticFiles();
+            app.UseResponseCompression();
+
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                OnPrepareResponse = ctx =>
+                {
+                    // Cache static files for 30 days
+                    ctx.Context.Response.Headers.Append("Cache-Control", "public,max-age=2592000");
+                }
+            });
             app.UseSession();
             //включаем инвалидацию по кештегам QP
             app.UseCacheTagsInvalidation();
@@ -228,7 +244,7 @@ namespace Demosite
             });
 
             var captchaIsActive = Configuration.GetSection("CaptchaSettings").GetSection("IsActive").Get<bool>();
-            if(captchaIsActive)
+            if (captchaIsActive)
             {
                 app.UseCaptchaImage("/captcha");
             }

@@ -1,42 +1,43 @@
 using Demosite.Components;
-using Demosite.Models;
+using Demosite.Interfaces;
 using Demosite.Models.Pages;
+using Demosite.ViewModels;
 using Demosite.ViewModels.Builders;
 using Microsoft.AspNetCore.Mvc;
 using QA.DotNetCore.Engine.Routing;
 using System;
+using System.Threading.Tasks;
 
 namespace Demosite.Controllers
 {
     public class NewsPageController : ContentControllerBase<NewsPage>
     {
-        private NewsPageViewModelBuilder NewsPageViewModelBuilder { get; }
-        public NewsPageController(NewsPageViewModelBuilder newsPageViewModelBuilder)
+        private readonly NewsPageViewModelBuilder _newsPageViewModelBuilder;
+        private readonly ISiteSettingsService _siteSettingsProvider;
+        public NewsPageController(NewsPageViewModelBuilder newsPageViewModelBuilder,
+                                  ISiteSettingsService siteSettings)
         {
-            this.NewsPageViewModelBuilder = newsPageViewModelBuilder;
+            _newsPageViewModelBuilder = newsPageViewModelBuilder;
+            _siteSettingsProvider = siteSettings;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var categoryId = CurrentItem.CategoryId;
-            var year = DateTime.Now.Year;
-            var vm = NewsPageViewModelBuilder.BuildList(CurrentItem, year: year, categoryId: categoryId);
-            return View(vm);
+            int? categoryId = CurrentItem.CategoryId;
+            int itemsOnPage = await _siteSettingsProvider.NewsPaginatedItemsCountAsync();
+            NewsPageViewModel viewModel = _newsPageViewModelBuilder.BuildList(CurrentItem, categoryId: categoryId, count: itemsOnPage);
+            return View(viewModel);
         }
 
 
         public IActionResult Details(int id)
         {
-            var vm = NewsPageViewModelBuilder.BuildDetails(CurrentItem, id, CurrentItem.DetailsText, CurrentItem.CategoryId);
-            if (vm == null)
-            {
-                return NotFound();
-            }
-            return View(vm);
+            NewsDetailsViewModel viewModel = _newsPageViewModelBuilder.BuildDetails(CurrentItem, id, CurrentItem.DetailsText, CurrentItem.CategoryId);
+            return viewModel == null ? NotFound() : View(viewModel);
         }
 
         public IActionResult Get(int? year, int? month, int? page)
         {
-            var categoryId = CurrentItem.CategoryId;
+            int? categoryId = CurrentItem.CategoryId;
             return ViewComponent(typeof(NewsListViewComponent), new { CurrentItem, year, month, categoryId, page });
         }
     }

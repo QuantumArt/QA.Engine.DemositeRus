@@ -1,5 +1,5 @@
-using Microsoft.Extensions.DependencyInjection;
 using Demosite.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
 using QA.DotNetCore.Engine.Abstractions;
 using QA.DotNetCore.Engine.Abstractions.Targeting;
 using QA.DotNetCore.Engine.QpData;
@@ -11,58 +11,54 @@ namespace Demosite.ViewModels.Builders
 {
     public class MenuViewModelBuilder
     {
+        private const int MENU_DEPTH = 3;
+        private readonly ITargetingUrlTransformator _urlTransformator;
         private ICacheService _memoryCache { get; set; }
-        private IServiceProvider _serviceProvider { get; }
+        private readonly IServiceProvider _serviceProvider;
         public MenuViewModelBuilder(ITargetingUrlTransformator urlTransformator,
                                     IServiceProvider serviceProvider)
         {
-            UrlTransformator = urlTransformator;
-            this._serviceProvider = serviceProvider;
+            _urlTransformator = urlTransformator;
+            _serviceProvider = serviceProvider;
         }
 
         public MenuViewModel Build(IStartPage startPage, AbstractPage currentPage)
         {
-            using (var scope = _serviceProvider.CreateScope())
+            using IServiceScope scope = _serviceProvider.CreateScope();
+            _memoryCache = scope.ServiceProvider.GetService<ICacheService>();
+            return _memoryCache.GetFromCache<MenuViewModel>(GetCacheKey(startPage.Id), () =>
             {
-                _memoryCache = scope.ServiceProvider.GetService<ICacheService>();
-                return _memoryCache.GetFromCache<MenuViewModel>(GetCacheKey(startPage.Id), () =>
+                if (startPage == null) return null;
+
+                MenuViewModel model = new();
+                IOrderedEnumerable<AbstractPage> topLevelItems = startPage.GetChildren()
+                    .Where(w => w.IsPage)
+                    .OfType<AbstractPage>()
+                    .Where(p => p.IsVisible)
+                    .OrderBy(o => o.SortOrder);
+
+                int currentPageId = (currentPage?.Id).GetValueOrDefault(0);//currentPage может быть Null, если страница не в структуре сайта
+
+                foreach (AbstractPage tlitem in topLevelItems)
                 {
-                    if (startPage == null) return null;
-
-                    var model = new MenuViewModel();
-                    var topLevelItems = startPage.GetChildren()
-                        .Where(w => w.IsPage)
-                        .OfType<AbstractPage>()
-                        .Where(p => p.IsVisible)
-                        .OrderBy(o => o.SortOrder);
-
-                    var currentPageId = (currentPage?.Id).GetValueOrDefault(0);//currentPage может быть Null, если страница не в структуре сайта
-
-                    foreach (var tlitem in topLevelItems)
+                    List<MenuItem> resultBuildMenu = BuildMenu(tlitem, MENU_DEPTH, currentPageId);
+                    model.Items.Add(new MenuItem
                     {
-                        var resultBuildMenu = BuildMenu(tlitem, MenuDepth, currentPageId);
-                        model.Items.Add(new MenuItem
-                        {
-                            Id = tlitem.Id,
-                            Title = tlitem.Title,
-                            Alias = tlitem.Alias,
-                            Href = tlitem.GetUrl(UrlTransformator),
-                            Children = resultBuildMenu,
-                            IsActive = tlitem.Id == currentPageId,
-                            HasActiveChild = resultBuildMenu.Where(w => w.IsActive).Any()
-                        });
-                    }
+                        Id = tlitem.Id,
+                        Title = tlitem.Title,
+                        Alias = tlitem.Alias,
+                        Href = tlitem.GetUrl(_urlTransformator),
+                        Children = resultBuildMenu,
+                        IsActive = tlitem.Id == currentPageId,
+                        HasActiveChild = resultBuildMenu.Where(w => w.IsActive).Any()
+                    });
+                }
 
-                    model.Items = model.Items?.OrderBy(o => o.Order).ToList();
+                model.Items = model.Items?.OrderBy(o => o.Order).ToList();
 
-                    return model;
-                });
-            }   
+                return model;
+            });
         }
-
-        private const int MenuDepth = 3;
-
-        public ITargetingUrlTransformator UrlTransformator { get; }
 
         private List<MenuItem> BuildMenu(AbstractPage item, int level, int currentId)
         {
@@ -71,15 +67,15 @@ namespace Demosite.ViewModels.Builders
                 return null;
             }
 
-            var itemList = new List<MenuItem>();
-            foreach (var itemlv in item.GetChildren().Where(w => w.IsPage).OfType<AbstractPage>().Where(p => p.IsVisible).OrderBy(o => o.SortOrder))
+            List<MenuItem> itemList = new();
+            foreach (AbstractPage itemlv in item.GetChildren().Where(w => w.IsPage).OfType<AbstractPage>().Where(p => p.IsVisible).OrderBy(o => o.SortOrder))
             {
-                var resultBuidMenu = BuildMenu(itemlv, level - 1, currentId);
+                List<MenuItem> resultBuidMenu = BuildMenu(itemlv, level - 1, currentId);
                 itemList.Add(new MenuItem
                 {
                     Title = itemlv.Title,
                     Alias = itemlv.Alias,
-                    Href = itemlv.GetUrl(UrlTransformator),
+                    Href = itemlv.GetUrl(_urlTransformator),
                     Children = resultBuidMenu,
                     IsActive = itemlv.Id == currentId || resultBuidMenu.Where(w => w.IsActive).Any()
                 });
@@ -87,7 +83,7 @@ namespace Demosite.ViewModels.Builders
             return itemList;
         }
 
-        static private string GetCacheKey(int id)
+        private static string GetCacheKey(int id)
         {
             return $"menu_item_{id}";
         }
