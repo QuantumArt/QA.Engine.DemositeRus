@@ -24,13 +24,10 @@
                 <ul class="list-group list-group-flush news-list mt-0">
                     @foreach (Document document in Model.Documents)
                     {
-                        <li>
+                        <li class="news-list__item">
                             <div class="card col-12 up-news">
                                 <div class="card-body">
                                     <h5 class="card-title">@document.Title</h5>
-                                    <p class="card-subtitle mb-2 text-muted">
-                                        <span>@document.Category</span>
-                                    </p>
                                     <p class="card-text">@document.Description</p>
                                     <a href="@document.SearchUrl" class="btn btn-light">Перейти</a>
                                 </div>

@@ -9,12 +9,13 @@ public class CompletionRequest
     [JsonPropertyName("$query")]
     public string Query { get; }
 
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("$where")]
     public RolesFilter? Filter { get; }
 
     public CompletionRequest(string query, string[] roles)
     {
         Query = query;
-        Filter = new(roles);
+        if (roles != null) Filter = new(roles);
     }
 }

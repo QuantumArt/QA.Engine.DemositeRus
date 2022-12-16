@@ -73,8 +73,5 @@ namespace Demosite.Postgre.DAL.NotQP
             ConfigureDistributings(modelBuilder);
             ConfigureEnvelopes(modelBuilder);
         }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-            => optionsBuilder.LogTo(Console.WriteLine);
     }
 }

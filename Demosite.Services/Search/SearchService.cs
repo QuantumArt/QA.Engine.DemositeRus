@@ -9,7 +9,6 @@ namespace Demosite.Services.Search;
 public class SearchService : ISearchService
 {
     private readonly ISearchProvider _searchProvider;
-    private const string DEFAULT_ROLE = "Reader";
 
     public SearchService(ISearchProvider searchPrivuder)
     {
@@ -18,18 +17,11 @@ public class SearchService : ISearchService
 
     public async Task<string[]> CompleteAsync(string query, CancellationToken token)
     {
-        string[] userRoles = GetUserRolesAsync(token);
-        return await _searchProvider.CompleteAsync(query, userRoles, token);
+        return await _searchProvider.CompleteAsync(query, null, token);
     }
 
     public async Task<SearchResponse> SearchAsync(string query, int limit, int offset, int? ifFoundLte, bool withCorrect, CancellationToken token)
     {
-        string[] userRoles = GetUserRolesAsync(token);
-        return await _searchProvider.SearchAsync(query, userRoles, limit, offset, ifFoundLte, withCorrect, token);
-    }
-
-    private string[] GetUserRolesAsync(CancellationToken token)
-    {
-        return new string[1] { DEFAULT_ROLE };
+        return await _searchProvider.SearchAsync(query, null, limit, offset, ifFoundLte, withCorrect, token);
     }
 }
