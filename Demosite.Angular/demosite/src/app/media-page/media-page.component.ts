@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { WidgetDetails } from '@quantumart/qa-engine-page-structure-angular';
+import { MediaEvent, MediaPageService } from './media-page.service';
 
 export interface MediaPageDetails extends WidgetDetails {
   title: string;
@@ -12,6 +13,7 @@ export interface MediaPageDetails extends WidgetDetails {
   selector: 'qa-media-page',
   templateUrl: './media-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [MediaPageService]
 })
 export class MediaPageComponent {
   public readonly pageDetails$: Observable<MediaPageDetails> = this.activatedRoute.data.pipe(
@@ -19,6 +21,12 @@ export class MediaPageComponent {
     map(data => data['details'] as MediaPageDetails),
   );
 
-  constructor(private readonly activatedRoute: ActivatedRoute) {
+  public firstDay$ = this.mediaPageService.getEvents().pipe(map(events => events?.length ? events[0] : null));
+  public prevDays$ = this.mediaPageService.getEvents().pipe(map(events => events?.length ? events.slice(1) : []));
+
+  constructor(
+    private readonly activatedRoute: ActivatedRoute,
+    private readonly mediaPageService: MediaPageService
+  ) {
   }
 }
