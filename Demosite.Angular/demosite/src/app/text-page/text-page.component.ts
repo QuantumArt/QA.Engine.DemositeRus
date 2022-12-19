@@ -1,12 +1,10 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
-import { WidgetDetails } from '@quantumart/qa-engine-page-structure-angular';
-import { TabOpenEventData } from '../behaviors/tabs/tabs.directive';
+import { NodeDetails } from '@quantumart/qa-engine-page-structure-angular';
+import { SiteNodeComponent, SiteNodeService } from '../services';
+import { TabOpenEventData } from '../behaviors';
 import { CardSliderService } from './card-slider.service';
 
-export interface TextPageDetails extends WidgetDetails {
+export interface TextPageDetails extends NodeDetails {
   title: string;
   text: string;
   hidetitle: boolean;
@@ -16,16 +14,17 @@ export interface TextPageDetails extends WidgetDetails {
   selector: 'qa-text-page',
   templateUrl: './text-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [CardSliderService]
+  providers: [SiteNodeService, CardSliderService]
 })
-export class TextPageComponent {
-  public readonly pageDetails$: Observable<TextPageDetails> = this.activatedRoute.data.pipe(
-    filter(data => data['details']),
-    map(data => data['details'] as TextPageDetails),
-  );
+export class TextPageComponent implements SiteNodeComponent {
+  public get id(): number {
+    return this.siteNodeService.getNodeId();
+  }
+
+  public readonly pageDetails$ = this.siteNodeService.getDetails<TextPageDetails>();
 
   constructor(
-    private readonly activatedRoute: ActivatedRoute,
+    private readonly siteNodeService: SiteNodeService,
     private readonly cardSliderService: CardSliderService
   ) {
   }

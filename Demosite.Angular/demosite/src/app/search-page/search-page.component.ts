@@ -1,10 +1,8 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
-import { WidgetDetails } from '@quantumart/qa-engine-page-structure-angular';
+import { NodeDetails } from '@quantumart/qa-engine-page-structure-angular';
+import { SiteNodeComponent, SiteNodeService } from '../services';
 
-export interface SearchPageDetails extends WidgetDetails {
+export interface SearchPageDetails extends NodeDetails {
   title: string;
 }
 
@@ -12,13 +10,15 @@ export interface SearchPageDetails extends WidgetDetails {
   selector: 'qa-search-page',
   templateUrl: './search-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [SiteNodeService]
 })
-export class SearchPageComponent {
-  public readonly pageDetails$: Observable<SearchPageDetails> = this.activatedRoute.data.pipe(
-    filter(data => data['details']),
-    map(data => data['details'] as SearchPageDetails),
-  );
+export class SearchPageComponent implements SiteNodeComponent {
+  public get id(): number {
+    return this.siteNodeService.getNodeId();
+  }
 
-  constructor(private readonly activatedRoute: ActivatedRoute) {
+  public readonly pageDetails$ = this.siteNodeService.getDetails<SearchPageDetails>();
+
+  constructor(private readonly siteNodeService: SiteNodeService) {
   }
 }

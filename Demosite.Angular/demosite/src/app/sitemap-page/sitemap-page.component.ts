@@ -1,10 +1,8 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
-import { MenuService, WidgetDetails } from '@quantumart/qa-engine-page-structure-angular';
+import { MenuService, NodeDetails } from '@quantumart/qa-engine-page-structure-angular';
+import { SiteNodeComponent, SiteNodeService } from '../services';
 
-export interface SitemapPageDetails extends WidgetDetails {
+export interface SitemapPageDetails extends NodeDetails {
   title: string;
 }
 
@@ -12,15 +10,19 @@ export interface SitemapPageDetails extends WidgetDetails {
   selector: 'qa-sitemap-page',
   templateUrl: './sitemap-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [SiteNodeService]
 })
-export class SitemapPageComponent {
-  public readonly pageDetails$: Observable<SitemapPageDetails> = this.activatedRoute.data.pipe(
-    filter(data => data['details']),
-    map(data => data['details'] as SitemapPageDetails),
-  );
+export class SitemapPageComponent implements SiteNodeComponent {
+  public get id(): number {
+    return this.siteNodeService.getNodeId();
+  }
 
+  public readonly pageDetails$ = this.siteNodeService.getDetails<SitemapPageDetails>();
   public readonly siteStructureRoot$ = this.menuService.buildMenu(5);
 
-  constructor(private readonly activatedRoute: ActivatedRoute, private readonly menuService: MenuService) {
+  constructor(
+    private readonly siteNodeService: SiteNodeService,
+    private readonly menuService: MenuService
+  ) {
   }
 }

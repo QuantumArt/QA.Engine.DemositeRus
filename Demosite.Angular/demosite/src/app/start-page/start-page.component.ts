@@ -1,9 +1,8 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { filter, map } from 'rxjs/operators';
-import { WidgetDetails } from '@quantumart/qa-engine-page-structure-angular';
+import { NodeDetails } from '@quantumart/qa-engine-page-structure-angular';
+import { SiteNodeComponent, SiteNodeService } from '../services';
 
-export interface StartPageDetails extends WidgetDetails {
+export interface StartPageDetails extends NodeDetails {
   title: string;
 }
 
@@ -11,13 +10,15 @@ export interface StartPageDetails extends WidgetDetails {
   selector: 'qa-start-page',
   templateUrl: './start-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [SiteNodeService]
 })
-export class StartPageComponent {
-  public readonly pageDetails$ = this.activatedRoute.data.pipe(
-    filter(data => data['details']),
-    map(data => data['details'] as StartPageDetails),
-  );
+export class StartPageComponent implements SiteNodeComponent {
+  public get id(): number {
+    return this.siteNodeService.getNodeId();
+  }
 
-  constructor(private readonly activatedRoute: ActivatedRoute) {
+  public readonly pageDetails$ = this.siteNodeService.getDetails<StartPageDetails>();
+
+  constructor(private readonly siteNodeService: SiteNodeService) {
   }
 }

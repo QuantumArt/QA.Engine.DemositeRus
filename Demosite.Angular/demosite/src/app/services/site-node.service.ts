@@ -4,21 +4,23 @@ import { Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { NodeDetails } from '@quantumart/qa-engine-page-structure-angular';
 
-export interface NewsPageDetails extends NodeDetails {
-  title: string;
-  categoryid: number;
-  detailstext?: string;
+export interface SiteNodeComponent {
+  get id(): number;
 }
 
 @Injectable()
-export class NewsPageService {
+export class SiteNodeService {
   constructor(private readonly activatedRoute: ActivatedRoute) {
   }
 
-  public getPageDetails(): Observable<NewsPageDetails> {
-    return this.activatedRoute.parent!.data.pipe(
+  public getNodeId(): number {
+    return this.activatedRoute.snapshot.data['nodeId'] as number;
+  }
+
+  public getDetails<T extends NodeDetails>(): Observable<T> {
+    return this.activatedRoute.data.pipe(
       filter(data => data['details']),
-      map(data => data['details'] as NewsPageDetails)
+      map(data => data['details'] as T),
     );
   }
 }
