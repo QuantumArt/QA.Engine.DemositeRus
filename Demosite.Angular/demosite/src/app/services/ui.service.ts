@@ -1,8 +1,8 @@
 ﻿import { Inject, Injectable } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { merge, Observable } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { WINDOW } from '../public-api';
 
 export type Breakpoint = 'smartphone' | 'tablet' | 'desktop';

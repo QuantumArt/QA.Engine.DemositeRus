@@ -1,0 +1,56 @@
+<ng-container *ngIf="pageDetails$ | async as pageDetails">
+  <h1 class="page__main-title">{{ pageDetails.title }}</h1>
+  <div class="page-news__filters">
+    <div class="page-news__filters-item">
+      <div class="select">
+        <div class="select__group">
+          <label class="select__label" for="2022">Выберите год</label>
+          <div class="select__box">
+            <select id="2022">
+              <option value="2022">2022</option>
+              <option value="2021">2021</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="page-news__filters-item">
+      <div class="select">
+        <div class="select__group">
+          <label class="select__label" for="month">Выберите месяц</label>
+          <div class="select__box">
+            <select id="month">
+              <option value="0">Все</option>
+              <option value="1">Январь</option>
+              <option value="2">Февраль</option>
+              <option value="3">Март</option>
+              <option value="4">Апрель</option>
+              <option value="5">Май</option>
+              <option value="6">Июнь</option>
+              <option value="7">Июль</option>
+              <option value="8">Август</option>
+              <option value="9">Сентябрь</option>
+              <option value="10">Октябрь</option>
+              <option value="11">Ноябрь</option>
+              <option value="12">Декабрь</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <section data-news-section="">
+    <div class="page-news__list">
+      <div class="news-list" data-news-list="">
+        <div *ngFor="let item of items$ | async" class="news-list__item">
+          <div class="card">
+            <div class="card__date">{{ item.postDate | date: "MMMM d, yyyy" }}</div>
+            <div class="card__title"><a [routerLink]="['details', item.id]">{{ item.title }}</a></div>
+            <div class="card__descr">{{ item.brief }}</div>
+            <a class="read-more card__read-more" [routerLink]="['details', item.id]">Читать...</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</ng-container>

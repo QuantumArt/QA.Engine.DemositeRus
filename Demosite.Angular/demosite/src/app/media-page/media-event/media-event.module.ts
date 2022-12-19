@@ -1,9 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { GalleryModule } from '@ks89/angular-modal-gallery';
 import { SwiperModule } from 'swiper/angular';
+import { GalleryModule } from '@ks89/angular-modal-gallery';
 import { SafePipeModule } from '../../pipes';
-import { FoldboxDirectiveModule } from '../../behaviors';
 import { MediaEventComponent } from './media-event.component';
 
 @NgModule({
@@ -11,13 +10,10 @@ import { MediaEventComponent } from './media-event.component';
     CommonModule,
     SwiperModule,
     GalleryModule,
-    SafePipeModule,
-    FoldboxDirectiveModule
+    SafePipeModule
   ],
   declarations: [MediaEventComponent],
-  exports: [
-    MediaEventComponent
-  ]
+  exports: [MediaEventComponent]
 })
 export class MediaEventModule {
 }

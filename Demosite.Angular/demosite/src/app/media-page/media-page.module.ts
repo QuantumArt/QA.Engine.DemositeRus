@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { GalleryModule } from '@ks89/angular-modal-gallery';
 import { QaEnginePageStructureModule } from '@quantumart/qa-engine-page-structure-angular';
 import { SafePipeModule } from '../pipes';
 import { FoldboxDirectiveModule } from '../behaviors';
@@ -12,9 +11,8 @@ import { MediaEventModule } from './media-event';
 @NgModule({
   imports: [
     CommonModule,
-    GalleryModule,
-    MediaPageRoutingModule,
     QaEnginePageStructureModule,
+    MediaPageRoutingModule,
     BreadcrumbsModule,
     SafePipeModule,
     FoldboxDirectiveModule,

@@ -51,6 +51,7 @@ const routes: Routes = [
       details: PageDetailsResolver,
       staticWidgets: LayoutWidgetsResolver,
     },
+    pathMatch: 'prefix',
     data: {
       nodeType: 'news_page',
     },
