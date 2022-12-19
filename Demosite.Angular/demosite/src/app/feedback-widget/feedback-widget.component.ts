@@ -1,7 +1,7 @@
 ﻿import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { WidgetComponent, WidgetDetails } from '@quantumart/qa-engine-page-structure-angular';
 import { HttpClient } from '@angular/common/http';
+import { WidgetComponent, WidgetDetails } from '@quantumart/qa-engine-page-structure-angular';
 
 export interface FeedbackWidgetDetails extends WidgetDetails {
 }

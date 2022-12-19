@@ -15,6 +15,7 @@ import { TopMenuWidgetComponent, TopMenuWidgetModule } from './top-menu-widget';
 import { NewsRoomWidgetComponent, NewsRoomWidgetModule } from './news-room-widget';
 import { FoldboxListWidgetComponent, FoldboxListWidgetModule } from './foldbox-list-widget';
 import { FeedbackWidgetComponent, FeedbackWidgetModule } from './feedback-widget';
+import { SubscribeWidgetComponent, SubscribeWidgetModule } from './subscribe-widget';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { FeedbackWidgetComponent, FeedbackWidgetModule } from './feedback-widget
     HtmlWidgetModule,
     NewsRoomWidgetModule,
     TopMenuWidgetModule,
+    SubscribeWidgetModule,
     QaEnginePageStructureModule.forRoot({
       widgetPlatformApiUrl: environment.WIDGET_PLATFORM_API_URL,
       layoutWidgetZones: ['SiteHeaderZone', 'SiteFooterZone'],
@@ -41,6 +43,7 @@ import { FeedbackWidgetComponent, FeedbackWidgetModule } from './feedback-widget
         ['feedback_widget', FeedbackWidgetComponent],
         ['foldboxlist_widget', FoldboxListWidgetComponent],
         ['newsroom_widget', NewsRoomWidgetComponent],
+        ['subscribe_widget', SubscribeWidgetComponent],
         ['top_menu_widget', TopMenuWidgetComponent]
       ]),
     }),
