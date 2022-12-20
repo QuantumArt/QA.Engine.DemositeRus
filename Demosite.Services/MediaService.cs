@@ -1,8 +1,7 @@
-using Microsoft.EntityFrameworkCore;
 using Demosite.Interfaces;
 using Demosite.Interfaces.Dto;
 using Demosite.Postgre.DAL;
-using System;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -10,21 +9,21 @@ namespace Demosite.Services
 {
     public class MediaService : IMediaService
     {
-        private PostgreQpDataContext qpDataContext { get; }
+        private readonly PostgreQpDataContext _qpDataContext;
         public MediaService(IDbContext context)
         {
-            qpDataContext = context as PostgreQpDataContext;
+            _qpDataContext = context as PostgreQpDataContext;
         }
 
         public IEnumerable<EventDto> GetAllEvents()
         {
-            var results = qpDataContext.Events.OrderByDescending(e => e.EventDate)
+            Event[] results = _qpDataContext.Events.OrderByDescending(e => e.EventDate)
                                        .Include(e => e.EventImages.OrderBy(i => i.SortOrder))
                                        .ToArray();
             return results.Select(Map).ToArray();
         }
 
-        private EventDto Map (Postgre.DAL.Event model)
+        private EventDto Map(Postgre.DAL.Event model)
         {
             return new EventDto()
             {
@@ -36,7 +35,7 @@ namespace Demosite.Services
             };
         }
 
-        private EventImageDto Map (Postgre.DAL.EventImage image)
+        private EventImageDto Map(Postgre.DAL.EventImage image)
         {
             return new EventImageDto()
             {

@@ -1,11 +1,11 @@
+using Demosite.Services.Settings;
+using Demosite.ViewModels.Interface;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
-using Demosite.Services.Settings;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Mvc;
-using Demosite.ViewModels.Interface;
 
 namespace Demosite.Helpers
 {
@@ -39,10 +39,13 @@ namespace Demosite.Helpers
         /// <param name="filterContext">The filter context.</param>
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            var settings = filterContext.HttpContext.RequestServices.GetService<CaptchaSettings>();
+            CaptchaSettings settings = filterContext.HttpContext.RequestServices.GetService<CaptchaSettings>();
+            if (!settings.IsActive)
+            {
+                return;
+            }
             bool isCaptchaValid = false;
             string key = settings.DefaultKey;
-            string actualValue = "";
             ICaptchaModel model = filterContext.ActionArguments.First().Value as ICaptchaModel;
             if (filterContext.HttpContext.Session != null)
             {
@@ -51,18 +54,18 @@ namespace Demosite.Helpers
                 {
                     key = keyForm;
                 }
-                actualValue = model.TokenCaptcha;
+                string actualValue = model.TokenCaptcha;
                 string expectedValue = filterContext.HttpContext.Session.GetString(key);
 
-                isCaptchaValid = !String.IsNullOrEmpty(actualValue)
-                              && !String.IsNullOrEmpty(expectedValue)
-                              && String.Equals(actualValue, expectedValue, StringComparison.OrdinalIgnoreCase);
+                isCaptchaValid = !string.IsNullOrEmpty(actualValue)
+                              && !string.IsNullOrEmpty(expectedValue)
+                              && string.Equals(actualValue, expectedValue, StringComparison.OrdinalIgnoreCase);
 
                 filterContext.HttpContext.Session.Remove(key);
             }
-            if(!isCaptchaValid)
+            if (!isCaptchaValid)
             {
-                var output = new JsonResult(new { success = false, typeError = "captcha", message = "Your Captcha response was incorrect. Please try again." });
+                JsonResult output = new(new { success = false, typeError = "captcha", message = "Your Captcha response was incorrect. Please try again." });
                 filterContext.Result = output;
             }
         }

@@ -1,11 +1,9 @@
 using QA.DotNetCore.Engine.QpData;
-using Demosite.Postgre.DAL;
 using System.Collections.Generic;
-using Demosite.Interfaces.Dto.Enums;
 
 namespace Demosite.Models.Widgets
 {
-    public class FoldBoxListWidget: AbstractWidget
+    public class FoldBoxListWidget : AbstractWidget
     {
         public IEnumerable<int> FoldBoxListItemIds => GetRelationIds("FOLDBOXLISTITEMS");
         public string WidgetType => GetDetail<string>("WidgetType", null);

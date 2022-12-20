@@ -1,0 +1,13 @@
+﻿@using Demosite.ViewModels.SearchBar;
+@model SearchBarViewModel;
+
+<form asp-action="Search" asp-controller="SearchResultPage" asp-antiforgery="false" asp-route-withCorrect = "true">
+    <div class="form__row">
+        <div class="search-input">
+            <input asp-for="Query" required minlength="3" maxlength="100" class="form-control autoComplete" size="16">
+        </div>
+        <button class="btn btn-light rounded-end" type="submit">Найти</button>
+    </div>
+</form>
+
+

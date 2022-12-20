@@ -1,23 +1,25 @@
-using Microsoft.AspNetCore.Mvc;
 using Demosite.Models.Pages;
-using QA.DotNetCore.Engine.Routing;
+using Demosite.ViewModels;
 using Demosite.ViewModels.Builders;
+using Microsoft.AspNetCore.Mvc;
+using QA.DotNetCore.Engine.Routing;
+using System.Collections.Generic;
 
 namespace Demosite.Controllers
 {
     public class AnnualReportsPageController : ContentControllerBase<AnnualReportsPage>
     {
-        private AnnualReportPageViewModelBuilder modelBuilder { get; }
+        private readonly AnnualReportPageViewModelBuilder _modelBuilder;
         public AnnualReportsPageController(AnnualReportPageViewModelBuilder modelBuilder)
         {
-            this.modelBuilder = modelBuilder;
+            _modelBuilder = modelBuilder;
         }
         public IActionResult Index()
         {
-            var ids = CurrentItem.ReportsItemIds; ;
-            var vm = modelBuilder.BuildForm(CurrentItem, ids);
-            vm.CountReportsToShow = CurrentItem.CountReportToShow;
-            return View(vm);
+            IEnumerable<int> ids = CurrentItem.ReportsItemIds;
+            AnnualReportsPageViewModel viewModel = _modelBuilder.BuildForm(CurrentItem, ids);
+            viewModel.CountReportsToShow = CurrentItem.CountReportToShow;
+            return View(viewModel);
         }
     }
 }

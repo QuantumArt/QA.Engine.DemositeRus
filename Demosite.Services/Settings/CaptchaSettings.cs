@@ -1,56 +1,33 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SixLabors.ImageSharp;
 
 namespace Demosite.Services.Settings
 {
     public class CaptchaSettings
     {
+        public bool IsActive { get; set; }
         public string DefaultKey { get; set; }
-        public FontWarpFactor FontWarpFactor { get; set; }
         public BackgroundNoiseLevel BackgroundNoiseLevel { get; set; }
-        public LineNoiseLevel LineNoiseLevel { get; set; }
-        public string[] Fonts { get; set; }
+        public byte DrawLineNoise { get; set; }
         public string[] Colors { get; set; }
-        public string Letters { get; set; }
         public string Referrer { get; set; }
         public int TextLength { get; set; }
-        public int MaxShift { get; set; }
-        public int MinShift { get; set; }
-        public int MaxAngle { get; set; }
-        public int MinAngle { get; set; }
-        public int FontSizeMax { get; set; }
-        public int FontSizeMin { get; set; }
-        public int CaptchaWidth { get; set; }
-        public int CaptchaHeight { get; set; }
-    }
-    /// <summary>
-    /// Amount of random font warping to apply to rendered text
-    /// </summary>
-    public enum FontWarpFactor
-    {
-        /// <summary>
-        /// 
-        /// </summary>
-        None,
-        /// <summary>
-        /// 
-        /// </summary>
-        Low,
-        /// <summary>
-        /// 
-        /// </summary>
-        Medium,
-        /// <summary>
-        /// 
-        /// </summary>
-        High,
-        /// <summary>
-        /// 
-        /// </summary>
-        Extreme
+        public byte MaxAngle { get; set; }
+        public byte FontSize { get; set; }
+        public ushort CaptchaWidth { get; set; }
+        public ushort CaptchaHeight { get; set; }
+        public Color[] GetColors()
+        {
+            if (Colors?.Length == 0)
+            {
+                return new Color[0];
+            }
+            Color[] result = new Color[Colors.Length];
+            for (int i = 0; i < Colors.Length; i++)
+            {
+                result[i] = Color.TryParse(Colors[i], out Color newColor) ? newColor : Color.Black;
+            }
+            return result;
+        }
     }
 
     /// <summary>
@@ -65,45 +42,18 @@ namespace Demosite.Services.Settings
         /// <summary>
         /// 
         /// </summary>
-        Low,
+        Low = 200,
         /// <summary>
         /// 
         /// </summary>
-        Medium,
+        Medium = 400,
         /// <summary>
         /// 
         /// </summary>
-        High,
+        High = 800,
         /// <summary>
         /// 
         /// </summary>
-        Extreme
-    }
-
-    /// <summary>
-    /// Amount of curved line noise to add to rendered image
-    /// </summary>
-    public enum LineNoiseLevel
-    {
-        /// <summary>
-        /// 
-        /// </summary>
-        None,
-        /// <summary>
-        /// 
-        /// </summary>
-        Low,
-        /// <summary>
-        /// 
-        /// </summary>
-        Medium,
-        /// <summary>
-        /// 
-        /// </summary>
-        High,
-        /// <summary>
-        /// 
-        /// </summary>
-        Extreme
+        Extreme = 1600
     }
 }

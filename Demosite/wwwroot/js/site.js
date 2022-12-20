@@ -19,7 +19,7 @@
     var newsPage = $("[data-news-page]");
     if (!newsPage || newsPage.length == 0)
       return;
-    var year = $("#2022");
+    var year = $("#year");
     var month = $("#month");
     var debounceGetNews = debounce(getNews);
 

@@ -1,12 +1,9 @@
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Demosite.Helpers;
 using Demosite.Interfaces;
-using Demosite.Interfaces.Dto;
-using Demosite.Services.Settings;
+using Demosite.Interfaces.Dto.Request;
 using Demosite.ViewModels;
 using Demosite.ViewModels.Builders;
-using System;
+using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 namespace Demosite.Controllers
@@ -14,38 +11,36 @@ namespace Demosite.Controllers
     [Route("[controller]")]
     public class SubscribeController : Controller
     {
-        private IEmailNotificationService _notificationService { get; }
-        private SubscribeViewModelBuilder _subscribeViewModel { get; }
+        private readonly IEmailNotificationService _notificationService;
+        private readonly SubscribeViewModelBuilder _subscribeViewModel;
         public SubscribeController(IEmailNotificationService emailNotification,
                                    SubscribeViewModelBuilder modelBuilder)
         {
-            this._notificationService = emailNotification;
-            this._subscribeViewModel = modelBuilder;
+            _notificationService = emailNotification;
+            _subscribeViewModel = modelBuilder;
         }
 
         [CaptchaValidation("TokenCaptcha")]
         [HttpPost("add")]
         public async Task<IActionResult> Add([FromBody] SubscribeViewModel subscriber)
         {
-            var result = await _subscribeViewModel.AddSubscriber(subscriber);
-            if (!result.Success)
-            {
-                return new JsonResult(new { success = result.Success, typeError = result.TypeError, message = result.Message });
-            }
-            return new JsonResult(new { success = result.Success, message = $"{this.Request.Scheme}://{this.Request.Host}/CheckEmailInformation" });
+            SubscriptionStatus result = await _subscribeViewModel.AddSubscriber(subscriber);
+            return !result.Success
+                ? new JsonResult(new { success = result.Success, typeError = result.TypeError, message = result.Message })
+                : (IActionResult)new JsonResult(new { success = result.Success, message = $"{Request.Scheme}://{Request.Host}/CheckEmailInformation" });
         }
         [HttpGet("confirmedsubscribe")]
         public async Task<IActionResult> ConfirmedSubscribe(string confirmcode)
         {
-            var result = await _notificationService.ConfirmedSubscribe(confirmcode);
-            ViewBag.IsConfirmed = result.isConfirm;
-            ViewBag.TextConfirmed = result.text;
+            (bool isConfirm, string text) = await _notificationService.ConfirmedSubscribe(confirmcode);
+            ViewBag.IsConfirmed = isConfirm;
+            ViewBag.TextConfirmed = text;
             return View();
         }
         [HttpGet("unsubscribe")]
         public async Task<IActionResult> Unsubscribe(string confirmCode)
         {
-            var result = await _notificationService.UnSubscribe(confirmCode);
+            SubscriptionStatus result = await _notificationService.UnSubscribe(confirmCode);
             return View(result);
         }
     }

@@ -20,6 +20,9 @@ ARG SERVICE_VERSION
 ENV SERVICE_VERSION=${SERVICE_VERSION:-0.0.0.0}
 
 WORKDIR /app
+COPY ./Fonts/Marlboro.ttf ./
+RUN mkdir -p /usr/share/fonts/truetype/
+RUN install -m644 Marlboro.ttf /usr/share/fonts/truetype/
 COPY --from=build-env /app/out .
 EXPOSE 80
 ENTRYPOINT ["dotnet", "Demosite.dll"]

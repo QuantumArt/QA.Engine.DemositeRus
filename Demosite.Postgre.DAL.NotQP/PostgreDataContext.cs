@@ -13,10 +13,10 @@ namespace Demosite.Postgre.DAL.NotQP
         public virtual DbSet<EmailNewsSubscriber> EmailNewsSubscribers { get; set; }
         public virtual DbSet<Distribution> Distributions { get; set; }
         public virtual DbSet<Envelope> Envelopes { get; set; }
-
         public PostgreDataContext(DbContextOptions<PostgreDataContext> options,
                                   NpgsqlConnection npgsqlConnection) : base(options)
         { }
+
         private void ConfigureEmailNewsSubscriptions(ModelBuilder modelBuilder)
         {
             var entity = modelBuilder.Entity<EmailNewsSubscriber>().ToTable("no_qp_email_news_subscriber");
@@ -27,15 +27,13 @@ namespace Demosite.Postgre.DAL.NotQP
             entity.Property(e => e.Company).HasColumnName("company");
             entity.Property(e => e.Email).HasColumnName("email");
             entity.Property(e => e.IsActive).HasColumnName("is_active");
-            entity.Property(e => e.Country).HasColumnName("country");
-            entity.Property(e => e.Activity).HasColumnName("activity");
             entity.Property(e => e.ConfirmCode).HasColumnName("confirm_code");
             entity.Property(e => e.ConfirmCodeSendDate).HasColumnName("confirm_code_send_date");
-            entity.Property(e => e.Gender).HasColumnName("gender");
             entity.Property(e => e.NewsCategory).HasConversion(v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
                                                                v => JsonSerializer.Deserialize<int[]>(v, (JsonSerializerOptions)null))
                                                 .HasColumnName("news_category");
         }
+
         private void ConfigureDistributings(ModelBuilder modelBuilder)
         {
             var entity = modelBuilder.Entity<Distribution>().ToTable("no_qp_distribution");
@@ -68,13 +66,12 @@ namespace Demosite.Postgre.DAL.NotQP
             entity.Property(e => e.DistributionId).HasColumnName("distribution_id");
             entity.HasOne(e => e.Distribution).WithMany(d => d.Envelopes).HasForeignKey(e => e.DistributionId);
         }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             ConfigureEmailNewsSubscriptions(modelBuilder);
             ConfigureDistributings(modelBuilder);
             ConfigureEnvelopes(modelBuilder);
         }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-            => optionsBuilder.LogTo(Console.WriteLine);
     }
 }

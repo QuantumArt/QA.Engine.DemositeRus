@@ -1,8 +1,9 @@
-using Microsoft.AspNetCore.Mvc;
 using Demosite.Models.Pages;
+using Microsoft.AspNetCore.Mvc;
 using QA.DotNetCore.Engine.Routing;
 using System;
 using System.Linq;
+using QA.DotNetCore.Engine.Abstractions;
 
 namespace Demosite.Controllers
 {
@@ -10,11 +11,8 @@ namespace Demosite.Controllers
     {
         public IActionResult Index()
         {
-            var firstChildPage = CurrentItem.GetChildren().OrderBy(i => i.SortOrder).FirstOrDefault();
-            if (firstChildPage != null)
-                return new RedirectResult(firstChildPage.GetUrl(), false);
-            else
-                throw new Exception("Site is empty");
+            IAbstractItem firstChildPage = CurrentItem.GetChildren().OrderBy(i => i.SortOrder).FirstOrDefault();
+            return firstChildPage != null ? (IActionResult)new RedirectResult(firstChildPage.GetUrl(), false) : throw new Exception("Site is empty");
         }
     }
 }

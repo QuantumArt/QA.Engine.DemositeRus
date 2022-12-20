@@ -1,3 +1,13 @@
+using Demosite.Interfaces;
+using Demosite.Middlewares.Captcha;
+using Demosite.Models.Pages;
+using Demosite.Postgre.DAL;
+using Demosite.Postgre.DAL.NotQP;
+using Demosite.Services;
+using Demosite.Services.Hosted;
+using Demosite.Services.Search;
+using Demosite.Services.Settings;
+using Demosite.ViewModels.Builders;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -6,18 +16,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Demosite.Interfaces;
-using Demosite.Middlewares.Captcha;
-using Demosite.Models.Pages;
-using Demosite.Postgre.DAL;
-using Demosite.Postgre.DAL.NotQP;
-using Demosite.Services;
-using Demosite.Services.Hosted;
-using Demosite.Services.Settings;
-using Demosite.Templates;
-using Demosite.ViewModels.Builders;
 using Npgsql;
+using Provider.Search;
 using QA.DotNetCore.Engine.Abstractions;
 using QA.DotNetCore.Engine.Abstractions.OnScreen;
 using QA.DotNetCore.Engine.AbTesting.Configuration;
@@ -28,9 +28,12 @@ using QA.DotNetCore.Engine.Persistent.Interfaces;
 using QA.DotNetCore.Engine.Persistent.Interfaces.Settings;
 using QA.DotNetCore.Engine.QpData.Configuration;
 using QA.DotNetCore.Engine.Routing.Configuration;
-using System;
 using RazorLight;
-//using DAlCacheTagUtilities = Demosite.Postgre.DAL.CacheTagUtilities;
+using SixLabors.Fonts;
+using SixLaborsCaptcha.Mvc.Core;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 using CacheTagUtilities = Demosite.Templates.CacheTagUtilities;
 
 namespace Demosite
@@ -48,13 +51,10 @@ namespace Demosite
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddHttpContextAccessor();
-            var mvc = services.AddMvc(o =>
-            {
-                //o.EnableEndpointRouting = false;
-            }).AddRazorRuntimeCompilation();
+            services.AddResponseCompression(options => options.EnableForHttps = true);
+            var mvc = services.AddMvc().AddRazorRuntimeCompilation();
 
             services.AddLogging();
-            //services.AddSingleton<ILogger>(provider => provider.GetRequiredService<ILogger<Program>>());
             var qpSettings = Configuration.GetSection("QpSettings").Get<QpSettings>();
             if (!Enum.TryParse(qpSettings.DatabaseType, true, out DatabaseType dbType))
             {
@@ -62,6 +62,8 @@ namespace Demosite
             }
             qpSettings.ConnectionString = Configuration.GetConnectionString("DatabaseQPPostgre");
             services.AddSingleton(qpSettings);
+
+            services.AddScoped<ISiteSettingsService, SiteSettingsService>();
 
             //структура сайта виджетной платформы
             services.AddSiteStructureEngine(options =>
@@ -87,7 +89,7 @@ namespace Demosite
             services.AddScoped<INewsService, NewsService>();
             services.AddScoped<IFoldBoxListService, FoldBoxListService>();
             services.AddScoped<IMediaService, MediaService>();
-            services.AddScoped<IReportsService, ReportsService>();
+            services.AddScoped<IReportsService, ReportsService>(); 
             services.AddScoped<IFeedbackService, FeedbackService>();
             services.AddScoped<IBannerWidgetService, BannerWidgetService>();
 
@@ -109,7 +111,7 @@ namespace Demosite
 
             services.AddScoped<CacheTagUtilities>();
             var cascheTagService = services.AddCacheTagServices();
-            if(qpSettings.IsStage)
+            if (qpSettings.IsStage)
             {
                 cascheTagService.WithInvalidationByMiddleware(@"^.*\/.+\.[a-zA-Z0-9]+$");
             }
@@ -131,13 +133,16 @@ namespace Demosite
             });
 
             //сервис рассылки новостей
-            var newsNotificationServiceSettings = Configuration.GetSection("NewsNotificationServiceConfig").Get<EmailNotificationSettings>();
-            services.AddSingleton(newsNotificationServiceSettings);
             services.AddScoped<IWarmUp, WarmUp>();
+            var notificationIsActive = Configuration.GetSection("NewsNotificationServiceConfig").GetSection("NotificationServiceIsActive").Get<bool>();
+            var newsNotificationServiceSettings = notificationIsActive
+                ? Configuration.GetSection("NewsNotificationServiceConfig").Get<EmailNotificationSettings>()
+                : new EmailNotificationSettings() { NotificationServiceIsActive = notificationIsActive };
             if (newsNotificationServiceSettings.NotificationServiceIsActive)
             {
                 services.AddHostedService<EmailNotificationHostedService>();
             }
+            services.AddSingleton(newsNotificationServiceSettings);
             services.AddScoped<IEmailNotificationService, EmailNotificationService>();
             services.AddScoped<INotificationTemplateEngine, NotificationTemplateEngine>();
             var engine = new RazorLightEngineBuilder()
@@ -147,11 +152,35 @@ namespace Demosite
             services.AddSingleton(engine);
 
             //Captcha
-            var captchaSettings = Configuration.GetSection("CaptchaSettings").Get<CaptchaSettings>();
+            var captchaIsActive = Configuration.GetSection("CaptchaSettings").GetSection("IsActive").Get<bool>();
+            CaptchaSettings captchaSettings = captchaIsActive
+                ? Configuration.GetSection("CaptchaSettings").Get<CaptchaSettings>()
+                : new CaptchaSettings() { IsActive = captchaIsActive };
+            if (captchaSettings.IsActive)
+            {
+                var colors = captchaSettings.GetColors();
+                services.AddSixLabCaptcha(x =>
+                {
+                    x.Width = captchaSettings.CaptchaWidth;
+                    x.Height = captchaSettings.CaptchaHeight;
+                    x.FontSize = captchaSettings.FontSize;
+                    x.MaxRotationDegrees = captchaSettings.MaxAngle;
+                    x.NoiseRate = (ushort)captchaSettings.BackgroundNoiseLevel;
+                    x.DrawLines = captchaSettings.DrawLineNoise;
+                    x.FontFamilies = new string[] { SystemFonts.Families.FirstOrDefault().Name };
+                    if (colors.Length > 0)
+                    {
+                        x.TextColor = colors;
+                    }
+                });
+            }
             services.AddSingleton(captchaSettings);
 
             services.AddMemoryCache();
             services.AddScoped<ICacheService, CacheService>();
+
+            services.AddSearch(Configuration);
+            services.AddScoped<ISearchService, SearchService>();
 
             services.AddControllersWithViews(options =>
             {
@@ -168,7 +197,6 @@ namespace Demosite
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -176,11 +204,26 @@ namespace Demosite
             else
             {
                 app.UseExceptionHandler("/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.            
             }
 
+            app.UseStatusCodePages(ctx =>
+            {
+                if (ctx.HttpContext.Response.StatusCode > 400)
+                    ctx.HttpContext.Response.Redirect("/Error");
 
-            app.UseStaticFiles();
+                return Task.CompletedTask;
+            });
+
+            app.UseResponseCompression();
+
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                OnPrepareResponse = ctx =>
+                {
+                    // Cache static files for 30 days
+                    ctx.Context.Response.Headers.Append("Cache-Control", "public,max-age=2592000");
+                }
+            });
             app.UseSession();
             //включаем инвалидацию по кештегам QP
             app.UseCacheTagsInvalidation();
@@ -199,7 +242,13 @@ namespace Demosite
                 endpoints.MapSiteStructureControllerRoute();
                 endpoints.MapControllers();
             });
-            app.UseCaptchaImage("/captcha");
+
+            var captchaIsActive = Configuration.GetSection("CaptchaSettings").GetSection("IsActive").Get<bool>();
+            if (captchaIsActive)
+            {
+                app.UseCaptchaImage("/captcha");
+            }
+
             PostgreQpDataContext.SetHttpContextAccessor(app.ApplicationServices.GetRequiredService<IHttpContextAccessor>());
         }
     }

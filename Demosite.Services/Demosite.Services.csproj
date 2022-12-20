@@ -40,6 +40,7 @@
     <ProjectReference Include="..\Demosite.Postgre.DAL.NotQP\Demosite.Postgre.DAL.NotQP.csproj" />
     <ProjectReference Include="..\Demosite.Postgre.DAL\Demosite.Postgre.DAL.csproj" />
     <ProjectReference Include="..\Demosite.Templates\Demosite.Templates.csproj" />
+    <ProjectReference Include="..\Provider.Search\Provider.Search.csproj" />
   </ItemGroup>
 
 </Project>

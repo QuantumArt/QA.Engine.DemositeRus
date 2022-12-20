@@ -1,6 +1,6 @@
 namespace Demosite.Interfaces.Dto
 {
-     public class NewsSubscriber
+    public class NewsSubscriber
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
