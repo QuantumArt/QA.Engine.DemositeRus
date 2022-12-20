@@ -5,7 +5,7 @@ import { Apollo, gql } from 'apollo-angular';
 
 const GET_NEWS_POSTS = gql`
   query getNewsPosts($categoryId: Int!) {
-    newsItems(filter: { categoryEq: $categoryId }) {
+    newsItems(filter: { categoryEq: $categoryId }, order: [PostDateDesc]) {
       items {
         id
         title
@@ -21,7 +21,7 @@ interface NewsPostsQueryResult {
     items: {
       id: number;
       title: string;
-      postDate?: string;
+      postDate: string;
       brief: string;
     }[];
   }
@@ -31,7 +31,7 @@ export interface NewsPost {
   id: number;
   title: string;
   url?: string;
-  postDate?: string;
+  postDate: string;
   brief?: string;
 }
 
@@ -40,11 +40,7 @@ export class NewsListService {
   constructor(private readonly apollo: Apollo) {
   }
 
-  public getNewsPosts(categoryId: number, year?: number, month?: number): Observable<NewsPost[]> {
-    if (!year) {
-      year = new Date().getFullYear();
-    }
-
+  public getNewsPosts(categoryId: number): Observable<NewsPost[]> {
     return this.apollo
       .watchQuery<NewsPostsQueryResult>({
         query: GET_NEWS_POSTS,

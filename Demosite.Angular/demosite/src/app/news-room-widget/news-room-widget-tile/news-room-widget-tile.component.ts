@@ -1,4 +1,12 @@
-﻿import { Component, HostBinding, Input, TrackByFunction, ViewEncapsulation } from '@angular/core';
+﻿import {
+  Component,
+  ElementRef,
+  HostBinding,
+  Input,
+  TrackByFunction,
+  ViewChild,
+  ViewEncapsulation
+} from '@angular/core';
 import { Observable } from 'rxjs';
 import SwiperCore, { Pagination } from 'swiper';
 import { NewsPost, NewsRoomWidgetTileService } from './news-room-widget-tile.service';

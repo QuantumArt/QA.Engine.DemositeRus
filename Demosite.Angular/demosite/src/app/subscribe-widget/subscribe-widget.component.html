@@ -3,23 +3,21 @@
     <div class="wrapper">
       <div class="page__block">
         <div class="page__text center">
-          <div class="subscribe">
-            <form class="form" [formGroup]="subscribeForm" (ngSubmit)="onSubmit()">
+          <div class="subscribe" *ngIf="categories$ | async as categories">
+            <form class="form" [formGroup]="subscribeForm" (ngSubmit)="onSubmit(categories)">
               <div class="form__row">
                 <div class="form__field">
                   <div class="form__group">
-                    <div class="radio">
+                    <div *ngFor="let gender of genders" class="radio">
                       <label class="radio__label">
-                        <input formControlName="gender" class="radio__input" type="radio" checked name="gender" value="m">
+                        <input formControlName="gender"
+                               [value]="gender.value"
+                               [checked]="gender.checked"
+                               class="radio__input"
+                               type="radio"
+                               name="gender">
                         <span class="radio__marker"></span>
-                        <span class="radio__text">Уважаемый</span>
-                      </label>
-                    </div>
-                    <div class="radio">
-                      <label class="radio__label">
-                        <input formControlName="gender" class="radio__input" type="radio" name="gender" value="f">
-                        <span class="radio__marker"></span>
-                        <span class="radio__text">Уважаемая</span>
+                        <span class="radio__text">{{ gender.title }}</span>
                       </label>
                     </div>
                   </div>
@@ -28,25 +26,43 @@
               <div class="form__row">
                 <div class="form__field">
                   <input formControlName="firstName" class="input" type="text" name="firstName" placeholder="Имя*">
+                  <span *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)"
+                        class="feedback-form__error"
+                        data-error-name-field>Введите имя</span>
                 </div>
                 <div class="form__field">
                   <input formControlName="lastName" class="input" type="text" name="lastName" placeholder="Фамилия*">
+                  <span *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)"
+                        class="feedback-form__error"
+                        data-error-name-field>Введите фамилию</span>
                 </div>
               </div>
               <div class="form__row">
                 <div class="form__field">
                   <input formControlName="company" class="input" type="text" name="company" placeholder="Компания*">
+                  <span *ngIf="company.invalid && (company.dirty || company.touched)"
+                        class="feedback-form__error"
+                        data-error-name-field>Введите название компании</span>
                 </div>
                 <div class="form__field">
                   <input formControlName="email" class="input" type="text" name="email" placeholder="Email*">
+                  <span *ngIf="email.invalid && (email.dirty || email.touched)"
+                        class="feedback-form__error"
+                        data-error-name-field>Введите email</span>
                 </div>
               </div>
               <div class="form__row">
                 <div class="form__field">
                   <div class="form__group">
-                    <div *ngFor="let category of categories$ | async" class="checkbox">
+                    <div *ngFor="let category of categories; let i = index"
+                         class="checkbox"
+                         formArrayName="categories">
                       <label class="checkbox__label">
-                        <input class="checkbox__input" type="checkbox" checked value="{{ category.id }}">
+                        <input [formControlName]="i"
+                               [checked]="true"
+                               [value]="category.id"
+                               class="checkbox__input"
+                               type="checkbox">
                         <span class="checkbox__marker"></span>
                         <span class="checkbox__text">{{ category.title }}</span>
                       </label>

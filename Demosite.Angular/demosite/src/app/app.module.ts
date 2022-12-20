@@ -1,4 +1,4 @@
-import { NgModule, Type } from '@angular/core';
+import { LOCALE_ID, NgModule, Type } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { OverlayModule } from '@angular/cdk/overlay';
@@ -16,6 +16,8 @@ import { NewsRoomWidgetComponent, NewsRoomWidgetModule } from './news-room-widge
 import { FoldboxListWidgetComponent, FoldboxListWidgetModule } from './foldbox-list-widget';
 import { FeedbackWidgetComponent, FeedbackWidgetModule } from './feedback-widget';
 import { SubscribeWidgetComponent, SubscribeWidgetModule } from './subscribe-widget';
+
+import '@angular/common/locales/global/ru';
 
 @NgModule({
   declarations: [
@@ -49,6 +51,7 @@ import { SubscribeWidgetComponent, SubscribeWidgetModule } from './subscribe-wid
     }),
   ],
   providers: [
+    { provide: LOCALE_ID, useValue: 'ru' },
     {
       provide: APOLLO_OPTIONS,
       useFactory(httpLink: HttpLink) {

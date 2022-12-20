@@ -50,4 +50,10 @@ export class BannerWidgetComponent implements WidgetComponent {
     private readonly bannerWidgetService: BannerWidgetService
   ) {
   }
+
+  public handleBannerClick(event: Event, bannerUrl?: string): void {
+    if (!bannerUrl) {
+      event.preventDefault();
+    }
+  }
 }

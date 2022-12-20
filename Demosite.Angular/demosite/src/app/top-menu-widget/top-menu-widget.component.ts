@@ -57,7 +57,7 @@ export class TopMenuWidgetComponent implements WidgetComponent {
   public closeMenu(): void {
     if (this.menuOpened) {
       this.menuOpened = false;
-      this.uiService.setBodyOverflow('hidden');
+      this.uiService.setBodyOverflow('auto');
     }
   }
 

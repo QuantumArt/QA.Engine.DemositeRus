@@ -4,8 +4,8 @@ import { map } from 'rxjs/operators';
 import { Apollo, gql } from 'apollo-angular';
 
 const GET_NEWS_POSTS = gql`
-  query getNewsPosts($categoryId: Int!) {
-    newsItems(filter: { categoryEq: $categoryId }) {
+  query getNewsPosts($categoryId: Int!, $first: Int!) {
+    newsItems(first: $first, order: [PostDateDesc], filter: { categoryEq: $categoryId }) {
       items {
         id
         title
@@ -44,7 +44,7 @@ export class NewsRoomWidgetTileService {
     return this.apollo
       .watchQuery<NewsPostsQueryResult>({
         query: GET_NEWS_POSTS,
-        variables: { categoryId }
+        variables: { categoryId, first: 3 }
       })
       .valueChanges.pipe(
         map(result => {

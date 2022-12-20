@@ -20,7 +20,9 @@
             <ng-template swiperSlide *ngFor="let item of items; trackBy: trackById">
               <div *ngIf="!item.imageUrl else bannerImage" [innerHTML]="item.text"></div>
               <ng-template #bannerImage>
-                <a class="banner-slider__item" [attr.href]="item.url || '#'">
+                <a class="banner-slider__item"
+                   [attr.href]="item.url || '#'"
+                   (click)="handleBannerClick($event, item.url)">
                   <img class="banner-slider__image-desktop" [attr.src]="item.imageUrl">
                   <img class="banner-slider__image-mobile" [attr.src]="item.imageUrl">
                 </a>
