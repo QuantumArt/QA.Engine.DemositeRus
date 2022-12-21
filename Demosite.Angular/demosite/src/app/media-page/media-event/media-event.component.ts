@@ -1,6 +1,34 @@
 ﻿import { ChangeDetectionStrategy, Component, Input, ViewEncapsulation } from '@angular/core';
 import { MediaEvent, MediaEventImage } from '../media-page.service';
-import { ModalGalleryService, ModalLibConfig } from '@ks89/angular-modal-gallery';
+import {
+  ButtonsConfig,
+  ButtonsStrategy,
+  ButtonType, DescriptionStrategy,
+  ModalGalleryService,
+  ModalLibConfig
+} from '@ks89/angular-modal-gallery';
+import SwiperCore, { Navigation } from 'swiper';
+
+const GALLERY_BUTTONS: ButtonsConfig = {
+  visible: true,
+  strategy: ButtonsStrategy.CUSTOM,
+  buttons: [
+    {
+      type: ButtonType.FULLSCREEN,
+      title: 'Switch to full-screen',
+      ariaLabel: 'Switch to full-screen',
+      className: 'fullscreen-image'
+    },
+    {
+      type: ButtonType.CLOSE,
+      title: 'Close this modal image gallery',
+      ariaLabel: 'Close this modal image gallery',
+      className: 'close-image'
+    }
+  ]
+};
+
+SwiperCore.use([Navigation]);
 
 @Component({
   selector: 'qa-media-event',
@@ -19,8 +47,7 @@ export class MediaEventComponent {
     event: Event,
     id: number,
     sourceImages: MediaEventImage[],
-    imageIndex: number,
-    libConfig?: ModalLibConfig
+    imageIndex: number
   ): void {
     event.preventDefault();
 
@@ -32,7 +59,23 @@ export class MediaEventComponent {
       id,
       images,
       currentImage,
-      libConfig
+      libConfig: {
+        buttonsConfig: GALLERY_BUTTONS,
+        slideConfig: {
+          infinite: true,
+          sidePreviews: {
+            show: false
+          }
+        },
+        currentImageConfig: {
+          description: {
+            strategy: DescriptionStrategy.ALWAYS_VISIBLE,
+            imageText: '',
+            numberSeparator: ' из ',
+            beforeTextDescription: ' => '
+          }
+        }
+      } as ModalLibConfig
     });
   }
 }

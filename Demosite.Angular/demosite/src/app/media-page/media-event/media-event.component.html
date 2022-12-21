@@ -5,7 +5,12 @@
       <div class="event__slider-track" data-es-slider>
         <swiper
           [slidesPerView]="'auto'"
-          [spaceBetween]="1">
+          [spaceBetween]="1"
+          [navigation]="{
+            nextEl,
+            prevEl,
+            disabledClass: 'slick-disabled'
+          }">
           <ng-template swiperSlide *ngFor="let image of item.images; let i = index">
             <div class="event__slider-item">
               <a [attr.href]="image.image" (click)="openGallery($event, item.id, item.images, i)">
@@ -16,8 +21,10 @@
         </swiper>
       </div>
       <div class="event__slider-footer">
-        <div class="event__slider-counter" data-es-counter></div>
-        <div class="event__slider-nav" data-es-nav></div>
+        <div class="event__slider-nav" data-es-nav>
+          <button #prevEl class="slick-prev slick-arrow" type="button">Previous</button>
+          <button #nextEl class="slick-next slick-arrow" type="button">Next</button>
+        </div>
       </div>
     </div>
   </div>
