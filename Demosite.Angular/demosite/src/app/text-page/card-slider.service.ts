@@ -92,16 +92,20 @@ export class CardSliderService implements OnDestroy {
 
   private initializePaginationControls(wrapperEl: HTMLElement): PaginationOptions {
     const el = this.documentRef.createElement('div');
-    el.classList.add('swiper-pagination');
+    el?.classList.add('card-slider__nav');
+    el?.classList.add('swiper-pagination');
     wrapperEl.after(el);
 
-    return { el };
+    return {
+      el,
+      clickable: true
+    };
   }
 
   private cleanSliderControls(container: HTMLElement | null): void {
     container?.querySelector<HTMLElement>('.swiper-button-next')?.remove();
     container?.querySelector<HTMLElement>('.swiper-button-prev')?.remove();
-    container?.querySelector<HTMLElement>('.swiper-pagination')?.remove();
+    container?.querySelector<HTMLElement>('.card-slider__nav')?.remove();
   }
 
   private destroySlider(): void {
