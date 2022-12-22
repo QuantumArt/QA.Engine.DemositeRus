@@ -4582,8 +4582,8 @@ input:checked ~ .checkbox__marker:before {
   cursor: default;
 }
 
-.search-btn:disabled + .search-btn__fake{
-  z-index: 99;
+.search-btn:disabled + .search-btn__fake {
+  z-index: 100;
 }
 
 .search-form {
@@ -4627,6 +4627,8 @@ input:checked ~ .checkbox__marker:before {
   border: 1px solid #dddddd;
 
   top: 50px;
+
+  z-index: 100;
 }
 
 .search-form__error:before,
@@ -4655,4 +4657,89 @@ input:checked ~ .checkbox__marker:before {
 
 .search-form__error--hidden {
   visibility: hidden;
+}
+
+.search-input__initial {
+  color: rgba(227, 6, 17, 0.3);
+  text-decoration: underline;
+}
+
+.item {
+  position: relative;
+  margin-bottom: 30px;
+  min-height: 1px;
+}
+.item .item-in {
+  border: 1px solid #f5f4f4ad;
+  padding: 40px;
+  position: relative;
+}
+.item .item-in:hover:before {
+  width: 100%;
+}
+.item .item-in::before {
+  content: "";
+  position: absolute;
+  bottom: 0px;
+  height: 2px;
+  width: 0%;
+  background: #e30611;
+  right: 0px;
+  -webkit-transition: width 0.4s;
+  transition: width 0.4s;
+}
+.item .card-title {
+  font-size: 18px;
+  margin-top: 25px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+.item .card-description {
+  font-size: 15px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+.item .link {
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #666;
+  margin-top: 10px;
+}
+.item .link:hover {
+  text-decoration: underline;
+}
+
+.item .link:hover:after {
+  display: inline-block;
+  -webkit-transform: scale(0.5, 1); /* Safari and Chrome */
+  -moz-transform: scale(0.5, 1); /* Firefox */
+  -ms-transform: scale(0.5, 1); /* IE 9 */
+  -o-transform: scale(0.5, 1); /* Opera */
+  transform: scale(0.5, 1); /* W3C */
+  content: ">";
+  position: relative;
+  margin-left: 2px;
+}
+
+.seperator{
+  margin-bottom: 30px;
+  width:35px;
+  height:3px;
+  background:#e30611;
+  border:none;
+}
+
+.search-result__count {
+  margin-bottom: 15px;
+}
+
+.mb-0 {
+  margin-bottom: 0;
+}
+
+.px-0 {
+  padding-right: 0;
+  padding-left: 0;
 }

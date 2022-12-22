@@ -63,12 +63,14 @@ class SearchInputValidator {
     this.errorMessage = "";
     this.activeErrorMessage = false;
     this.invalid = true;
-    this.minInputLength = 3;
 
     this.searchBtnFake = this.form.querySelector(".search-btn__fake");
     this.submitBtn = this.form.querySelector('button[type="submit"]');
     this.input = this.form.querySelector("input");
     this.errorBlock = this.form.querySelector(".search-form__error");
+
+     this.minInputLength = Number(this.input.minLength ?? 0);
+
     this.setListeners();
   }
 
@@ -81,7 +83,6 @@ class SearchInputValidator {
       this.searchBtnFake.addEventListener(
         "click",
         () => {
-          console.log("click");
           if (this.invalid) {
             this.showError();
           }
@@ -101,7 +102,8 @@ class SearchInputValidator {
     if (this.submitBtn) {
       if (this.input.value.length < this.minInputLength) {
         this.setDisabledSubmit();
-        this.errorMessage = `Минимальная длина ${this.minInputLength}`;
+        this.errorMessage = `Минимальная длина ${this.minInputLength} ${this.generateEnding(this.minInputLength)}`;
+
         this.invalid = true;
       } else {
         this.setEnabledSubmit();
@@ -132,6 +134,21 @@ class SearchInputValidator {
       this.errorBlock.classList.remove("search-form__error--visible");
       this.errorBlock.classList.add("search-form__error--hidden");
     }
+  }
+
+  generateEnding(value) {
+    const words = ["символ", "символа", "символов"];
+    const num = value % 10;
+    if (value > 10 && value < 20) {
+      return words[2];
+    }
+    if (num > 1 && num < 5) {
+      return words[1];
+    }
+    if (num == 1) {
+      return words[0];
+    }
+    return words[2];
   }
 }
 
