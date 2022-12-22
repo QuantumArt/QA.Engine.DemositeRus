@@ -58,7 +58,7 @@ import '@angular/common/locales/global/ru';
         return {
           cache: new InMemoryCache(),
           link: httpLink.create({
-            uri: 'http://graphql.demositerus.dev.qsupport.ru/graphql'
+            uri: environment.GRAPHQL_DATA_API_URL
           })
         }
       },
