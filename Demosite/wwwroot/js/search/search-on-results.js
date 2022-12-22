@@ -69,7 +69,9 @@ class SearchInputValidator {
     this.input = this.form.querySelector("input");
     this.errorBlock = this.form.querySelector(".search-form__error");
 
-     this.minInputLength = Number(this.input.minLength ?? 0);
+    this.minInputLength = this.input.minLength
+      ? Number(this.input.minLength)
+      : 0;
 
     this.setListeners();
   }
@@ -102,7 +104,9 @@ class SearchInputValidator {
     if (this.submitBtn) {
       if (this.input.value.length < this.minInputLength) {
         this.setDisabledSubmit();
-        this.errorMessage = `Минимальная длина ${this.minInputLength} ${this.generateEnding(this.minInputLength)}`;
+        this.errorMessage = `Минимальная длина ${
+          this.minInputLength
+        } ${this.generateEnding(this.minInputLength)}`;
 
         this.invalid = true;
       } else {
