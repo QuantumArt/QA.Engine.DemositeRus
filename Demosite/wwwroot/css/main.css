@@ -4670,7 +4670,7 @@ input:checked ~ .checkbox__marker:before {
   min-height: 1px;
 }
 .item .item-in {
-  border: 1px solid #f5f4f4ad;
+  border: 1px solid #f6eded;
   padding: 40px;
   position: relative;
 }
@@ -4704,31 +4704,44 @@ input:checked ~ .checkbox__marker:before {
 .item .link {
   font-size: 12px;
   text-transform: uppercase;
+  background: #f9f5f5;
   color: #666;
   margin-top: 10px;
-}
-.item .link:hover {
-  text-decoration: underline;
-}
-
-.item .link:hover:after {
-  display: inline-block;
-  -webkit-transform: scale(0.5, 1); /* Safari and Chrome */
-  -moz-transform: scale(0.5, 1); /* Firefox */
-  -ms-transform: scale(0.5, 1); /* IE 9 */
-  -o-transform: scale(0.5, 1); /* Opera */
-  transform: scale(0.5, 1); /* W3C */
-  content: ">";
+  text-align:left;
   position: relative;
-  margin-left: 2px;
+  padding: 5px 15px 5px 15px;
+  height: 45px;
+  box-shadow: inset 0 0 0 0 #e30611;
+  transition: .3s ease-in-out, box-shadow .3s ease-in-out;
+
+}
+.item .link:before {
+  content: "→";
+  position: absolute;
+  top: 50%;
+  right: 15px;
+  transform: translateY(-50%);
+  color: #fff;
+  opacity: 0;
+  -webkit-transition: all 350ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
-.seperator{
+.item .link:hover:before{
+  opacity:1;
+}
+
+.item .link:hover {
+  padding-right: 30px;
+  color: #fff;
+  box-shadow: inset 200px 0 0 0 #e30611;
+}
+
+.seperator {
   margin-bottom: 30px;
-  width:35px;
-  height:3px;
-  background:#e30611;
-  border:none;
+  width: 35px;
+  height: 3px;
+  background: #e30611;
+  border: none;
 }
 
 .search-result__count {
