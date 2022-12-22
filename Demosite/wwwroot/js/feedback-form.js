@@ -60,6 +60,9 @@ $(function () {
         var _this = this;
 
         this.inputs.forEach(function (input) {
+
+          console.log("FORM113")
+
           input.addEventListener("blur", function () {
             _this.validateInput(input);
           });

@@ -2,7 +2,7 @@ $(".autoComplete").each(function () {
   let resultsPageInputConfig = {
     selector: () => {
       return this; // Any valid selector
-    }, 
+    },
     events: {
       input: {
         focus: () => {
@@ -14,8 +14,7 @@ $(".autoComplete").each(function () {
           autoCompleteJSResultsPage.input.value = selection;
         },
         navigate: (event) => {
-          autoCompleteJSResultsPage.input.value =
-            event.detail.selection.value;
+          autoCompleteJSResultsPage.input.value = event.detail.selection.value;
         },
       },
     },
@@ -56,4 +55,87 @@ $(".autoComplete").each(function () {
   };
 
   const autoCompleteJSResultsPage = new autoComplete(resultsPageInputConfig);
+});
+
+class SearchInputValidator {
+  constructor(form) {
+    this.form = form;
+    this.errorMessage = "";
+    this.activeErrorMessage = false;
+    this.invalid = true;
+    this.minInputLength = 3;
+
+    this.searchBtnFake = this.form.querySelector(".search-btn__fake");
+    this.submitBtn = this.form.querySelector('button[type="submit"]');
+    this.input = this.form.querySelector("input");
+    this.errorBlock = this.form.querySelector(".search-form__error");
+    this.setListeners();
+  }
+
+  setListeners() {
+    if (this.input) {
+      this.input.addEventListener("keyup", () => {
+        this.validate();
+      });
+
+      this.searchBtnFake.addEventListener(
+        "click",
+        () => {
+          console.log("click");
+          if (this.invalid) {
+            this.showError();
+          }
+        },
+        true
+      );
+
+      this.input.addEventListener("focus", () => {
+        if (this.activeErrorMessage) {
+          this.hideError();
+        }
+      });
+    }
+  }
+
+  validate() {
+    if (this.submitBtn) {
+      if (this.input.value.length < this.minInputLength) {
+        this.setDisabledSubmit();
+        this.errorMessage = `Минимальная длина ${this.minInputLength}`;
+        this.invalid = true;
+      } else {
+        this.setEnabledSubmit();
+        this.invalid = false;
+      }
+    }
+  }
+  setDisabledSubmit() {
+    this.submitBtn.disabled = true;
+  }
+  setEnabledSubmit() {
+    this.submitBtn.disabled = false;
+  }
+
+  showError() {
+    this.activeErrorMessage = true;
+    if (this.errorBlock) {
+      this.errorBlock.textContent = this.errorMessage;
+      this.errorBlock.classList.remove("search-form__error--hidden");
+      this.errorBlock.classList.add("search-form__error--visible");
+    }
+  }
+
+  hideError() {
+    this.activeErrorMessage = false;
+    if (this.errorBlock) {
+      this.errorBlock.textContent = this.errorMessage;
+      this.errorBlock.classList.remove("search-form__error--visible");
+      this.errorBlock.classList.add("search-form__error--hidden");
+    }
+  }
+}
+
+$(".search-form ").each(function () {
+  const searchForm = new SearchInputValidator(this);
+  searchForm.validate();
 });
