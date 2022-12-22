@@ -4693,6 +4693,9 @@ input:checked ~ .checkbox__marker:before {
   margin-top: 25px;
   letter-spacing: 2px;
   text-transform: uppercase;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
 }
 .item .card-description {
   font-size: 15px;
