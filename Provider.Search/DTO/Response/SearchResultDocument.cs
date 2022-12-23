@@ -25,17 +25,17 @@ public class SearchResultDocument
     public string? Category { get; }
 
     public SearchResultDocument(
-        string? id,
-        string? index,
-        decimal score,
+        string? _id,
+        string? _index,
+        decimal _score,
         string? searchUrl,
         string? title,
         string? description,
         string? category)
     {
-        Id = id;
-        Index = index;
-        Score = score;
+        Id = _id;
+        Index = _index;
+        Score = _score;
         SearchUrl = searchUrl;
         Title = title;
         Description = description;
