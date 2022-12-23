@@ -17,9 +17,6 @@ spec:
       containers:
       - image: "||registry||/#{imageName}#:||version||"
         name: #{appName}#
-        envFrom:
-        - configMapRef:
-            name: #{configmapName}#
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 4000
