@@ -4704,7 +4704,7 @@ input:checked ~ .checkbox__marker:before {
   text-overflow: ellipsis;
   max-width: 100%;
 }
-.card .link {
+.card .card-link {
   font-size: 12px;
   text-transform: uppercase;
   background: #f9f5f5;
@@ -4718,7 +4718,7 @@ input:checked ~ .checkbox__marker:before {
   transition: .3s ease-in-out, box-shadow .3s ease-in-out;
 
 }
-.card .link:before {
+.card .card-link:before {
   content: "→";
   position: absolute;
   top: 50%;
@@ -4729,11 +4729,11 @@ input:checked ~ .checkbox__marker:before {
   -webkit-transition: all 350ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
-.card .link:hover:before{
+.card .card-link:hover:before{
   opacity:1;
 }
 
-.card .link:hover {
+.card .card-link:hover {
   padding-right: 30px;
   color: #fff;
   box-shadow: inset 200px 0 0 0 #e30611;

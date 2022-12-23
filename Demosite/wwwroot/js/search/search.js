@@ -104,9 +104,8 @@ class SearchInputValidator {
     if (this.submitBtn) {
       if (this.input.value.length < this.minInputLength) {
         this.setDisabledSubmit();
-        this.errorMessage = `Минимальная длина ${
-          this.minInputLength
-        } ${this.generateEnding(this.minInputLength)}`;
+        this.errorMessage = `Минимальная длина ${this.minInputLength
+          } ${this.generateEnding(this.minInputLength)}`;
 
         this.invalid = true;
       } else {
@@ -115,9 +114,11 @@ class SearchInputValidator {
       }
     }
   }
+
   setDisabledSubmit() {
     this.submitBtn.disabled = true;
   }
+
   setEnabledSubmit() {
     this.submitBtn.disabled = false;
   }
@@ -149,7 +150,7 @@ class SearchInputValidator {
     if (num > 1 && num < 5) {
       return words[1];
     }
-    if (num == 1) {
+    if (num === 1) {
       return words[0];
     }
     return words[2];
