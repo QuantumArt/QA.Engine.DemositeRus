@@ -49,5 +49,7 @@ spec:
     http:
       paths:
       - backend:
-          serviceName: #{appName}#
-          servicePort: 80
+          service:
+            name: #{appName}#
+            port: 
+              number: 80
