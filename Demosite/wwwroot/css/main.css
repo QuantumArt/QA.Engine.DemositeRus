@@ -4664,20 +4664,20 @@ input:checked ~ .checkbox__marker:before {
   text-decoration: underline;
 }
 
-.item {
+.card {
   position: relative;
   margin-bottom: 30px;
   min-height: 1px;
 }
-.item .item-in {
+.card .card__wrapper {
   border: 1px solid #f6eded;
   padding: 40px;
   position: relative;
 }
-.item .item-in:hover:before {
+.card .card__wrapper:hover:before {
   width: 100%;
 }
-.item .item-in::before {
+.card .card__wrapper::before {
   content: "";
   position: absolute;
   bottom: 0px;
@@ -4688,7 +4688,7 @@ input:checked ~ .checkbox__marker:before {
   -webkit-transition: width 0.4s;
   transition: width 0.4s;
 }
-.item .card-title {
+.card .card-title {
   font-size: 18px;
   margin-top: 25px;
   letter-spacing: 2px;
@@ -4697,14 +4697,14 @@ input:checked ~ .checkbox__marker:before {
   text-overflow: ellipsis;
   max-width: 100%;
 }
-.item .card-description {
+.card .card-description {
   font-size: 15px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 100%;
 }
-.item .link {
+.card .link {
   font-size: 12px;
   text-transform: uppercase;
   background: #f9f5f5;
@@ -4718,7 +4718,7 @@ input:checked ~ .checkbox__marker:before {
   transition: .3s ease-in-out, box-shadow .3s ease-in-out;
 
 }
-.item .link:before {
+.card .link:before {
   content: "→";
   position: absolute;
   top: 50%;
@@ -4729,11 +4729,11 @@ input:checked ~ .checkbox__marker:before {
   -webkit-transition: all 350ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
-.item .link:hover:before{
+.card .link:hover:before{
   opacity:1;
 }
 
-.item .link:hover {
+.card .link:hover {
   padding-right: 30px;
   color: #fff;
   box-shadow: inset 200px 0 0 0 #e30611;
@@ -4747,8 +4747,8 @@ input:checked ~ .checkbox__marker:before {
   border: none;
 }
 
-.search-result__count {
-  margin-bottom: 15px;
+.nav-search__results-count {
+  margin: 15px 0;
 }
 
 .mb-0 {

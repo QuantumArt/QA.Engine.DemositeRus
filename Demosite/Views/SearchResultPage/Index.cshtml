@@ -4,9 +4,7 @@
 
 <section class="page__section">
     <div class="wrapper">
-        <div class="flex-grow-1 px-3 pt-3">
-            <div class="ps-3">
-                <h1 class="fs-3 text-center mb-4">Поиск по сайту</h1>
+                <h1>Поиск по сайту</h1>
                 <div class="nav__search px-0">
                     @await Component.WidgetZone(Html, "SiteSearchHeaderZone")
                 </div>
@@ -17,15 +15,14 @@
                     <p class="mb-0">Показаны результаты по запросу: @Html.Raw(resultSearch)</p>
                     <p>Искать вместо этого: <a href='@Url.Action("Search", "SearchResultPage", new {query = insteadSearch, withCorrect = !Model.SearchCorrection.ResultsAreCorrected})' class="search-input__initial">@insteadSearch</a> </p>
                 }
-                <div class="search-result__count">Всего найдено: @(Model != null ? @Model.DocumentsCount : "0")</div>
-            </div>
+                <div class="nav-search__results-count">Всего найдено: @(Model != null ? @Model.DocumentsCount : "0")</div>
             @if (Model?.DocumentsCount > 0)
             {
-                <ul class="list-group list-group-flush news-list mt-0">
+                <ul>
                     @foreach (Document document in Model.Documents)
                     {
-                        <li class="item">
-                            <div class="item-in">
+                        <li class="card">
+                            <div class="card__wrapper">
                                     <h4 class="card-title">@document.Title</h4>
                                     <div class="seperator"></div>
                                     <p class="card-description">@document.Description</p>
@@ -36,6 +33,5 @@
                 </ul>
                 <vc:pagination pages-count="@Model.PagesCount" />
             }
-        </div>
     </div>
 </section>
