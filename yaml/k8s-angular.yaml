@@ -48,7 +48,9 @@ spec:
   - host: #{appHost}#
     http:
       paths:
-      - backend:
+      - pathType: Prefix
+        path: /
+        backend:
           service:
             name: #{appName}#
             port: 
