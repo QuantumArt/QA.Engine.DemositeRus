@@ -67,12 +67,12 @@ export class MediaPageService {
         query: GET_EVENTS
       })
       .valueChanges.pipe(
-        map(result => {
-          if (!result.data?.events?.items?.length) {
+        map(({ data }) => {
+          if (!data?.events?.items?.length) {
             return [];
           }
 
-          const events = result.data.events.items
+          const events = data.events.items
             .map(({ id, title, text, textBelow, eventDate, eventImages }) => ({
               id,
               title,

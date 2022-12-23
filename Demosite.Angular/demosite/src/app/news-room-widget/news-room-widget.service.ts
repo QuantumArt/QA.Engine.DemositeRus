@@ -45,12 +45,12 @@ export class NewsRoomWidgetService {
         query: GET_NEWS_CATEGORIES
       })
       .valueChanges.pipe(
-        map(result => {
-          if (!result.data?.newsCategories?.items?.length) {
+        map(({ data }) => {
+          if (!data?.newsCategories?.items?.length) {
             return [];
           }
 
-          const blocks = result.data.newsCategories.items
+          const blocks = data.newsCategories.items
             .map(({ id, alias, alternativeTitle, sortOrder }) => ({
               id,
               alias,

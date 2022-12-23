@@ -17,6 +17,7 @@ export interface FoldboxListWidgetDetails extends WidgetDetails {
 export class FoldboxListWidgetComponent implements WidgetComponent {
   @Input()
   public set widget(widget: FoldboxListWidgetDetails) {
+    this.title = widget.title;
     this.widgetType = widget.widgettype;
 
     if (widget.foldboxlistitems) {
@@ -24,6 +25,7 @@ export class FoldboxListWidgetComponent implements WidgetComponent {
     }
   }
 
+  public title?: string;
   public widgetType?: string;
   public items$?: Observable<FoldboxListItem[]>;
 

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, TrackByFunction } from '@angular/core';
 import { MenuElement, MenuService } from '@quantumart/qa-engine-page-structure-angular';
 import { ActivatedRoute } from '@angular/router';
 import { map, switchMap } from 'rxjs/operators';
@@ -20,6 +20,8 @@ export class BreadcrumbsComponent  {
     ),
     map(({ root, nodeId }) => this.findItems({ ...root, title: 'Главная' }, nodeId, MAX_DEEP).reverse())
   );
+
+  public readonly trackById: TrackByFunction<MenuElement> = (_, item) => item.id;
 
   constructor(private readonly menuService: MenuService, private readonly route: ActivatedRoute) {
   }

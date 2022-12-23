@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { NewsPageService } from './news-page.service';
-import { ActivatedRoute } from '@angular/router';
 import { SiteNodeComponent, SiteNodeService } from '../services';
 
 @Component({
@@ -18,7 +17,6 @@ export class NewsPageComponent implements SiteNodeComponent {
 
   constructor(
     private readonly siteNodeService: SiteNodeService,
-    private readonly activatedRoute: ActivatedRoute,
     private readonly newsPageService: NewsPageService
   ) {
   }

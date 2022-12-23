@@ -47,12 +47,12 @@ export class NewsRoomWidgetTileService {
         variables: { categoryId, first: 3 }
       })
       .valueChanges.pipe(
-        map(result => {
-          if (!result.data?.newsItems?.items?.length) {
+        map(({ data }) => {
+          if (!data?.newsItems?.items?.length) {
             return [];
           }
 
-          return result.data.newsItems.items
+          return data.newsItems.items
             .map(({ id, title, postDate, brief }) => ({
               id,
               title,

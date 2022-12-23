@@ -7,11 +7,11 @@
   TrackByFunction,
   ViewEncapsulation
 } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { Observable } from 'rxjs';
 import SwiperCore, { Autoplay, Pagination } from 'swiper';
 import { WidgetComponent, WidgetDetails } from '@quantumart/qa-engine-page-structure-angular';
 import { BannerItem, BannerWidgetService } from './banner-widget.service';
-import { isPlatformBrowser } from '@angular/common';
 
 SwiperCore.use([Autoplay, Pagination]);
 

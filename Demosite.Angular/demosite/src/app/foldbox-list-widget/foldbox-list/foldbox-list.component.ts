@@ -1,4 +1,4 @@
-﻿import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+﻿import { ChangeDetectionStrategy, Component, Input, TrackByFunction } from '@angular/core';
 import { FoldboxListItem } from '../foldbox-list-widget.service';
 
 @Component({
@@ -9,5 +9,6 @@ import { FoldboxListItem } from '../foldbox-list-widget.service';
 export class FoldboxListComponent {
   @Input() public items!: FoldboxListItem[] | null;
 
+  public readonly trackById: TrackByFunction<FoldboxListItem> = (_, item) => item.id;
   public opened = false;
 }

@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, ElementRef, TrackByFunction, ViewChild } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 import { NewsPageService } from '../news-page.service';
 import { NewsListService, NewsPost } from './news-list.service';
-import { map, switchMap } from 'rxjs/operators';
-import { BehaviorSubject } from 'rxjs';
 
 export interface NewsFilter {
   year: number;
@@ -17,6 +17,22 @@ export interface NewsFilter {
 })
 export class NewsListComponent {
   @ViewChild('month') public readonly monthEl?: ElementRef<HTMLSelectElement>;
+
+  public readonly months = [
+    [0, 'Все'],
+    [1, 'Январь'],
+    [2, 'Февраль'],
+    [3, 'Март'],
+    [4, 'Апрель'],
+    [5, 'Май'],
+    [6, 'Июнь'],
+    [7, 'Июль'],
+    [8, 'Август'],
+    [9, 'Сентябрь'],
+    [10, 'Октябрь'],
+    [11, 'Ноябрь'],
+    [12, 'Декабрь']
+  ];
 
   public readonly pageDetails$ = this.newsPageService.getPageDetails().pipe(
     switchMap(details => this.newsListService.getNewsPosts(details.categoryid).pipe(

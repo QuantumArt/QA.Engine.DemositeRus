@@ -12,6 +12,6 @@ export interface DialogData {
   encapsulation: ViewEncapsulation.None
 })
 export class ContentComponent {
-  constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData) {
+  constructor(@Inject(MAT_DIALOG_DATA) public readonly data: DialogData) {
   }
 }

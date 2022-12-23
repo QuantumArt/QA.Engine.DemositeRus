@@ -1,8 +1,8 @@
-﻿import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+﻿import { ChangeDetectionStrategy, Component, Input, TrackByFunction } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { tap } from 'rxjs';
 import { WidgetComponent, WidgetDetails } from '@quantumart/qa-engine-page-structure-angular';
 import { NewsCategory, SubscribeWidgetService } from './subscribe-widget.service';
-import { tap } from 'rxjs';
 
 export interface SubscribeWidgetDetails extends WidgetDetails {
 }
@@ -48,9 +48,11 @@ export class SubscribeWidgetComponent implements WidgetComponent {
 
   public categories$ = this.subscribeWidgetService.getCategories().pipe(
     tap(categories => {
-      categories.forEach(category => this.categories.push(new FormControl(true)))
+      categories.forEach(() => this.categories.push(new FormControl(true)))
     })
   );
+
+  public readonly trackById: TrackByFunction<NewsCategory> = (_, item) => item.id;
 
   constructor(private readonly subscribeWidgetService: SubscribeWidgetService) {
   }

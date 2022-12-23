@@ -11,7 +11,7 @@
             prevEl,
             disabledClass: 'slick-disabled'
           }">
-          <ng-template swiperSlide *ngFor="let image of item.images; let i = index">
+          <ng-template swiperSlide *ngFor="let image of item.images; trackBy: trackById; let i = index">
             <div class="event__slider-item">
               <a [attr.href]="image.image" (click)="openGallery($event, item.id, item.images, i)">
                 <img [attr.src]="image.image" [attr.alt]="image.title">

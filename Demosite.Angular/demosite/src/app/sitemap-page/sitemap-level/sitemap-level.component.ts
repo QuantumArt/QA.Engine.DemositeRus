@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, TrackByFunction } from '@angular/core';
 import { MenuElement } from '@quantumart/qa-engine-page-structure-angular';
 
 @Component({
@@ -9,4 +9,6 @@ import { MenuElement } from '@quantumart/qa-engine-page-structure-angular';
 export class SitemapLevelComponent {
   @Input() public root!: MenuElement | null;
   @Input() public level!: number;
+
+  public readonly trackById: TrackByFunction<MenuElement> = (_, item) => item.id;
 }

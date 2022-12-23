@@ -54,7 +54,7 @@
               <div class="form__row">
                 <div class="form__field">
                   <div class="form__group">
-                    <div *ngFor="let category of categories; let i = index"
+                    <div *ngFor="let category of categories; trackBy: trackById; let i = index"
                          class="checkbox"
                          formArrayName="categories">
                       <label class="checkbox__label">

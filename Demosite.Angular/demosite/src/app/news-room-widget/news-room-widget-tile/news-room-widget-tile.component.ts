@@ -1,12 +1,4 @@
-﻿import {
-  Component,
-  ElementRef,
-  HostBinding,
-  Input,
-  TrackByFunction,
-  ViewChild,
-  ViewEncapsulation
-} from '@angular/core';
+﻿import { Component, HostBinding, Input, TrackByFunction, ViewEncapsulation } from '@angular/core';
 import { Observable } from 'rxjs';
 import SwiperCore, { Pagination } from 'swiper';
 import { NewsPost, NewsRoomWidgetTileService } from './news-room-widget-tile.service';
@@ -28,7 +20,8 @@ SwiperCore.use([Pagination]);
   providers: [NewsRoomWidgetTileService]
 })
 export class NewsRoomWidgetTileComponent {
-  @Input() public set category(category: NewsCategory) {
+  @Input()
+  public set category(category: NewsCategory) {
     this.title = category.title;
     this.url = category.url;
     this.posts$ = this.newsRoomWidgetTileService.getNewsPosts(category.id, category.alias);

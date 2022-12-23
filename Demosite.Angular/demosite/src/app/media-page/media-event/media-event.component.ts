@@ -1,5 +1,5 @@
-﻿import { ChangeDetectionStrategy, Component, Input, ViewEncapsulation } from '@angular/core';
-import { MediaEvent, MediaEventImage } from '../media-page.service';
+﻿import { ChangeDetectionStrategy, Component, Input, TrackByFunction, ViewEncapsulation } from '@angular/core';
+import SwiperCore, { Navigation } from 'swiper';
 import {
   ButtonsConfig,
   ButtonsStrategy,
@@ -7,7 +7,7 @@ import {
   ModalGalleryService,
   ModalLibConfig
 } from '@ks89/angular-modal-gallery';
-import SwiperCore, { Navigation } from 'swiper';
+import { MediaEvent, MediaEventImage } from '../media-page.service';
 
 const GALLERY_BUTTONS: ButtonsConfig = {
   visible: true,
@@ -39,6 +39,7 @@ SwiperCore.use([Navigation]);
 })
 export class MediaEventComponent {
   @Input() public item!: MediaEvent;
+  public readonly trackById: TrackByFunction<MediaEventImage> = (_, item) => item.id;
 
   constructor(private readonly modalGalleryService: ModalGalleryService) {
   }

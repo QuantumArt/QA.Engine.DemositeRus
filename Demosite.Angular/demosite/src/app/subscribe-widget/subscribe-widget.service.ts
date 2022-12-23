@@ -45,12 +45,12 @@ export class SubscribeWidgetService {
         query: GET_NEWS_CATEGORIES
       })
       .valueChanges.pipe(
-        map(result => {
-          if (!result.data?.newsCategories?.items?.length) {
+        map(({ data }) => {
+          if (!data?.newsCategories?.items?.length) {
             return [];
           }
 
-          const categories = result.data.newsCategories.items
+          const categories = data.newsCategories.items
             .map(({ id, alias, alternativeTitle, sortOrder }) => ({
               id,
               alias,

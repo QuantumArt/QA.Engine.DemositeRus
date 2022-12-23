@@ -1,8 +1,8 @@
 ﻿import { AfterViewInit, Directive, ElementRef, Inject, OnDestroy } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { ContentComponent } from './content.component';
-import { EventHandlerCollection } from '../../utils';
 import { DOCUMENT } from '@angular/common';
+import { MatDialog } from '@angular/material/dialog';
+import { EventHandlerCollection } from '../../utils';
+import { ContentComponent } from './content.component';
 
 @Directive({
   selector: '[qaDialogBehavior]'

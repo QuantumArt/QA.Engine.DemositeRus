@@ -46,12 +46,12 @@ export class FoldboxListWidgetService {
         variables: { ids }
       })
       .valueChanges.pipe(
-        map(result => {
-          if (!result.data?.foldBoxListItems?.items?.length) {
+        map(({ data }) => {
+          if (!data?.foldBoxListItems?.items?.length) {
             return [];
           }
 
-          const items = result.data.foldBoxListItems.items
+          const items = data.foldBoxListItems.items
             .map(({ id, title, text, sortOrder }) => ({
               id,
               title,

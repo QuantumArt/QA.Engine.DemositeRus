@@ -48,12 +48,12 @@ export class NewsDetailsService {
         variables: { id }
       })
       .valueChanges.pipe(
-        map(result => {
-          if (!result.data?.newsItems?.items?.length) {
+        map(({ data }) => {
+          if (!data?.newsItems?.items?.length) {
             return null;
           }
 
-          return result.data.newsItems.items
+          return data.newsItems.items
             .map(({ id, title, postDate, text }) => ({
               id,
               title,

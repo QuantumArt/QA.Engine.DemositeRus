@@ -49,12 +49,12 @@ export class BannerWidgetService {
         variables: { ids }
       })
       .valueChanges.pipe(
-        map(result => {
-          if (!result.data?.bannerItems?.items?.length) {
+        map(({ data }) => {
+          if (!data?.bannerItems?.items?.length) {
             return [];
           }
 
-          const banners = result.data.bannerItems.items
+          const banners = data.bannerItems.items
             .map(({ id, text, uRL, image, sortOrder }) => ({
               id,
               text,

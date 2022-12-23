@@ -1,9 +1,8 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ChangeDetectionStrategy, Component, TrackByFunction } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { NodeDetails } from '@quantumart/qa-engine-page-structure-angular';
 import { SiteNodeComponent, SiteNodeService } from '../services';
-import { MediaPageService } from './media-page.service';
+import { MediaEvent, MediaPageService } from './media-page.service';
 
 export interface MediaPageDetails extends NodeDetails {
   title: string;
@@ -21,6 +20,7 @@ export class MediaPageComponent implements SiteNodeComponent {
   }
 
   public readonly pageDetails$ = this.siteNodeService.getDetails<MediaPageDetails>();
+  public readonly trackById: TrackByFunction<MediaEvent> = (_, item) => item.id;
 
   public readonly firstDay$ = this.mediaPageService.getEvents().pipe(
     map(events => events?.length ? events[0] : null)
@@ -32,7 +32,6 @@ export class MediaPageComponent implements SiteNodeComponent {
 
   constructor(
     private readonly siteNodeService: SiteNodeService,
-    private readonly activatedRoute: ActivatedRoute,
     private readonly mediaPageService: MediaPageService
   ) {
   }
