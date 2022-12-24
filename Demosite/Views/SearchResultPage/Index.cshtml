@@ -29,7 +29,7 @@
                                 <div class="card-body">
                                     <h5 class="card-title">@document.Title</h5>
                                     <p class="card-text">@document.Description</p>
-                                    <a href="@document.SearchUrl" class="btn btn-light">Перейти</a>
+                                    <a href=@(new Uri(@document.SearchUrl).AbsoluteUri) class="btn btn-light">Перейти</a>
                                 </div>
                             </div>
                         </li>

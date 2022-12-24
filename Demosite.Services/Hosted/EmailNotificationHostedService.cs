@@ -12,6 +12,7 @@ namespace Demosite.Services.Hosted
     public class EmailNotificationHostedService : BackgroundService
     {
         private readonly ILogger<EmailNotificationHostedService> _logger;
+        private readonly Timer _timer;
         private readonly EmailNotificationSettings _settings;
         private readonly IServiceProvider _serviceProvider;
         public EmailNotificationHostedService(ILogger<EmailNotificationHostedService> logger,
@@ -38,8 +39,8 @@ namespace Demosite.Services.Hosted
             await Task.Delay(startThrough);
             while (!stoppingToken.IsCancellationRequested)
             {
+                notificationService.BackgroundSendEmails();
                 await Task.Delay(_settings.SendTimeInterval, stoppingToken);
-                await notificationService.BackgroundSendEmails();
             }
             _logger.LogDebug($"SendNewsEmailService background task is stopping.");
         }

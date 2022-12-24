@@ -3,14 +3,7 @@
 @using Microsoft.AspNetCore.Html
 
 @{
-    Func<dynamic, IHtmlContent> ShowMonthList(IEnumerable<int> months) =>
-    @<select id="month">
-        <option value="0">Все</option>
-        @foreach (int month in months)
-        {
-        <option value="@month">@CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month)</option>
-        }
-    </select>;
+    var dateList = Model.Items.Select(i => new DateTime(i.Date.Year, i.Date.Month, 1)).Distinct().ToArray();
 }
 
 <main class="main">
@@ -28,7 +21,7 @@
                                 <div class="select__box">
                                     <select id="year">
                                         <option value="0">Все</option>
-                                        @foreach (int year in Model.Items.Select(item => item.Date.Year).Distinct())
+                                        @foreach (int year in dateList.Select(item => item.Year).Distinct().OrderByDescending(item => item))
                                         {
                                             <option value="@year">@year</option>
                                         }
@@ -42,14 +35,13 @@
                             <div class="select__group">
                                 <label class="select__label" for="month">Выберите месяц</label>
                                 <div class="select__box">
-                                    @ShowMonthList(Model.Items.Select(item => item.Date.Month).Distinct())(null)
-                                   @* <select id="month">
-                                          <option value="0">Все</option>
-                                        @foreach (int month in Model.Items.Select(item => item.Date.Month).Distinct())
-                                        {
-                                        <option value="@month">@CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month)</option>
-                                        }
-                                    </select>*@
+                                    <select id="month">
+                                      <option value="0">Все</option>
+                                        @foreach (int month in dateList.Select(item => item.Month).Distinct().OrderBy(item => item))
+                                      {
+                                            <option value="@month" data-month-filter>@CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month)</option>
+                                      }
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -132,3 +124,7 @@
     </div>
     @await Component.WidgetZone(Html, "ContentBelow")
 </main>
+
+<script>
+    var dateFilterList = JSON.parse('@Html.Raw(Json.Serialize(dateList))').map(string => new Date(string));
+</script>
