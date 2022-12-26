@@ -1,11 +1,13 @@
 import { LOCALE_ID, NgModule, Type } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, BrowserTransferStateModule } from '@angular/platform-browser';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { APOLLO_OPTIONS, ApolloModule } from 'apollo-angular';
 import { HttpLink } from 'apollo-angular/http';
 import { InMemoryCache } from '@apollo/client/core';
 import { QaEnginePageStructureModule, WidgetComponent } from '@quantumart/qa-engine-page-structure-angular';
+import { TransferStateInterceptor } from './services/transfer-state.interceptor';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { environment } from '../environments/environment';
@@ -16,7 +18,6 @@ import { NewsRoomWidgetComponent, NewsRoomWidgetModule } from './news-room-widge
 import { FoldboxListWidgetComponent, FoldboxListWidgetModule } from './foldbox-list-widget';
 import { FeedbackWidgetComponent, FeedbackWidgetModule } from './feedback-widget';
 import { SubscribeWidgetComponent, SubscribeWidgetModule } from './subscribe-widget';
-
 import '@angular/common/locales/global/ru';
 
 @NgModule({
@@ -25,6 +26,7 @@ import '@angular/common/locales/global/ru';
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
+    BrowserTransferStateModule,
     BrowserAnimationsModule,
     OverlayModule,
     ApolloModule,
@@ -52,6 +54,11 @@ import '@angular/common/locales/global/ru';
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'ru' },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TransferStateInterceptor,
+      multi: true,
+    },
     {
       provide: APOLLO_OPTIONS,
       useFactory(httpLink: HttpLink) {
