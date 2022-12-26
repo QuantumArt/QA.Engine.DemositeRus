@@ -34,7 +34,6 @@ using SixLaborsCaptcha.Mvc.Core;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using CacheTagUtilities = Demosite.Templates.CacheTagUtilities;
 
 namespace Demosite
 {
@@ -89,7 +88,7 @@ namespace Demosite
             services.AddScoped<INewsService, NewsService>();
             services.AddScoped<IFoldBoxListService, FoldBoxListService>();
             services.AddScoped<IMediaService, MediaService>();
-            services.AddScoped<IReportsService, ReportsService>(); 
+            services.AddScoped<IReportsService, ReportsService>();
             services.AddScoped<IFeedbackService, FeedbackService>();
             services.AddScoped<IBannerWidgetService, BannerWidgetService>();
 
@@ -122,6 +121,7 @@ namespace Demosite
             //включаем инвалидацию по кештегам QP
             cascheTagService.WithCacheTrackers(invalidation =>
             {
+                //QpContentCacheTracker - уже реализованный ICacheTagTracker, который работает на базе механизма CONTENT_MODIFICATION из QP
                 invalidation.Register<QpContentCacheTracker>();
             });
             //возможность работы с режимом onscreen
@@ -176,7 +176,6 @@ namespace Demosite
             }
             services.AddSingleton(captchaSettings);
 
-            services.AddMemoryCache();
             services.AddScoped<ICacheService, CacheService>();
 
             services.AddSearch(Configuration);

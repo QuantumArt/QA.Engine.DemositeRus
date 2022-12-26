@@ -1,32 +1,28 @@
 using Demosite.Interfaces;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
+using QA.DotNetCore.Caching.Interfaces;
 using System;
 
 namespace Demosite.Services
 {
     public class CacheService : ICacheService
     {
-        private readonly IMemoryCache _memoryCache;
-        private readonly int _cacheDuration;
-        public CacheService(IMemoryCache memoryCache,
+        private readonly ICacheProvider _cacheProvider;
+        private readonly TimeSpan _cacheDuration;
+        public CacheService(ICacheProvider cacheProvider,
                             IConfiguration config)
         {
-            _memoryCache = memoryCache;
-            _cacheDuration = int.Parse(config["Cache:Duration"]);
+            _cacheProvider = cacheProvider;
+            _cacheDuration = TimeSpan.FromSeconds(int.Parse(config["Cache:Duration"]));
         }
 
-        public T GetFromCache<T>(string key, Func<T> query)
+        public T GetFromCache<T>(string key, string[] cacheTags, Func<T> query)
         {
-            if (!_memoryCache.TryGetValue(key, out T result))
-            {
-                result = query();
-                if (result != null)
-                {
-                    _ = _memoryCache.Set(key, result, new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromSeconds(_cacheDuration)));
-                }
-            }
-            return result;
+            return _cacheProvider.GetOrAdd(
+                key,
+                cacheTags,
+                _cacheDuration,
+                query);
         }
     }
 }

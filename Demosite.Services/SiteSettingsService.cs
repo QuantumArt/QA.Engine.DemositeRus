@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using CacheTagUtilities = Demosite.Templates.CacheTagUtilities;
 
 namespace Demosite.Services;
 
@@ -109,8 +108,9 @@ public class SiteSettingsService : ISiteSettingsService
     {
         const string settingsCacheKey =
             nameof(SiteSettingsService) + "." + nameof(GetSiteSettings);
+        string[] cacheTags = _cacheTagUtilities.Merge(CacheTags.SiteSetting);
 
-        return _memoryCache.GetFromCache<Task<IDictionary<string, SiteSettingDto>>>(settingsCacheKey, async () =>
+        return _memoryCache.GetFromCache<Task<IDictionary<string, SiteSettingDto>>>(settingsCacheKey, cacheTags, async () =>
         {
             SiteSetting[] settings = await (_context as PostgreQpDataContext).SiteSettings
                 .AsNoTracking()
