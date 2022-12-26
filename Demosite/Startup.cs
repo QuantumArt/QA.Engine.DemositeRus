@@ -16,7 +16,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
 using Npgsql;
 using Provider.Search;
 using QA.DotNetCore.Engine.Abstractions;
@@ -218,12 +217,13 @@ namespace Demosite
 
             app.UseResponseCompression();
 
+            var httpCacheControl = Configuration.GetSection("HttpCacheControl").Get<HttpCacheControl>();
             app.UseStaticFiles(new StaticFileOptions
             {
                 OnPrepareResponse = ctx =>
                 {
                     // Cache static files for 30 days
-                    ctx.Context.Response.Headers.Append("Cache-Control", "public,max-age=2592000");
+                    ctx.Context.Response.Headers.Append("Cache-Control", $"public,max-age={httpCacheControl.StaticFilesMaxAge.TotalSeconds}");
                 }
             });
             app.UseSession();

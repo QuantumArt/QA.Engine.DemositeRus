@@ -1,6 +1,5 @@
 using Demosite.Interfaces;
 using Demosite.Services.Settings;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using QA.DotNetCore.Caching.Interfaces;
 using System;
