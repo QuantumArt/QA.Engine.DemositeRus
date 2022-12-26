@@ -1,6 +1,7 @@
 using Demosite.Interfaces;
 using Demosite.Services.Settings;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using QA.DotNetCore.Caching.Interfaces;
 using System;
 
@@ -9,9 +10,9 @@ namespace Demosite.Services
     public class CacheService : ICacheService
     {
         private readonly ICacheProvider _cacheProvider;
-        private readonly CacheSettings _cacheSettings;
+        private readonly IOptionsMonitor<CacheSettings> _cacheSettings;
         public CacheService(ICacheProvider cacheProvider,
-                            CacheSettings cacheSettings)
+                            IOptionsMonitor<CacheSettings> cacheSettings)
         {
             _cacheProvider = cacheProvider;
             _cacheSettings = cacheSettings;
@@ -22,7 +23,7 @@ namespace Demosite.Services
             return _cacheProvider.GetOrAdd(
                 key,
                 cacheTags,
-                _cacheSettings.Duration,
+                _cacheSettings.CurrentValue.Duration,
                 query);
         }
     }

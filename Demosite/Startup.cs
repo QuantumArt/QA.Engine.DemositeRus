@@ -16,6 +16,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Npgsql;
 using Provider.Search;
 using QA.DotNetCore.Engine.Abstractions;
@@ -51,7 +52,17 @@ namespace Demosite
         {
             services.AddHttpContextAccessor();
             services.AddResponseCompression(options => options.EnableForHttps = true);
-            var mvc = services.AddMvc().AddRazorRuntimeCompilation();
+
+            var httpCacheControl = Configuration.GetSection("HttpCacheControl").Get<HttpCacheControl>();
+            var mvc = services.AddMvc(options =>
+            {
+                options.CacheProfiles.Add("Caching",
+                    new CacheProfile
+                    {
+                        Location = ResponseCacheLocation.Any,
+                        Duration = httpCacheControl.MaxAge
+                    });
+            }).AddRazorRuntimeCompilation();
 
             services.AddLogging();
             var qpSettings = Configuration.GetSection("QpSettings").Get<QpSettings>();
@@ -108,8 +119,7 @@ namespace Demosite
                 options.UseQpSettings(qpSettings);
             });
 
-            var cacheSettings = Configuration.GetSection("Cache").Get<CacheSettings>();
-            services.AddSingleton(cacheSettings);
+            services.Configure<CacheSettings>(Configuration.GetSection("Cache"));
 
             services.AddScoped<CacheTagUtilities>();
             var cascheTagService = services.AddCacheTagServices();
@@ -183,16 +193,6 @@ namespace Demosite
 
             services.AddSearch(Configuration);
             services.AddScoped<ISearchService, SearchService>();
-
-            services.AddControllersWithViews(options =>
-            {
-                options.CacheProfiles.Add("Caching",
-                    new CacheProfile
-                    {
-                        Location = ResponseCacheLocation.Any,
-                        Duration = (int) cacheSettings.Duration.TotalSeconds
-                    });
-            });
             services.AddSession();
         }
 
