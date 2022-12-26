@@ -108,6 +108,9 @@ namespace Demosite
                 options.UseQpSettings(qpSettings);
             });
 
+            var cacheSettings = Configuration.GetSection("Cache").Get<CacheSettings>();
+            services.AddSingleton(cacheSettings);
+
             services.AddScoped<CacheTagUtilities>();
             var cascheTagService = services.AddCacheTagServices();
             if (qpSettings.IsStage)
@@ -187,7 +190,7 @@ namespace Demosite
                     new CacheProfile
                     {
                         Location = ResponseCacheLocation.Any,
-                        Duration = int.Parse(Configuration["Cache:Duration"])
+                        Duration = (int) cacheSettings.Duration.TotalSeconds
                     });
             });
             services.AddSession();
