@@ -1,7 +1,9 @@
+using System;
+
 namespace Demosite.Services.Settings
 {
     public class HttpCacheControl
     {
-        public int MaxAge { get; set; }
+        public TimeSpan MaxAge { get; set; }
     }
 }

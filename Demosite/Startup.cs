@@ -60,7 +60,7 @@ namespace Demosite
                     new CacheProfile
                     {
                         Location = ResponseCacheLocation.Any,
-                        Duration = httpCacheControl.MaxAge
+                        Duration = (int)httpCacheControl.MaxAge.TotalSeconds
                     });
             }).AddRazorRuntimeCompilation();
 
