@@ -89,7 +89,7 @@ namespace Demosite
             services.AddScoped<INewsService, NewsService>();
             services.AddScoped<IFoldBoxListService, FoldBoxListService>();
             services.AddScoped<IMediaService, MediaService>();
-            services.AddScoped<IReportsService, ReportsService>(); 
+            services.AddScoped<IReportsService, ReportsService>();
             services.AddScoped<IFeedbackService, FeedbackService>();
             services.AddScoped<IBannerWidgetService, BannerWidgetService>();
 

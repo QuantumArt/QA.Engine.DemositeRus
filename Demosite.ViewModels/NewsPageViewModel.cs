@@ -10,6 +10,7 @@ namespace Demosite.ViewModels
         public List<NewsItemInListViewModel> Items { get; set; } = new List<NewsItemInListViewModel>();
         public int PageCount { get; set; }
         public int CurrentPage { get; set; }
+        public Dictionary<int, int[]> DateDictionary { get; set;} = new Dictionary<int, int[]>();
     }
 
     public class NewsItemInListViewModel

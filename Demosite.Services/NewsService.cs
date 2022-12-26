@@ -3,9 +3,9 @@ using Demosite.Interfaces.Dto;
 using Demosite.Interfaces.Dto.Request;
 using Demosite.Postgre.DAL;
 using Microsoft.EntityFrameworkCore;
-using QA.DotNetCore.Engine.Persistent.Interfaces.Settings;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 
 namespace Demosite.Services
@@ -14,7 +14,7 @@ namespace Demosite.Services
     {
         private readonly IDbContext _qpDataContext;
         private readonly ICacheService _memoryCache;
-        public NewsService(QpSettings qpSettings, IDbContext context, ICacheService memoryCache)
+        public NewsService(IDbContext context, ICacheService memoryCache)
         {
             _qpDataContext = context;
             _memoryCache = memoryCache;
@@ -124,6 +124,19 @@ namespace Demosite.Services
                         .OrderByDescending(o => o.PostDate)
                         .Select(Map)
                         .ToArray();
+        }
+
+        public Dictionary<int, int[]>GetPostDateDictionary()
+        {
+            const string cacheKey = nameof(NewsService) + "." + nameof(GetPostDateDictionary);
+            return _memoryCache.GetFromCache<Dictionary<int, int[]>>(cacheKey, () =>
+            {
+                Dictionary<int, int[]> result = (_qpDataContext as PostgreQpDataContext).NewsPosts.AsNoTracking()
+                    .Where(news => news.PostDate.HasValue)
+                    .GroupBy(keySelector => keySelector.PostDate.Value.Year, val => val.PostDate.Value.Month)
+                    .ToDictionary(key => key.Key, value => value.ToArray());
+                return result;
+            });
         }
 
         private static string GetCacheKey(int id, int? categoryId = null)
