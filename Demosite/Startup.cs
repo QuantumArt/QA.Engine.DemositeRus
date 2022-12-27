@@ -34,7 +34,6 @@ using SixLaborsCaptcha.Mvc.Core;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using CacheTagUtilities = Demosite.Templates.CacheTagUtilities;
 
 namespace Demosite
 {
@@ -52,7 +51,17 @@ namespace Demosite
         {
             services.AddHttpContextAccessor();
             services.AddResponseCompression(options => options.EnableForHttps = true);
-            var mvc = services.AddMvc().AddRazorRuntimeCompilation();
+
+            var httpCacheControl = Configuration.GetSection("HttpCacheControl").Get<HttpCacheControl>();
+            var mvc = services.AddMvc(options =>
+            {
+                options.CacheProfiles.Add("Caching",
+                    new CacheProfile
+                    {
+                        Location = ResponseCacheLocation.Any,
+                        Duration = (int)httpCacheControl.MaxAge.TotalSeconds
+                    });
+            }).AddRazorRuntimeCompilation();
 
             services.AddLogging();
             var qpSettings = Configuration.GetSection("QpSettings").Get<QpSettings>();
@@ -109,6 +118,8 @@ namespace Demosite
                 options.UseQpSettings(qpSettings);
             });
 
+            services.Configure<CacheSettings>(Configuration.GetSection("Cache"));
+
             services.AddScoped<CacheTagUtilities>();
             var cascheTagService = services.AddCacheTagServices();
             if (qpSettings.IsStage)
@@ -122,6 +133,7 @@ namespace Demosite
             //включаем инвалидацию по кештегам QP
             cascheTagService.WithCacheTrackers(invalidation =>
             {
+                //QpContentCacheTracker - уже реализованный ICacheTagTracker, который работает на базе механизма CONTENT_MODIFICATION из QP
                 invalidation.Register<QpContentCacheTracker>();
             });
             //возможность работы с режимом onscreen
@@ -176,21 +188,10 @@ namespace Demosite
             }
             services.AddSingleton(captchaSettings);
 
-            services.AddMemoryCache();
             services.AddScoped<ICacheService, CacheService>();
 
             services.AddSearch(Configuration);
             services.AddScoped<ISearchService, SearchService>();
-
-            services.AddControllersWithViews(options =>
-            {
-                options.CacheProfiles.Add("Caching",
-                    new CacheProfile
-                    {
-                        Location = ResponseCacheLocation.Any,
-                        Duration = int.Parse(Configuration["Cache:Duration"])
-                    });
-            });
             services.AddSession();
         }
 
@@ -216,12 +217,12 @@ namespace Demosite
 
             app.UseResponseCompression();
 
+            var httpCacheControl = Configuration.GetSection("HttpCacheControl").Get<HttpCacheControl>();
             app.UseStaticFiles(new StaticFileOptions
             {
                 OnPrepareResponse = ctx =>
                 {
-                    // Cache static files for 30 days
-                    ctx.Context.Response.Headers.Append("Cache-Control", "public,max-age=2592000");
+                    ctx.Context.Response.Headers.Append("Cache-Control", $"public,max-age={httpCacheControl.StaticFilesMaxAge.TotalSeconds}");
                 }
             });
             app.UseSession();

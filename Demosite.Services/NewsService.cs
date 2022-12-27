@@ -14,15 +14,18 @@ namespace Demosite.Services
     {
         private readonly IDbContext _qpDataContext;
         private readonly ICacheService _memoryCache;
-        public NewsService(IDbContext context, ICacheService memoryCache)
+        private readonly CacheTagUtilities _cacheTagUtilities;
+        public NewsService(IDbContext context, ICacheService memoryCache, CacheTagUtilities cacheTagUtilities)
         {
             _qpDataContext = context;
             _memoryCache = memoryCache;
+            _cacheTagUtilities = cacheTagUtilities;
         }
 
         public IEnumerable<NewsPostDto> GetAllPosts(int? year = null, int? month = null, int? categoryId = null)
         {
-            return _memoryCache.GetFromCache<IEnumerable<NewsPostDto>>(GetCacheKey(year, month, categoryId), () =>
+            var cacheTags = _cacheTagUtilities.Merge(CacheTags.NewsPost);
+            return _memoryCache.GetFromCache<IEnumerable<NewsPostDto>>(GetCacheKey(year, month, categoryId), cacheTags, () =>
                {
                    IQueryable<NewsPost> query = (_qpDataContext as PostgreQpDataContext).NewsPosts.AsNoTracking();
 
@@ -55,7 +58,8 @@ namespace Demosite.Services
 
         public NewsPostDto GetPost(int id, int? categoryId)
         {
-            return _memoryCache.GetFromCache<NewsPostDto>(GetCacheKey(id, categoryId), () =>
+            var cacheTags = _cacheTagUtilities.Merge(CacheTags.NewsPost);
+            return _memoryCache.GetFromCache<NewsPostDto>(GetCacheKey(id, categoryId), cacheTags, () =>
             {
                 IQueryable<NewsPost> query = (_qpDataContext as PostgreQpDataContext).NewsPosts.AsNoTracking();
                 query = categoryId.HasValue ? query.Where(bp => bp.Id == id && bp.Category.Id == categoryId.Value) : query.Where(bp => bp.Id == id);

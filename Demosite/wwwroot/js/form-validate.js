@@ -1,7 +1,7 @@
 "use strict";
 
 $(function () {
-  var form = $("form");
+  var form = $("form:not(.search-form)");
   form.each(function () {
     $(this).attr("novalidate", "");
     $(this).validate({
