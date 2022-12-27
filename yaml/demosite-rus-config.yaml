@@ -26,6 +26,8 @@ data:
   NewsNotificationServiceConfig__EmailSender__UseSsl: "#{notificationService.useSsl}#"
   NewsNotificationServiceConfig__EmailConfirmationExpirationTime: "#{notificationService.emailConfirmationExpirationTime}#"
   Cache__Duration: "#{cacheSettings.duration}#"
+  HttpCacheControl__MaxAge: "#{httpCacheControl.maxAge}#"
+  HttpCacheControl__StaticFilesMaxAge: "#{httpCacheControl.staticFilesMaxAge}#"
   CaptchaSettings__IsActive: "#{captchaSettings.isActive}#"
   CaptchaSettings__DefaultKey: "#{captchaSettings.defaultKey}#"
   CaptchaSettings__BackgroundNoiseLevel: "#{captchaSettings.backgroundNoiseLevel}#"
