@@ -80,15 +80,18 @@
         }
       }).done(function (html) {
         $("[data-news-section]", newsPage).html(html);
-        var selectYear = $("select#year").val(); 
-        var monthList = dateFilterList.filter(m => selectYear == 0 || m.getFullYear() == selectYear)
-          .map(m => m.getMonth() + 1);
-        $("select#month option[data-month-filter]").each(function () {
-          if (monthList.includes(parseInt($(this).val())))
-            $(this).show()
-          else
-            $(this).hide()
-        });
+        var selectYear = $("select#year").val();
+        if (dateFilterList?.size) {
+          var monthList = dateFilterList.has(selectYear)
+            ? dateFilterList.get(selectYear)
+            : new Array();
+          $("select#month option[data-month-filter]").each(function () {
+            if (!monthList.length || monthList.includes(parseInt($(this).val())))
+              $(this).show()
+            else
+              $(this).hide()
+          });
+        }
         initPagination();
       });
     }

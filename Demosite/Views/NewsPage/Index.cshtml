@@ -3,7 +3,7 @@
 @using Microsoft.AspNetCore.Html
 
 @{
-    var dateList = Model.Items.Select(i => new DateTime(i.Date.Year, i.Date.Month, 1)).Distinct().ToArray();
+    var dateList = Model.DateDictionary;
 }
 
 <main class="main">
@@ -21,7 +21,7 @@
                                 <div class="select__box">
                                     <select id="year">
                                         <option value="0">Все</option>
-                                        @foreach (int year in dateList.Select(item => item.Year).Distinct().OrderByDescending(item => item))
+                                        @foreach (int year in dateList.Keys.OrderByDescending(item => item))
                                         {
                                             <option value="@year">@year</option>
                                         }
@@ -37,7 +37,7 @@
                                 <div class="select__box">
                                     <select id="month">
                                       <option value="0">Все</option>
-                                        @foreach (int month in dateList.Select(item => item.Month).Distinct().OrderBy(item => item))
+                                        @foreach (int month in dateList.Values.SelectMany(array => array).Distinct().OrderByDescending(item => item))
                                       {
                                             <option value="@month" data-month-filter>@CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month)</option>
                                       }
@@ -126,5 +126,5 @@
 </main>
 
 <script>
-    var dateFilterList = JSON.parse('@Html.Raw(Json.Serialize(dateList))').map(string => new Date(string));
+    var dateFilterList = new Map(Object.entries(JSON.parse('@Html.Raw(Json.Serialize(dateList))')));
 </script>

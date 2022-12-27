@@ -19,7 +19,7 @@ namespace Demosite.ViewModels.Builders
         {
             NewsPageViewModel viewModel = new() { Header = newsPage.Title };
             IEnumerable<Interfaces.Dto.NewsPostDto> news = _newsService.GetAllPosts(year, month, categoryId);
-            viewModel.DateDictionary = news.ToDictionary(key => key.PostDate.Year, value => news.Where(news => news.PostDate.Year == value.PostDate.Year).Select(news => news.PostDate.Month).ToArray());
+            viewModel.DateDictionary = _newsService.GetPostsDateDictionary(categoryId);
             viewModel.Items.AddRange(news.Skip((pageNumber - 1) * count)
                                   .Take(count)
                                   .Select(p => new NewsItemInListViewModel
@@ -69,11 +69,6 @@ namespace Demosite.ViewModels.Builders
                 Id = x.Id,
                 Title = x.Title
             }).ToList();
-        }
-
-        public Dictionary<int, int[]> BuildDateDictionary()
-        {
-
         }
     }
 }

@@ -5,7 +5,6 @@ using Demosite.Postgre.DAL;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 
 namespace Demosite.Services
@@ -130,14 +129,21 @@ namespace Demosite.Services
                         .ToArray();
         }
 
-        public Dictionary<int, int[]>GetPostDateDictionary()
+        public Dictionary<int, int[]> GetPostsDateDictionary(int? categoryId)
         {
-            const string cacheKey = nameof(NewsService) + "." + nameof(GetPostDateDictionary);
-            return _memoryCache.GetFromCache<Dictionary<int, int[]>>(cacheKey, () =>
+            var cacheTags = _cacheTagUtilities.Merge(CacheTags.NewsPost);
+            return _memoryCache.GetFromCache<Dictionary<int, int[]>>(GetCacheKeyPostDate(categoryId), cacheTags, () =>
             {
-                Dictionary<int, int[]> result = (_qpDataContext as PostgreQpDataContext).NewsPosts.AsNoTracking()
-                    .Where(news => news.PostDate.HasValue)
-                    .GroupBy(keySelector => keySelector.PostDate.Value.Year, val => val.PostDate.Value.Month)
+                var query = (_qpDataContext as PostgreQpDataContext).NewsPosts.AsNoTracking()
+                    .Where(news => news.PostDate.HasValue);
+                if(categoryId.HasValue)
+                {
+                    query = query.Where(news => news.Category_ID.Value == categoryId.Value);
+                }
+                var queryFromDB = query.Select(news => new { year = news.PostDate.Value.Year, month = news.PostDate.Value.Month })
+                    .Distinct()
+                    .AsEnumerable();
+                Dictionary<int, int[]> result = queryFromDB.GroupBy(keySelector => keySelector.year, val => val.month)
                     .ToDictionary(key => key.Key, value => value.ToArray());
                 return result;
             });
@@ -151,6 +157,11 @@ namespace Demosite.Services
         private static string GetCacheKey(int? year = null, int? month = null, int? categoryId = null)
         {
             return $"news_post_all_{(year.HasValue ? year.Value : string.Empty)}_{(month.HasValue ? month.Value : string.Empty)}_{(categoryId.HasValue ? categoryId.Value : string.Empty)}";
+        }
+
+        private static string GetCacheKeyPostDate(int? categoryId = null)
+        {
+            return nameof(GetPostsDateDictionary) + (categoryId.HasValue ? $"_category_{categoryId}" : $"_withoutcategory");
         }
     }
 }

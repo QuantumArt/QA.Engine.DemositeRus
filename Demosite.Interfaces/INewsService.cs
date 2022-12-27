@@ -11,6 +11,6 @@ namespace Demosite.Interfaces
         IEnumerable<NewsCategoryDto> GetCategories();
         NewsPostDto[] GetPosts(int[] ids);
         IEnumerable<NewsPostDto> GetAllPosts(PostRequest request, int[] categoryIds = null);
-        Dictionary<int, int[]> GetPostDateDictionary();
+        Dictionary<int, int[]> GetPostsDateDictionary(int? categoryId);
     }
 }
