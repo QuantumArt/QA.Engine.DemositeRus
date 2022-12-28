@@ -78,7 +78,7 @@
           var monthList = dateFilterList.has(selectYear)
             ? dateFilterList.get(selectYear)
             : new Array();
-          $("select#month option[data-month-filter]").each(function () {
+          $("select#month > option[data-month-filter]").each(function () {
             if (!monthList.length || monthList.includes(parseInt($(this).val())))
               $(this).show()
             else

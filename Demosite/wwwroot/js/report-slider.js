@@ -17,12 +17,6 @@ var reportSlider = {
       });
       _self.setSettings({
         slidesToShow: 3,
-        responsive: [{
-          breakpoint: 1024,
-          settings: {
-            slidesToShow: 3,
-          },
-        },],
       });
       utils.initSlick($(this), _self.sliderSettings);
     });

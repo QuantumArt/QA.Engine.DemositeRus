@@ -24,7 +24,7 @@
               @foreach (var file in titelReport.Files)
               {
                 <div class="report-card__doc">
-                  <a class="document q4-icon_link" href=@Uri.EscapeDataString(file.FileUrl) type="">@file.Title</a>
+                  <a class="document q4-icon_link" href=@Uri.EscapeDataString(file.FileUrl)>@file.Title</a>
                 </div>
               }
 
@@ -70,7 +70,7 @@
                         @foreach (var file in item.Files)
                         {
                           <div class="report-card__doc">
-                            <a class="document q4-icon_link" href=@Uri.EscapeDataString(file.FileUrl) type="">@file.Title</a>
+                            <a class="document q4-icon_link" href=@Uri.EscapeDataString(file.FileUrl)>@file.Title</a>
                           </div>
                         }
                       </div>

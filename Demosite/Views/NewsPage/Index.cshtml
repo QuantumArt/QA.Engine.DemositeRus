@@ -36,11 +36,11 @@
                                 <label class="select__label" for="month">Выберите месяц</label>
                                 <div class="select__box">
                                     <select id="month">
-                                      <option value="0">Все</option>
+                                        <option value="0">Все</option>
                                         @foreach (int month in dateList.Values.SelectMany(array => array).Distinct().OrderByDescending(item => item))
-                                      {
+                                        {
                                             <option value="@month" data-month-filter>@CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month)</option>
-                                      }
+                                        }
                                     </select>
                                 </div>
                             </div>
