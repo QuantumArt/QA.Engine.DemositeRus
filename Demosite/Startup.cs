@@ -250,6 +250,7 @@ namespace Demosite
                 app.UseCaptchaImage("/captcha");
             }
 
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
             PostgreQpDataContext.SetHttpContextAccessor(app.ApplicationServices.GetRequiredService<IHttpContextAccessor>());
         }
     }

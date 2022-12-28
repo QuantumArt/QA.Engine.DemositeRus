@@ -5,15 +5,9 @@
 "use strict";
 
 (function ($) {
-
   function init() {
-    
     initNewsPage();
-    
-
   }
-
-  
 
   function initNewsPage() {
     var newsPage = $("[data-news-page]");
@@ -61,7 +55,6 @@
       });
     }
 
-
     function loadNewsList() {
       let yearVal = year.val() > 0 ? year.val() : null;
       let monthVal = month.val() > 0 ? month.val() : null;
@@ -81,7 +74,7 @@
       }).done(function (html) {
         $("[data-news-section]", newsPage).html(html);
         var selectYear = $("select#year").val();
-        if (dateFilterList?.size) {
+        if (dateFilterList !== undefined && dateFilterList.size) {
           var monthList = dateFilterList.has(selectYear)
             ? dateFilterList.get(selectYear)
             : new Array();
@@ -95,8 +88,6 @@
         initPagination();
       });
     }
-
-
   }
 
   function debounce(func, timeout = 500) {
