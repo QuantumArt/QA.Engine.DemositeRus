@@ -136,7 +136,7 @@ namespace Demosite.Services
             {
                 var query = (_qpDataContext as PostgreQpDataContext).NewsPosts.AsNoTracking()
                     .Where(news => news.PostDate.HasValue);
-                if(categoryId.HasValue)
+                if (categoryId.HasValue)
                 {
                     query = query.Where(news => news.Category_ID.Value == categoryId.Value);
                 }
@@ -151,17 +151,25 @@ namespace Demosite.Services
 
         private static string GetCacheKey(int id, int? categoryId = null)
         {
-            return $"news_post_{id}" + (categoryId.HasValue ? $"_category_{categoryId}" : $"_withoutcategory");
+            string key = $"news_post_{id}";
+            if (categoryId.HasValue) key = key + $"_category_{categoryId}";
+            return key;
         }
 
         private static string GetCacheKey(int? year = null, int? month = null, int? categoryId = null)
         {
-            return $"news_post_all_{(year.HasValue ? year.Value : string.Empty)}_{(month.HasValue ? month.Value : string.Empty)}_{(categoryId.HasValue ? categoryId.Value : string.Empty)}";
+            string key = "news_post_all";
+            if (year.HasValue) key = key + $"_{year}";
+            if (month.HasValue) key = key + $"_{month}";
+            if (categoryId.HasValue) key = key + $"_category_{categoryId}";
+            return key.ToString();
         }
 
         private static string GetCacheKeyPostDate(int? categoryId = null)
         {
-            return nameof(GetPostsDateDictionary) + (categoryId.HasValue ? $"_category_{categoryId}" : $"_withoutcategory");
+            string key = nameof(GetPostsDateDictionary);
+            if (categoryId.HasValue) key = key + $"_category_{categoryId}";
+            return key;
         }
     }
 }
