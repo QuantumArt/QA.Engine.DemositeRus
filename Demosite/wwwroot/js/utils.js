@@ -1,7 +1,5 @@
 "use strict";
 
-const COUNT_SLIDES_SHOW = 3;
-
 var utils = {
   _getPropName: function _getPropName(dataAttr) {
     if (!dataAttr) return "";

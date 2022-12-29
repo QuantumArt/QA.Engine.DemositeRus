@@ -22,20 +22,21 @@ public class SearchResultDocument
     public string? Description { get; }
 
     [JsonPropertyName("category")]
-    public string? Category { get; }
+    public int? Category { get; }
 
+    [JsonConstructor]
     public SearchResultDocument(
-        string? _id,
-        string? _index,
-        decimal _score,
+        string? id,
+        string? index,
+        decimal score,
         string? searchUrl,
         string? title,
         string? description,
-        string? category)
+        int? category)
     {
-        Id = _id;
-        Index = _index;
-        Score = _score;
+        Id = id;
+        Index = index;
+        Score = score;
         SearchUrl = searchUrl;
         Title = title;
         Description = description;

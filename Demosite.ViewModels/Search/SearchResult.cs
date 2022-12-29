@@ -35,7 +35,7 @@ public class SearchResult
                 x.Title ?? string.Empty,
                 x.SearchUrl ?? string.Empty,
                 x.Description ?? string.Empty,
-                x.Category ?? string.Empty))
+                x.Category?.ToString() ?? string.Empty))
             .ToArray();
     }
 }

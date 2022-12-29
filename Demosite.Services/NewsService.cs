@@ -139,7 +139,7 @@ namespace Demosite.Services
                     .Select(np => new { np.PostDate.Value.Year, np.PostDate.Value.Month })
                     .AsEnumerable();
                 Dictionary<int, int[]> result = query.GroupBy(keySelector => keySelector.Year, val => val.Month)
-                    .ToDictionary(key => key.Key, value => value.ToArray());
+                    .ToDictionary(key => key.Key, value => value.Distinct().ToArray());
                 return result;
             });
         }

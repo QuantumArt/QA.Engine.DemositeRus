@@ -10,6 +10,7 @@
     "inputFiles": [
       "wwwroot/js/jquery-3.6.0.min.js",
       "wwwroot/js/moment-with-locales.js",
+      "wwwroot/js/constants.js",
       "wwwroot/js/selectors.js",
       "wwwroot/js/utils.js",
       "wwwroot/js/site.js",
