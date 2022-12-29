@@ -1,7 +1,9 @@
 ﻿import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
 import { WidgetComponent, WidgetDetails } from '@quantumart/qa-engine-page-structure-angular';
+import { FeedbackRequestResult, FeedbackWidgetService } from './feedback-widget.service';
+import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 export interface FeedbackWidgetDetails extends WidgetDetails {
 }
@@ -12,11 +14,13 @@ const PHONE_OR_EMAIL = /^((\s*[\w.-]+@[\w-]+\.([\w-]+\.)?[A-Za-z]{2,8}\s*)|(((8|
   selector: 'qa-feedback-widget',
   templateUrl: './feedback-widget.component.html',
   styleUrls: ['./feedback-widget.component.scss'],
+  providers: [FeedbackWidgetService],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FeedbackWidgetComponent implements WidgetComponent {
   @Input()
   public widget!: FeedbackWidgetDetails;
+  public result$?: Observable<FeedbackRequestResult>;
 
   public feedbackForm = new FormGroup({
     name: new FormControl('', Validators.required),
@@ -27,7 +31,7 @@ export class FeedbackWidgetComponent implements WidgetComponent {
     text: new FormControl('', Validators.required)
   });
 
-  constructor(private readonly http: HttpClient) {
+  constructor(private readonly feedbackWidgetService: FeedbackWidgetService) {
   }
 
   public get name() {
@@ -43,7 +47,6 @@ export class FeedbackWidgetComponent implements WidgetComponent {
   }
 
   public onSubmit(): void {
-    //TODO: send form
-    //this.http.post()
+    this.result$ = this.feedbackWidgetService.send({ ...this.feedbackForm.value });
   }
 }
