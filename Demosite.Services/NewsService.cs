@@ -135,15 +135,10 @@ namespace Demosite.Services
             return _memoryCache.GetFromCache<Dictionary<int, int[]>>(GetCacheKeyPostDate(categoryId), cacheTags, () =>
             {
                 var query = (_qpDataContext as PostgreQpDataContext).NewsPosts.AsNoTracking()
-                    .Where(news => news.PostDate.HasValue);
-                if (categoryId.HasValue)
-                {
-                    query = query.Where(news => news.Category_ID.Value == categoryId.Value);
-                }
-                var queryFromDB = query.Select(news => new { year = news.PostDate.Value.Year, month = news.PostDate.Value.Month })
-                    .Distinct()
+                    .Where(np => np.PostDate.HasValue && (categoryId == null || np.Category_ID == categoryId))
+                    .Select(np => new { np.PostDate.Value.Year, np.PostDate.Value.Month })
                     .AsEnumerable();
-                Dictionary<int, int[]> result = queryFromDB.GroupBy(keySelector => keySelector.year, val => val.month)
+                Dictionary<int, int[]> result = query.GroupBy(keySelector => keySelector.Year, val => val.Month)
                     .ToDictionary(key => key.Key, value => value.ToArray());
                 return result;
             });
@@ -151,30 +146,21 @@ namespace Demosite.Services
 
         private static string GetCacheKey(int id, int? categoryId = null)
         {
-            string key = $"news_post_{id}";
-            if (categoryId.HasValue)
-                key += $"_category_{categoryId}";
-            return key;
+            return $"news_post_{id}{GetKeyComponent(categoryId)}";
         }
 
         private static string GetCacheKey(int? year = null, int? month = null, int? categoryId = null)
         {
-            string key = "news_post_all";
-            if (year.HasValue)
-                key += $"_{year}";
-            if (month.HasValue)
-                key += $"_{month}";
-            if (categoryId.HasValue)
-                key += $"_category_{categoryId}";
-            return key;
+            return $"news_post_all{GetKeyComponent(year)}{GetKeyComponent(month)}{GetKeyComponent(categoryId)}";
         }
 
         private static string GetCacheKeyPostDate(int? categoryId = null)
         {
-            string key = nameof(GetPostsDateDictionary);
-            if (categoryId.HasValue)
-                key += $"_category_{categoryId}";
-            return key;
+            return nameof(GetPostsDateDictionary) + GetKeyComponent(categoryId);
+        }
+        private static string GetKeyComponent(int? value)
+        {
+            return value.HasValue ? $"_{value}" : string.Empty;
         }
     }
 }

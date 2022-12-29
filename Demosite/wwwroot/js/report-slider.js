@@ -15,9 +15,6 @@ var reportSlider = {
       _self.setSettings({
         appendArrows: $(this).parent().find(reportSlider.nav)
       });
-      _self.setSettings({
-        slidesToShow: 3,
-      });
       utils.initSlick($(this), _self.sliderSettings);
     });
   }

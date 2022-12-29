@@ -1,26 +1,7 @@
 "use strict";
 
 var tabsCardSlider = {
-  sliderSettings: {
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    infinite: false,
-    responsive: [{
-      breakpoint: 1024,
-      settings: {
-        slidesToShow: 2,
-        arrows: false,
-        dots: true
-      }
-    }, {
-      breakpoint: 768,
-      settings: {
-        slidesToShow: 1,
-        arrows: false,
-        dots: true
-      }
-    }]
-  },
+  sliderSettings: utils.getDefaultSliderSettings(),
   setSettings: function setSettings(settings) {
     this.sliderSettings = $.extend(true, this.sliderSettings, settings);
   },
@@ -46,15 +27,18 @@ var tabsCardSlider = {
           responsive: [{
             breakpoint: 1024,
             settings: {
+              arrows: false,
+              dots: true,
               appendDots: $sliderNav
             }
           }, {
             breakpoint: 768,
             settings: {
+              arrows: false,
+              dots: true,
               appendDots: $sliderNav
             }
             }],
-          slidesToShow: 3
         });
         utils.initSlick($slider, _self.sliderSettings);
       } else {

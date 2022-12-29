@@ -12,14 +12,9 @@ namespace Demosite.ViewModels
         public string Title { get; set; }
         public string Alias { get; set; }
         public string Href { get; set; }
-        public List<MenuItem> Children { get; set; }
+        public List<MenuItem> Children { get; set; } = new();
         public int Order { get; set; }
         public bool IsActive { get; set; }
         public bool HasActiveChild { get; set; }
-
-        public MenuItem()
-        {
-            Children = new();
-        }
     }
 }

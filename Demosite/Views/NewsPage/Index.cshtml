@@ -2,10 +2,6 @@
 @model Demosite.ViewModels.NewsPageViewModel
 @using Microsoft.AspNetCore.Html
 
-@{
-    var dateList = Model.DateDictionary;
-}
-
 <main class="main">
     @await Component.WidgetZone(Html, "ContentAbove")
     <div class="page page-news" data-news-page>
@@ -21,7 +17,7 @@
                                 <div class="select__box">
                                     <select id="year">
                                         <option value="0">Все</option>
-                                        @foreach (int year in dateList.Keys.OrderByDescending(item => item))
+                                        @foreach (int year in Model.DateDictionary.Keys.OrderByDescending(item => item))
                                         {
                                             <option value="@year">@year</option>
                                         }
@@ -37,7 +33,7 @@
                                 <div class="select__box">
                                     <select id="month">
                                         <option value="0">Все</option>
-                                        @foreach (int month in dateList.Values.SelectMany(array => array).Distinct().OrderByDescending(item => item))
+                                        @foreach (int month in Model.DateDictionary.Values.SelectMany(array => array).Distinct().OrderByDescending(item => item))
                                         {
                                             <option value="@month" data-month-filter>@CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month)</option>
                                         }
@@ -126,5 +122,5 @@
 </main>
 
 <script>
-    var dateFilterList = new Map(Object.entries(JSON.parse('@Html.Raw(Json.Serialize(dateList))')));
+    var dateFilterList = new Map(Object.entries(JSON.parse('@Html.Raw(Json.Serialize(Model.DateDictionary))')));
 </script>

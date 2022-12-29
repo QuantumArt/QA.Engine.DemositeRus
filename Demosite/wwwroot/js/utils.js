@@ -1,5 +1,7 @@
 "use strict";
 
+const COUNT_SLIDES_SHOW = 3;
+
 var utils = {
   _getPropName: function _getPropName(dataAttr) {
     if (!dataAttr) return "";
@@ -40,7 +42,7 @@ var utils = {
   // sliders utils
   getDefaultSliderSettings: function getDefaultSliderSettings() {
     return {
-      slidesToShow: 3,
+      slidesToShow: COUNT_SLIDES_SHOW,
       slidesToScroll: 1,
       infinite: false,
       responsive: [{
