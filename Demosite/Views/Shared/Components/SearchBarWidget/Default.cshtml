@@ -1,13 +1,20 @@
 ﻿@using Demosite.ViewModels.SearchBar;
 @model SearchBarViewModel;
 
-<form asp-action="Search" asp-controller="SearchResultPage" asp-antiforgery="false" asp-route-withCorrect = "true">
-    <div class="form__row">
+<form method="get"
+      asp-action="Search"
+      asp-controller="SearchResultPage"
+      class="search-form"
+      autocomplete="off">
+    <div class="form__row search-form__row">
         <div class="search-input">
-            <input asp-for="Query" required minlength="3" maxlength="100" class="form-control autoComplete" size="16">
+            <input asp-for="Query" required minlength="3" maxlength="100" class="form-control autoComplete" size="16" spellcheck=false autocorrect="off" autocomplete="off" autocapitalize="off">
+            <input name="withCorrect" type="hidden" value="true" />
         </div>
-        <button class="btn btn-light rounded-end" type="submit">Найти</button>
+        <div class="search-btn__wrapper">
+            <button class="search-btn" type="submit">Найти</button>
+            <div class="search-btn__fake"></div>
+        </div>
     </div>
+    <div class="search-form__error search-form__error--hidden">Минимальная длина 3 символа</div>
 </form>
-
-

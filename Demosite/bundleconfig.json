@@ -1,7 +1,6 @@
 [
   {
     "outputFileName": "wwwroot/demosite.min.css",
-    // An array of relative input file paths. Globbing patterns supported
     "inputFiles": [
       "wwwroot/css/*.css"
     ]
@@ -33,14 +32,12 @@
       "wwwroot/js/report-slider.js",
       "wwwroot/js/feedback-form.js",
       "wwwroot/js/search/autoComplete.js",
-      "wwwroot/js/search/search-on-results.js"
+      "wwwroot/js/search/search.js"
     ],
-    // Optionally specify minification options
     "minify": {
       "enabled": true,
       "renameLocals": true
     },
-    // Optionally generate .map file
     "sourceMap": false
   }
 ]

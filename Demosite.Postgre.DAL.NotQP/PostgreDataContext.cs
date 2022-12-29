@@ -1,7 +1,7 @@
-using Microsoft.EntityFrameworkCore;
 using Demosite.Interfaces;
 using Demosite.Interfaces.Dto.Enums;
 using Demosite.Postgre.DAL.NotQP.Models;
+using Microsoft.EntityFrameworkCore;
 using Npgsql;
 using System;
 using System.Text.Json;
