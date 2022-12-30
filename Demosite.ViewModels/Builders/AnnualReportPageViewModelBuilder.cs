@@ -17,14 +17,14 @@ namespace Demosite.ViewModels.Builders
         public AnnualReportsPageViewModel BuildForm(IAbstractPage page, IEnumerable<int> ids)
         {
             AnnualReportsPageViewModel viewModel = new() { Title = page.Title };
-            ReportItem[] reports = _reportsService.GetReports(ids).Select(Map).ToArray();
+            AnnualReportsItem[] reports = _reportsService.GetReports(ids).Select(Map).ToArray();
             viewModel.Reports.AddRange(reports);
             viewModel.BreadCrumbs = page.GetBreadCrumbs();
             return viewModel;
         }
-        private ReportItem Map(ReportDto model)
+        private AnnualReportsItem Map(ReportDto model)
         {
-            return new ReportItem()
+            return new AnnualReportsItem()
             {
                 Id = model.Id,
                 Title = model.Title,
@@ -33,9 +33,9 @@ namespace Demosite.ViewModels.Builders
                 Files = model.ReportFiles.Select(Map).ToList()
             };
         }
-        private ReportFileItem Map(ReportFileDto file)
+        private AnnualReportsFileItem Map(ReportFileDto file)
         {
-            return new ReportFileItem()
+            return new AnnualReportsFileItem()
             {
                 Id = file.Id,
                 Title = file.Title,

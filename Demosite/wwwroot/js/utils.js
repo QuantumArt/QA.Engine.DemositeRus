@@ -40,7 +40,7 @@ var utils = {
   // sliders utils
   getDefaultSliderSettings: function getDefaultSliderSettings() {
     return {
-      slidesToShow: 3,
+      slidesToShow: COUNT_SLIDES_SHOW,
       slidesToScroll: 1,
       infinite: false,
       responsive: [{

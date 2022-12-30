@@ -18,7 +18,6 @@ namespace Demosite.Controllers
         {
             IEnumerable<int> ids = CurrentItem.ReportsItemIds;
             AnnualReportsPageViewModel viewModel = _modelBuilder.BuildForm(CurrentItem, ids);
-            viewModel.CountReportsToShow = CurrentItem.CountReportToShow;
             return View(viewModel);
         }
     }

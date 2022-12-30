@@ -19,6 +19,7 @@ namespace Demosite.ViewModels.Builders
         {
             NewsPageViewModel viewModel = new() { Header = newsPage.Title };
             IEnumerable<Interfaces.Dto.NewsPostDto> news = _newsService.GetAllPosts(year, month, categoryId);
+            viewModel.DateDictionary = _newsService.GetPostsDateDictionary(categoryId);
             viewModel.Items.AddRange(news.Skip((pageNumber - 1) * count)
                                   .Take(count)
                                   .Select(p => new NewsItemInListViewModel

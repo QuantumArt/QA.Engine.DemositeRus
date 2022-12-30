@@ -34,7 +34,7 @@ public class SearchResultPageController : ContentControllerBase<SearchResultPage
 
     public async Task<IActionResult> Search([FromQuery] string query, [FromQuery] bool withCorrect, CancellationToken token)
     {
-        if(string.IsNullOrWhiteSpace(query))
+        if (string.IsNullOrWhiteSpace(query))
         {
             return BadRequest("The parameter 'query' is null or empty");
         }

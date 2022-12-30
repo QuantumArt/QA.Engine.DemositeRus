@@ -5,7 +5,7 @@ namespace Demosite.ViewModels
 {
     public class NewsDetailsViewModel
     {
-        public List<BreadCrumbViewModel> BreadCrumbs { get; set; } = new List<BreadCrumbViewModel>();
+        public List<BreadCrumbViewModel> BreadCrumbs { get; set; } = new();
         public string Title { get; set; }
         public string CategoryName { get; set; }
         public DateTime Date { get; set; }

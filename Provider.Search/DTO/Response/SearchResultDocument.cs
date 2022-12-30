@@ -22,8 +22,9 @@ public class SearchResultDocument
     public string? Description { get; }
 
     [JsonPropertyName("category")]
-    public string? Category { get; }
+    public int? Category { get; }
 
+    [JsonConstructor]
     public SearchResultDocument(
         string? id,
         string? index,
@@ -31,7 +32,7 @@ public class SearchResultDocument
         string? searchUrl,
         string? title,
         string? description,
-        string? category)
+        int? category)
     {
         Id = id;
         Index = index;

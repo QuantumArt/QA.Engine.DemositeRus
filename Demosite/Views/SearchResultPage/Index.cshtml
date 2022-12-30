@@ -4,34 +4,37 @@
 
 <section class="page__section">
     <div class="wrapper">
-                <h1>Поиск по сайту</h1>
-                <div class="nav__search px-0">
-                    @await Component.WidgetZone(Html, "SiteSearchHeaderZone")
-                </div>
-                @if (!string.IsNullOrEmpty(Model?.SearchCorrection?.Text))
+        <h1>Поиск по сайту</h1>
+        <div class="nav__search px-0">
+            @await Component.WidgetZone(Html, "SiteSearchHeaderZone")
+        </div>
+        @if (!string.IsNullOrEmpty(Model?.SearchCorrection?.Text))
+        {
+            var resultSearch = Model.SearchCorrection.ResultsAreCorrected ? Model.SearchCorrection.Snippet : Model.SearchCorrection.OriginalQuery;
+            var insteadSearch = Model.SearchCorrection.ResultsAreCorrected ? Model.SearchCorrection.OriginalQuery : Model.SearchCorrection.Text;
+            <p class="mb-0">Показаны результаты по запросу: @Html.Raw(resultSearch)</p>
+            <p>Искать вместо этого: <a href='@Url.Action("Search", "SearchResultPage", new {query = insteadSearch, withCorrect = !Model.SearchCorrection.ResultsAreCorrected})' class="search-input__initial">@insteadSearch</a> </p>
+        }
+        <div class="nav-search__results-count">Всего найдено: @(Model != null ? @Model.DocumentsCount : "0")</div>
+        @if (Model?.DocumentsCount > 0)
+        {
+            <ul>
+                @foreach (Document document in Model.Documents)
                 {
-                    var resultSearch = Model.SearchCorrection.ResultsAreCorrected ? Model.SearchCorrection.Snippet : Model.SearchCorrection.OriginalQuery;
-                    var insteadSearch = Model.SearchCorrection.ResultsAreCorrected ? Model.SearchCorrection.OriginalQuery : Model.SearchCorrection.Text;
-                    <p class="mb-0">Показаны результаты по запросу: @Html.Raw(resultSearch)</p>
-                    <p>Искать вместо этого: <a href='@Url.Action("Search", "SearchResultPage", new {query = insteadSearch, withCorrect = !Model.SearchCorrection.ResultsAreCorrected})' class="search-input__initial">@insteadSearch</a> </p>
+                    <li class="card">
+                        <div class="card__wrapper">
+                            <h4 class="card-title">@document.Title</h4>
+                            <div class="seperator"></div>
+                            <p class="card-description">@document.Description</p>
+                            @if (Uri.TryCreate(document.SearchUrl, document.SearchUrlKind, out Uri uriResult))
+                            {
+                                <a class="card-link" href=@(uriResult.AbsoluteUri) class="btn btn-light">Перейти</a>
+                            }
+                        </div>
+                    </li>
                 }
-                <div class="nav-search__results-count">Всего найдено: @(Model != null ? @Model.DocumentsCount : "0")</div>
-            @if (Model?.DocumentsCount > 0)
-            {
-                <ul>
-                    @foreach (Document document in Model.Documents)
-                    {
-                        <li class="card">
-                            <div class="card__wrapper">
-                                    <h4 class="card-title">@document.Title</h4>
-                                    <div class="seperator"></div>
-                                    <p class="card-description">@document.Description</p>
-                                    <a class="card-link" href="@document.SearchUrl" class="btn btn-light">Перейти</a>
-                            </div>
-                        </li>
-                    }
-                </ul>
-                <vc:pagination pages-count="@Model.PagesCount" />
-            }
+            </ul>
+            <vc:pagination pages-count="@Model.PagesCount" />
+        }
     </div>
 </section>

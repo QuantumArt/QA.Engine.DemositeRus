@@ -19,6 +19,7 @@ namespace Demosite.Controllers
             _newsPageViewModelBuilder = newsPageViewModelBuilder;
             _siteSettingsProvider = siteSettings;
         }
+
         public async Task<IActionResult> Index()
         {
             int? categoryId = CurrentItem.CategoryId;
@@ -26,7 +27,6 @@ namespace Demosite.Controllers
             NewsPageViewModel viewModel = _newsPageViewModelBuilder.BuildList(CurrentItem, categoryId: categoryId, count: itemsOnPage);
             return View(viewModel);
         }
-
 
         public IActionResult Details(int id)
         {
