@@ -44,7 +44,6 @@ public class SearchApiClient
         var response = await _client.PostAsync(path, JsonContent.Create(request), token);
 
         response = response.EnsureSuccessStatusCode();
-        
         var result = await response.Content.ReadFromJsonAsync<TResponse>(cancellationToken: token);
 
         if (result is null)
