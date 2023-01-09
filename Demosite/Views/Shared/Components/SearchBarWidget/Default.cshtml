@@ -3,7 +3,7 @@
 
 <form asp-action="Search" asp-controller="SearchResultPage" asp-antiforgery="false" asp-route-withCorrect = "true" class="search-form ">
     <div class="form__row search-form__row ">
-        <div class="search-input">
+        <div class="search-input autoComplete_wrapper">
             <input asp-for="Query" required minlength="3" maxlength="100" class="form-control autoComplete" size="16" autocomplete="off" novalidate>
         </div>
         <div class="search-btn__wrapper">
