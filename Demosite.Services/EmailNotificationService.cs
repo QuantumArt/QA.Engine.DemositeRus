@@ -288,7 +288,7 @@ namespace Demosite.Services
             {
                 _logger.LogInformation(nameService + $": creating a list of news to send");
                 //получить дату последней рассылки
-                DateTime lastDateSend = DateTime.Now.Subtract(_settings.SendTimeInterval);
+                DateTimeOffset lastDateSend = DateTime.UtcNow.Subtract(_settings.SendTimeInterval);
                 //получить новые новости с даты последней расылки
                 IEnumerable<NewsPostDto> newNews = _newsService.GetAllPosts(new PostRequest()
                 {
@@ -303,7 +303,7 @@ namespace Demosite.Services
                 {
                     NewsIds = newNews.Select(n => n.Id).ToArray(),
                     Status = SendStatus.Created,
-                    Created = DateTime.Now
+                    Created = DateTime.UtcNow
                 };
                 _ = _dbContext.Distributions.Add(newDistribution);
                 _ = await _dbContext.SaveChangesAsync();
