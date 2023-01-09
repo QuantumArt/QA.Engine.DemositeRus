@@ -42,10 +42,8 @@ public class SearchApiClient
             path);
 
         var response = await _client.PostAsync(path, JsonContent.Create(request), token);
-
         response = response.EnsureSuccessStatusCode();
-
-        var result = await response.Content.ReadAsAsync<TResponse>(token);
+        var result = await response.Content.ReadFromJsonAsync<TResponse>(cancellationToken: token);
 
         if (result is null)
         {
@@ -54,7 +52,6 @@ public class SearchApiClient
         }
 
         _logger.LogInformation("Successfully obtained search results");
-
         return result;
     }
 }

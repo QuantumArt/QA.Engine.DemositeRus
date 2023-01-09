@@ -5,7 +5,6 @@ using Demosite.ViewModels;
 using Demosite.ViewModels.Builders;
 using Microsoft.AspNetCore.Mvc;
 using QA.DotNetCore.Engine.Routing;
-using System;
 using System.Threading.Tasks;
 
 namespace Demosite.Controllers
@@ -20,6 +19,7 @@ namespace Demosite.Controllers
             _newsPageViewModelBuilder = newsPageViewModelBuilder;
             _siteSettingsProvider = siteSettings;
         }
+
         public async Task<IActionResult> Index()
         {
             int? categoryId = CurrentItem.CategoryId;
@@ -27,7 +27,6 @@ namespace Demosite.Controllers
             NewsPageViewModel viewModel = _newsPageViewModelBuilder.BuildList(CurrentItem, categoryId: categoryId, count: itemsOnPage);
             return View(viewModel);
         }
-
 
         public IActionResult Details(int id)
         {

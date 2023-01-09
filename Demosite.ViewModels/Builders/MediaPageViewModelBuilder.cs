@@ -1,6 +1,7 @@
 using Demosite.Interfaces;
 using Demosite.Interfaces.Dto;
 using Demosite.ViewModels.Helpers;
+using Demosite.ViewModels;
 using QA.DotNetCore.Engine.Abstractions;
 using System.Linq;
 
@@ -16,14 +17,14 @@ namespace Demosite.ViewModels.Builders
         public MediaPageViewModel BuildList(IAbstractPage widget)
         {
             MediaPageViewModel viewModel = new() { Title = widget.Title };
-            EventItem[] events = _mediaService.GetAllEvents().Select(Map).ToArray();
+            MediaPageEventItem[] events = _mediaService.GetAllEvents().Select(Map).ToArray();
             viewModel.Events.AddRange(events);
             viewModel.BreadCrumbs = widget.GetBreadCrumbs();
             return viewModel;
         }
-        private EventItem Map(EventDto model)
+        private MediaPageEventItem Map(EventDto model)
         {
-            return new EventItem()
+            return new MediaPageEventItem()
             {
                 Id = model.Id,
                 Title = model.Title,
@@ -33,9 +34,9 @@ namespace Demosite.ViewModels.Builders
             };
         }
 
-        private EventImageItem Map(EventImageDto image)
+        private MediaPageEventImageItem Map(EventImageDto image)
         {
-            return new EventImageItem()
+            return new MediaPageEventImageItem()
             {
                 Title = image.Title,
                 SortOrder = image.SortOrder ?? 100,

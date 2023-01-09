@@ -1,0 +1,1 @@
+const COUNT_SLIDES_SHOW = 3;

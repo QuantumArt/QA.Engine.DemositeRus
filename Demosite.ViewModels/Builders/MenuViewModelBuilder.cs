@@ -1,4 +1,5 @@
 using Demosite.Interfaces;
+using Demosite.Postgre.DAL;
 using Microsoft.Extensions.DependencyInjection;
 using QA.DotNetCore.Engine.Abstractions;
 using QA.DotNetCore.Engine.Abstractions.Targeting;
@@ -15,6 +16,7 @@ namespace Demosite.ViewModels.Builders
         private readonly ITargetingUrlTransformator _urlTransformator;
         private ICacheService _memoryCache { get; set; }
         private readonly IServiceProvider _serviceProvider;
+        private CacheTagUtilities _cacheTagUtilities { get; set; }
         public MenuViewModelBuilder(ITargetingUrlTransformator urlTransformator,
                                     IServiceProvider serviceProvider)
         {
@@ -25,8 +27,13 @@ namespace Demosite.ViewModels.Builders
         public MenuViewModel Build(IStartPage startPage, AbstractPage currentPage)
         {
             using IServiceScope scope = _serviceProvider.CreateScope();
+
+            _cacheTagUtilities = scope.ServiceProvider.GetService<CacheTagUtilities>();
+            string[] cacheTags = _cacheTagUtilities.Merge(CacheTags.QPAbstractItem);
+
             _memoryCache = scope.ServiceProvider.GetService<ICacheService>();
-            return _memoryCache.GetFromCache<MenuViewModel>(GetCacheKey(startPage.Id), () =>
+
+            return _memoryCache.GetFromCache<MenuViewModel>(GetCacheKey(startPage.Id), cacheTags, () =>
             {
                 if (startPage == null) return null;
 

@@ -41,7 +41,7 @@ spec:
   selector:
     app: #{appName}#
 ---
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: #{appName}#
@@ -51,6 +51,9 @@ spec:
   - host: #{appHost}#
     http:
       paths:
-      - backend:
-          serviceName: #{appName}#
-          servicePort: 80
+      - pathType: ImplementationSpecific
+        backend:
+          service:
+            name: #{appName}#
+            port:
+              number: 80

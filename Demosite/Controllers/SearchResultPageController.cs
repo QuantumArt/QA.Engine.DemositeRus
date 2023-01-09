@@ -32,8 +32,13 @@ public class SearchResultPageController : ContentControllerBase<SearchResultPage
         return View();
     }
 
-    public async Task<IActionResult> Search(string query, bool withCorrect, CancellationToken token)
+    public async Task<IActionResult> Search([FromQuery] string query, [FromQuery] bool withCorrect, CancellationToken token)
     {
+        if (string.IsNullOrWhiteSpace(query))
+        {
+            return BadRequest("The parameter 'query' is null or empty");
+        }
+
         int pageNumber = Request.CurrentPaginationPageNumber();
         pageNumber--; // start from zero page
         int itemsPerPage = await _siteSettingsProvider.GetSearchPaginatedItemsCountAsync(token);

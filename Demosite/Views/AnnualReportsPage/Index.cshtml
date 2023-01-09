@@ -24,7 +24,7 @@
               @foreach (var file in titelReport.Files)
               {
                 <div class="report-card__doc">
-                  <a class="document q4-icon_link" href=@Uri.EscapeUriString(file.FileUrl) type="">@file.Title</a>
+                  <a class="document q4-icon_link" href=@Uri.EscapeDataString(file.FileUrl)>@file.Title</a>
                 </div>
               }
 
@@ -43,7 +43,7 @@
       <div class="page__block">
         <h3 class="h3">Archive</h3>
         <div class="report-slider" data-rs>
-          <div class="report-slider__slides" data-rs-slider data-slider-count="@Model.CountReportsToShow">
+          <div class="report-slider__slides" data-rs-slider >
             @foreach (var item in @otherReports)
             {
               <div class="report-slider__slide">
@@ -70,7 +70,7 @@
                         @foreach (var file in item.Files)
                         {
                           <div class="report-card__doc">
-                            <a class="document q4-icon_link" href=@Uri.EscapeUriString(file.FileUrl) type="">@file.Title</a>
+                            <a class="document q4-icon_link" href=@Uri.EscapeDataString(file.FileUrl)>@file.Title</a>
                           </div>
                         }
                       </div>

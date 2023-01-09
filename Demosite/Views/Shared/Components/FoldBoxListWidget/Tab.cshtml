@@ -3,9 +3,9 @@
   var isActive = true;
 }
 
-<section class="foldbox">
+<section class="page__section foldbox">
   <div class="wrapper">
-    <h2 class="h2">@Model.Header</h2>
+    <h2 class="h2 center">@Model.Header</h2>
     <div class="page__block">
 
       <div class="tabs" data-tabs>
@@ -25,7 +25,7 @@
               <div class="tabs__item-box">
                 <div class="card-slider" data-cs=@item.Id>
                   <div class="card-slider__box">
-                    <div class="card-slider__slides" data-cs-slider data-slider-count="@(Model.SlidesToShow ?? 4)">
+                    <div class="card-slider__slides" data-cs-slider >
                       @Html.Raw(item.Text)
                     </div>
                     <div class="card-slider__nav" data-cs-nav></div>

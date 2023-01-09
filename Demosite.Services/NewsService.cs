@@ -3,7 +3,6 @@ using Demosite.Interfaces.Dto;
 using Demosite.Interfaces.Dto.Request;
 using Demosite.Postgre.DAL;
 using Microsoft.EntityFrameworkCore;
-using QA.DotNetCore.Engine.Persistent.Interfaces.Settings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,15 +13,18 @@ namespace Demosite.Services
     {
         private readonly IDbContext _qpDataContext;
         private readonly ICacheService _memoryCache;
-        public NewsService(QpSettings qpSettings, IDbContext context, ICacheService memoryCache)
+        private readonly CacheTagUtilities _cacheTagUtilities;
+        public NewsService(IDbContext context, ICacheService memoryCache, CacheTagUtilities cacheTagUtilities)
         {
             _qpDataContext = context;
             _memoryCache = memoryCache;
+            _cacheTagUtilities = cacheTagUtilities;
         }
 
         public IEnumerable<NewsPostDto> GetAllPosts(int? year = null, int? month = null, int? categoryId = null)
         {
-            return _memoryCache.GetFromCache<IEnumerable<NewsPostDto>>(GetCacheKey(year, month, categoryId), () =>
+            var cacheTags = _cacheTagUtilities.Merge(CacheTags.NewsPost);
+            return _memoryCache.GetFromCache<IEnumerable<NewsPostDto>>(GetCacheKey(year, month, categoryId), cacheTags, () =>
                {
                    IQueryable<NewsPost> query = (_qpDataContext as PostgreQpDataContext).NewsPosts.AsNoTracking();
 
@@ -55,7 +57,8 @@ namespace Demosite.Services
 
         public NewsPostDto GetPost(int id, int? categoryId)
         {
-            return _memoryCache.GetFromCache<NewsPostDto>(GetCacheKey(id, categoryId), () =>
+            var cacheTags = _cacheTagUtilities.Merge(CacheTags.NewsPost);
+            return _memoryCache.GetFromCache<NewsPostDto>(GetCacheKey(id, categoryId), cacheTags, () =>
             {
                 IQueryable<NewsPost> query = (_qpDataContext as PostgreQpDataContext).NewsPosts.AsNoTracking();
                 query = categoryId.HasValue ? query.Where(bp => bp.Id == id && bp.Category.Id == categoryId.Value) : query.Where(bp => bp.Id == id);
@@ -126,14 +129,38 @@ namespace Demosite.Services
                         .ToArray();
         }
 
+        public Dictionary<int, int[]> GetPostsDateDictionary(int? categoryId)
+        {
+            var cacheTags = _cacheTagUtilities.Merge(CacheTags.NewsPost);
+            return _memoryCache.GetFromCache<Dictionary<int, int[]>>(GetCacheKeyPostDate(categoryId), cacheTags, () =>
+            {
+                var query = (_qpDataContext as PostgreQpDataContext).NewsPosts.AsNoTracking()
+                    .Where(np => np.PostDate.HasValue && (categoryId == null || np.Category_ID == categoryId))
+                    .Select(np => new { np.PostDate.Value.Year, np.PostDate.Value.Month })
+                    .AsEnumerable();
+                Dictionary<int, int[]> result = query.GroupBy(keySelector => keySelector.Year, val => val.Month)
+                    .ToDictionary(key => key.Key, value => value.Distinct().ToArray());
+                return result;
+            });
+        }
+
         private static string GetCacheKey(int id, int? categoryId = null)
         {
-            return $"news_post_{id}" + (categoryId.HasValue ? $"_category_{categoryId}" : $"_withoutcategory");
+            return $"news_post_{id}{GetKeyComponent(categoryId)}";
         }
 
         private static string GetCacheKey(int? year = null, int? month = null, int? categoryId = null)
         {
-            return $"news_post_all_{(year.HasValue ? year.Value : string.Empty)}_{(month.HasValue ? month.Value : string.Empty)}_{(categoryId.HasValue ? categoryId.Value : string.Empty)}";
+            return $"news_post_all{GetKeyComponent(year)}{GetKeyComponent(month)}{GetKeyComponent(categoryId)}";
+        }
+
+        private static string GetCacheKeyPostDate(int? categoryId = null)
+        {
+            return nameof(GetPostsDateDictionary) + GetKeyComponent(categoryId);
+        }
+        private static string GetKeyComponent(int? value)
+        {
+            return value.HasValue ? $"_{value}" : string.Empty;
         }
     }
 }
