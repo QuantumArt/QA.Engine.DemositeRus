@@ -84,7 +84,7 @@ namespace Demosite.Services
                 {
                     Id = post.Id,
                     Title = post.Title,
-                    PostDate = DateTime.SpecifyKind(post.PostDate.GetValueOrDefault(new DateTime(2001, 01, 01)), DateTimeKind.Utc),
+                    PostDate = DateOnly.FromDateTime(post.PostDate.GetValueOrDefault(new DateTime(2001, 01, 01))),
                     Brief = post.Brief,
                     Text = post.Text,
                     Category = Map(post.Category),
