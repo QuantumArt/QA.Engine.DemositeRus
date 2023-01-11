@@ -9,8 +9,7 @@ namespace Demosite.Interfaces
         IEnumerable<NewsPostDto> GetAllPosts(int? year = null, int? month = null, int? categoryId = null);
         NewsPostDto GetPost(int id, int? categoryId = null);
         IEnumerable<NewsCategoryDto> GetCategories();
-        NewsPostDto[] GetPosts(int[] ids);
-        IEnumerable<NewsPostDto> GetAllPosts(PostRequest request, int[] categoryIds = null);
+        IEnumerable<NewsPostDto> GetAllPosts(PostRequest request);
         Dictionary<int, int[]> GetPostsDateDictionary(int? categoryId);
     }
 }

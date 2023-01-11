@@ -2,6 +2,7 @@ using Demosite.Interfaces;
 using Demosite.Interfaces.Dto;
 using Demosite.Interfaces.Dto.Enums;
 using Demosite.Interfaces.Dto.Request;
+using Demosite.Interfaces.Models;
 using Demosite.Postgre.DAL.NotQP;
 using Demosite.Postgre.DAL.NotQP.Models;
 using Demosite.Services.Models;
@@ -287,13 +288,27 @@ namespace Demosite.Services
             try
             {
                 _logger.LogInformation(nameService + $": creating a list of news to send");
+
                 //получить дату последней рассылки
-                DateTimeOffset lastDateSend = DateTime.UtcNow.Subtract(_settings.SendTimeInterval);
-                //получить новые новости с даты последней расылки
+                DateOnly lastDateSend = DateOnly.FromDateTime(DateTime.UtcNow.Subtract(_settings.SendTimeInterval));
+
+                //получение Id новостей с последних рассылок
+                int[] lastSendNewsIds = (await _dbContext.Distributions
+                    .Where(d => d.Status == SendStatus.Completed && d.Created >= lastDateSend.ToDateTime(new TimeOnly(), DateTimeKind.Utc))
+                    .ToArrayAsync())
+                    .SelectMany(d => d.NewsIds)
+                    .ToArray();
+
+                //получить новые опубликованные новости с даты последней расылки
                 IEnumerable<NewsPostDto> newNews = _newsService.GetAllPosts(new PostRequest()
                 {
                     FromDate = lastDateSend,
+                    IsPublished = true,
+                    NewsIds = lastSendNewsIds.Any()
+                        ? new ArrayFilter<int>(lastSendNewsIds, true)
+                        : null
                 });
+
                 if (!newNews.Any())
                 {
                     _logger.LogInformation(nameService + $": not found new news");
@@ -328,9 +343,13 @@ namespace Demosite.Services
             }
             distribution.Status = SendStatus.Processing;
             _ = await _dbContext.SaveChangesAsync();
-            NewsPostDto[] news = _newsService.GetPosts(distribution.NewsIds)
-                                   .OrderByDescending(n => n.PostDate)
-                                   .ToArray();
+            NewsPostDto[] news = distribution.NewsIds.Any()
+                ? _newsService.GetAllPosts(new PostRequest()
+                {
+                    NewsIds = new ArrayFilter<int>(distribution.NewsIds)
+                }).OrderByDescending(n => n.PostDate)
+                .ToArray()
+                : new NewsPostDto[0];
             if (news.Length == 0)
             {
                 _logger.LogInformation(nameService + $": not found new news to send");
