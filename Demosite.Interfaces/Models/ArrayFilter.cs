@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Demosite.Interfaces.Models
 {
@@ -11,6 +12,15 @@ namespace Demosite.Interfaces.Models
         {
             Inverted = inverted;
             Values = values;
+        }
+
+        public static ArrayFilter<T> Create(T[] values, bool inverted = false)
+        {
+            if(values == null || !values.Any())
+            {
+                return null;
+            }
+            return new ArrayFilter<T>(values, inverted);
         }
     }
 }

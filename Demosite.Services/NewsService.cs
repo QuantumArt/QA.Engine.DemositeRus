@@ -70,10 +70,10 @@ namespace Demosite.Services
         public IEnumerable<NewsPostDto> GetAllPosts(PostRequest request)
         {
             IQueryable<NewsPost> query = (_qpDataContext as PostgreQpDataContext).NewsPosts.AsNoTracking();
-            if(request.IsPublished.HasValue)
+            if (request.IsPublished.HasValue)
             {
                 int publishedId = (_qpDataContext as PostgreQpDataContext).PublishedId;
-                if(request.IsPublished.Value)
+                if (request.IsPublished.Value)
                 {
                     query = query.Where(n => n.StatusTypeId == publishedId);
                 }
@@ -92,9 +92,9 @@ namespace Demosite.Services
                 DateTimeOffset toDate = request.FromDate.Value.ToDateTime(new TimeOnly(), DateTimeKind.Local);
                 query = query.Where(n => n.PostDate <= toDate.UtcDateTime);
             }
-            if (request.CategoryIds!= null && request.CategoryIds.Values.Any())
+            if (request.CategoryIds != null && request.CategoryIds.Values.Any())
             {
-                if(request.CategoryIds.Inverted)
+                if (request.CategoryIds.Inverted)
                 {
                     query = query.Where(q => q.Category_ID.HasValue && !request.CategoryIds.Values.Contains(q.Category_ID.Value));
                 }
@@ -103,9 +103,9 @@ namespace Demosite.Services
                     query = query.Where(q => q.Category_ID.HasValue && request.CategoryIds.Values.Contains(q.Category_ID.Value));
                 }
             }
-            if(request.NewsIds != null && request.NewsIds.Values.Any())
+            if (request.NewsIds != null && request.NewsIds.Values.Any())
             {
-                if(request.NewsIds.Inverted)
+                if (request.NewsIds.Inverted)
                 {
                     query = query.Where(n => !request.NewsIds.Values.Contains(n.Id));
                 }
@@ -157,17 +157,19 @@ namespace Demosite.Services
 
         private NewsCategoryDto Map(Postgre.DAL.NewsCategory category)
         {
-            return category == null
-                ? null
-                : new NewsCategoryDto
-                {
-                    Id = category.Id,
-                    Title = category.Title,
-                    AlternativeTitle = category.AlternativeTitle,
-                    Alias = category.Alias,
-                    ShowOnStart = category.ShowOnStart ?? false,
-                    SortOrder = category.SortOrder
-                };
+            if (category == null)
+            {
+                return null;
+            }
+            return new NewsCategoryDto
+            {
+                Id = category.Id,
+                Title = category.Title,
+                AlternativeTitle = category.AlternativeTitle,
+                Alias = category.Alias,
+                ShowOnStart = category.ShowOnStart ?? false,
+                SortOrder = category.SortOrder
+            };
         }
 
         private NewsPostDto Map(Postgre.DAL.NewsPost post)

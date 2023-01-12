@@ -304,9 +304,7 @@ namespace Demosite.Services
                 {
                     FromDate = DateOnly.FromDateTime(lastDateSend),
                     IsPublished = true,
-                    NewsIds = lastSendNewsIds.Any()
-                        ? new ArrayFilter<int>(lastSendNewsIds, true)
-                        : null
+                    NewsIds = ArrayFilter<int>.Create(lastSendNewsIds, true)
                 });
 
                 if (!newNews.Any())
