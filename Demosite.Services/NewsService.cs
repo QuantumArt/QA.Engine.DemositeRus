@@ -72,7 +72,7 @@ namespace Demosite.Services
             IQueryable<NewsPost> query = (_qpDataContext as PostgreQpDataContext).NewsPosts.AsNoTracking();
             if(request.IsPublished.HasValue)
             {
-                int publishedId = GetPublishedId();
+                int publishedId = (_qpDataContext as PostgreQpDataContext).PublishedId;
                 if(request.IsPublished.Value)
                 {
                     query = query.Where(n => n.StatusTypeId == publishedId);
@@ -134,26 +134,27 @@ namespace Demosite.Services
                 return result;
             });
         }
+
         private static string GetCacheKey(int id, int? categoryId = null)
         {
             return $"news_post_{id}{GetKeyComponent(categoryId)}";
         }
+
         private static string GetCacheKey(int? year = null, int? month = null, int? categoryId = null)
         {
             return $"news_post_all{GetKeyComponent(year)}{GetKeyComponent(month)}{GetKeyComponent(categoryId)}";
         }
+
         private static string GetCacheKeyPostDate(int? categoryId = null)
         {
             return nameof(GetPostsDateDictionary) + GetKeyComponent(categoryId);
         }
+
         private static string GetKeyComponent(int? value)
         {
             return value.HasValue ? $"_{value}" : string.Empty;
         }
-        private int GetPublishedId()
-        {
-            return (_qpDataContext as PostgreQpDataContext).PublishedId;
-        }
+
         private NewsCategoryDto Map(Postgre.DAL.NewsCategory category)
         {
             return category == null
@@ -168,6 +169,7 @@ namespace Demosite.Services
                     SortOrder = category.SortOrder
                 };
         }
+
         private NewsPostDto Map(Postgre.DAL.NewsPost post)
         {
             return post == null

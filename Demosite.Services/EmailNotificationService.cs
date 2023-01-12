@@ -345,11 +345,11 @@ namespace Demosite.Services
             _ = await _dbContext.SaveChangesAsync();
             NewsPostDto[] news = distribution.NewsIds.Any()
                 ? _newsService.GetAllPosts(new PostRequest()
-                {
-                    NewsIds = new ArrayFilter<int>(distribution.NewsIds)
-                }).OrderByDescending(n => n.PostDate)
-                .ToArray()
-                : new NewsPostDto[0];
+                 {
+                     NewsIds = new ArrayFilter<int>(distribution.NewsIds)
+                 }).OrderByDescending(n => n.PostDate)
+                 .ToArray()
+                : Array.Empty<NewsPostDto>();
             if (news.Length == 0)
             {
                 _logger.LogInformation(nameService + $": not found new news to send");
