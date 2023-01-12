@@ -2413,6 +2413,7 @@ h4, .h4 {
   background: transparent url(/static/images/arrow-line-red.svg) center center no-repeat;
   background-size: 16px;
   cursor: pointer;
+  border: none;
 }
 
 .pagination__arrow--prev {
@@ -2591,7 +2592,6 @@ h4, .h4 {
   background: #fff;
   box-shadow: 0 0 5px #ebebeb;
   padding: 20px;
-  margin: 0 10px;
 }
 
 .card-slider__nav {
@@ -3541,9 +3541,9 @@ input:checked ~ .checkbox__marker:before {
   margin-right: 20px;
 }
 
-  .info-card__icon img {
-    max-height: 100%;
-  }
+.info-card__icon img {
+  max-height: 100%;
+}
 
 .event {
   padding: 0.5rem 0 0;
@@ -3595,34 +3595,17 @@ input:checked ~ .checkbox__marker:before {
   position: relative;
   padding-top: 1.5rem;
   margin-bottom: 1rem;
-  margin-right: -20px;
 }
 
-  .event__gallery:last-child {
-    margin-bottom: 0;
-  }
+.event__gallery:last-child {
+  margin-bottom: 0;
+}
 
 @media screen and (min-width: 768px) {
   .event__gallery {
     margin-bottom: 2rem;
     padding-top: 3rem;
   }
-}
-
-@media screen and (min-width: 1024px) and (max-width: 1680px) {
-  .event__gallery {
-    margin-right: -40px;
-  }
-}
-
-@media screen and (min-width: 1680px) {
-  .event__gallery {
-    margin-right: calc((100vw - 1680px) / -2 - 40px);
-  }
-}
-
-.event__slider img {
-  max-height: 180px;
 }
 
 .event__slider button {
@@ -3664,15 +3647,6 @@ input:checked ~ .checkbox__marker:before {
   .event__slider .slick-next::before, .event__slider .slick-next.slick-disabled:before {
     border-bottom-color: transparent;
     border-left-color: transparent;
-  }
-
-.event__slider-item {
-  margin: 1rem;
-  cursor: pointer;
-}
-
-  .event__slider-item:first-child {
-    margin-left: 0;
   }
 
 .event__slider-footer {
@@ -3822,144 +3796,6 @@ input:checked ~ .checkbox__marker:before {
 .banner-slider__item {
   height: 400px;
   display: block;
-}
-
-.banner-slider__image-desktop {
-  -o-object-fit: cover;
-  object-fit: cover;
-  width: 100%;
-  height: 100%;
-  display: none !important;
-}
-
-.banner-slider__image-mobile {
-  -o-object-fit: cover;
-  object-fit: cover;
-  width: 100%;
-  height: 100%;
-}
-
-@media screen and (min-width: 1024px) {
-  .banner-slider .banner-slider__image-desktop {
-    display: block !important;
-  }
-
-  .banner-slider .banner-slider__image-mobile {
-    display: none !important;
-  }
-}
-
-.banner-slider button {
-  font-size: 0;
-  box-shadow: none;
-  border: 0;
-  background: none;
-  padding: 0;
-  cursor: pointer;
-}
-
-.banner-slider .slick-prev {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  left: 52px;
-  z-index: 100;
-  width: 42px;
-  height: 42px;
-  background: url("/static/images/banner-slider-left-arrow.svg") no-repeat;
-}
-
-.banner-slider .slick-next {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  right: 52px;
-  z-index: 100;
-  width: 42px;
-  height: 42px;
-  background: url("/static/images/banner-slider-right-arrow.svg") no-repeat;
-}
-
-@media screen and (max-width: 1023px) {
-  .banner-slider .slick-prev,
-  .banner-slider .slick-next {
-    display: none !important;
-  }
-
-  .banner-slider .banner-slider__item,
-  .banner-slider .slick-track {
-    height: 300px !important;
-  }
-}
-
-.banner-slider .slick-dots {
-  position: absolute;
-  bottom: 22px;
-  display: flex;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-  .banner-slider .slick-dots li {
-    margin: 0 5px;
-    width: 12px;
-    border-radius: 25px;
-  }
-
-  .banner-slider .slick-dots button {
-    background: #5A5A5A;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    vertical-align: middle;
-    transition: 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
-  }
-
-  .banner-slider .slick-dots .slick-active button {
-    background: #e30611;
-    width: 24px;
-    transform: translateX(-8px);
-    border-radius: 25px;
-  }
-
-.banner-slider .card__title {
-  font-size: 18px;
-  margin-bottom: 20px;
-}
-
-.banner-slider .card__title, .banner-slider .card__subtitle {
-  font-weight: 500;
-}
-
-.banner-slider .card__subtitle {
-  margin-bottom: 10px;
-}
-
-.banner-slider .card__subtitle, .banner-slider .card__descr {
-  font-size: 14px;
-}
-
-.banner-slider .card__docs {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-  .banner-slider .card__docs .document {
-    flex: 0 0 50%;
-    margin-bottom: 12px;
-    font-size: 16px;
-    min-height: 44px;
-    padding-right: 12px;
-  }
-
-.banner-slider .slick-track {
-  display: flex !important;
-  height: 400px;
-  margin: 0;
-}
-
-.banner-slider .slick-slide {
-  height: auto !important;
 }
 
 @media screen and (min-width: 768px) {

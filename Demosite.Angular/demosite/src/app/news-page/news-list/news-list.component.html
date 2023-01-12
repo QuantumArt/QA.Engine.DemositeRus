@@ -42,5 +42,42 @@
         </div>
       </div>
     </div>
+    <ng-container *ngIf="currentPage$ | async as currentPage">
+      <div class="pagination" *ngIf="pageDetails.items.length">
+        <button
+          [ngClass]="{
+            'pagination__arrow': true,
+            'pagination__arrow--prev': true,
+            'pagination__arrow--hidden': currentPage === 1
+          }"
+          type="button"
+          aria-label="предыдущая страница"
+          (click)="changePage(currentPage - 1, pageDetails.pages.length, $event)"
+        >
+        </button>
+        <ul class="pagination__list">
+          <li *ngFor="let item of pageDetails.pages"
+            [ngClass]="{
+              'pagination__list-item': true,
+              'pagination__list-item--current': currentPage === item
+            }"
+            [attr.data-page-id]="item"
+          >
+            <a href (click)="changePage(item, pageDetails.pages.length, $event)">{{item}}</a>
+          </li>
+        </ul>
+        <button
+          [ngClass]="{
+            'pagination__arrow': true,
+            'pagination__arrow--next': true,
+            'pagination__arrow--hidden': currentPage === pageDetails.pages.length
+          }"
+          type="button"
+          aria-label="следующая страница"
+          (click)="changePage(currentPage + 1, pageDetails.pages.length, $event)"
+        >
+        </button>
+      </div>
+    </ng-container>
   </section>
 </ng-container>

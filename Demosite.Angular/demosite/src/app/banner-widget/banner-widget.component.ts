@@ -9,11 +9,12 @@
 } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { Observable } from 'rxjs';
-import SwiperCore, { Autoplay, Pagination } from 'swiper';
+import SwiperCore, { Autoplay, Navigation, Pagination, SwiperOptions } from 'swiper';
 import { WidgetComponent, WidgetDetails } from '@quantumart/qa-engine-page-structure-angular';
 import { BannerItem, BannerWidgetService } from './banner-widget.service';
 
-SwiperCore.use([Autoplay, Pagination]);
+const AUTOPLAY_DELAY = 5000;
+SwiperCore.use([Autoplay, Pagination, Navigation]);
 
 export interface BannerWidgetDetails extends WidgetDetails {
   swipedelay?: number;
@@ -42,8 +43,24 @@ export class BannerWidgetComponent implements WidgetComponent {
 
   public readonly isPlatformBrowser = isPlatformBrowser(this.platformId);
   public readonly trackById: TrackByFunction<BannerItem> = (_, item) => item.id;
-  public swipeDelay = 2000;
+  public swipeDelay = AUTOPLAY_DELAY;
   public items$?: Observable<BannerItem[]>;
+  public swiperConfig: SwiperOptions = {
+    enabled: this.isPlatformBrowser,
+    autoplay: {
+      delay: this.swipeDelay,
+      disableOnInteraction: true,
+    },
+    navigation: {
+      nextEl: '.banner-slider__button--next',
+      prevEl: '.banner-slider__button--prev'
+    },
+    pagination: {
+      clickable: true,
+      el: '.banner-slider__pagination',
+    },
+    loop: true,
+  }
 
   constructor(
     @Inject(PLATFORM_ID) private readonly platformId: Object,

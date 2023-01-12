@@ -2,6 +2,8 @@
 import { slideDown, slideStop, slideUp } from 'slide-anim';
 import { EventHandlerCollection } from '../../utils';
 
+const ACCORDION_DURATION = 1000;
+
 @Directive({
   selector: '[qaFoldboxBehavior]'
 })
@@ -59,10 +61,10 @@ export class FoldboxDirective implements AfterViewInit, OnDestroy {
     if (body) {
       if (!opened) {
         slideStop(body);
-        slideDown(body);
+        slideDown(body, {duration: ACCORDION_DURATION});
       } else {
         slideStop(body);
-        slideUp(body);
+        slideUp(body, {duration: ACCORDION_DURATION});
       }
     }
   }

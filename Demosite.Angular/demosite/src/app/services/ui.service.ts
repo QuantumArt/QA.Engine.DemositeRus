@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { WINDOW } from '../public-api';
 
-export type Breakpoint = 'smartphone' | 'tablet' | 'desktop';
+export type Breakpoint = 'smartphone' | 'tablet' | 'laptop' | 'desktop';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +19,7 @@ export class UiService {
   }
 
   public observeOnBreakpoint(): Observable<Breakpoint> {
-    return this.breakpointObserver.observe(['(max-width: 767px)', '(max-width: 1023px)']).pipe(
+    return this.breakpointObserver.observe(['(max-width: 767px)', '(max-width: 1023px)', '(max-width: 1279px)']).pipe(
       map(state => {
         if (state.breakpoints['(max-width: 767px)']) {
           return 'smartphone';
@@ -27,6 +27,10 @@ export class UiService {
 
         if (state.breakpoints['(max-width: 1023px)']) {
           return 'tablet'
+        }
+
+        if (state.breakpoints['(max-width: 1279px)']) {
+          return 'laptop'
         }
 
         return 'desktop';

@@ -6,6 +6,7 @@ import { CardSliderService } from '../../text-page/card-slider.service';
 @Component({
   selector: 'qa-foldbox-tabs',
   templateUrl: './foldbox-tabs.component.html',
+  styleUrls: ['./foldbox-tabs.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FoldboxTabsComponent {

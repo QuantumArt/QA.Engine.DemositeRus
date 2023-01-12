@@ -1,12 +1,42 @@
-﻿.cdk-overlay-pane {
-  position: relative!important;
+﻿@use "src/mixins.scss" as mixin;
+
+.cdk-overlay-pane {
+  position: relative !important;
 }
 
-.qa-dialog .popup__close {
-  line-height: 14px;
-  min-width: auto;
+::ng-deep .mat-dialog-container {
+  padding-top: 44px;
 }
 
-.qa-dialog {
-  padding: 16px;
+.dialog {
+  padding-top: 24px;
+
+  &__scrollable {
+    max-height: 65vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
+
+    &::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background-color: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: #ebebeb;
+      border-radius: 20px;
+    }
+  }
+
+  .popup__close {
+    line-height: 14px;
+    min-width: auto;
+  }
+
+  @include mixin.min-laptop {
+    padding-top: 44px;
+    padding-bottom: 20px;
+  }
 }

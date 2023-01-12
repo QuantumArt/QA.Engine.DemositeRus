@@ -45,8 +45,18 @@ export class CardSliderService implements OnDestroy {
 
       this.initializeSlides(container);
 
+      let spaceBetween = 20;
+
+      if (breakpoint === 'laptop') {
+        spaceBetween = 30;
+      }
+
+      if (breakpoint === 'desktop') {
+        spaceBetween = 40;
+      }
+
       const options: SwiperOptions = {
-        spaceBetween: 1,
+        spaceBetween,
         slidesPerView: breakpoint === 'smartphone' ? 1 : (breakpoint === 'tablet' ? 2 : 3),
         navigation: breakpoint === 'desktop' ? this.initializeNavigationControls(wrapperEl) : false,
         pagination: breakpoint === 'tablet' || breakpoint === 'smartphone'

@@ -1,11 +1,19 @@
-﻿import { ChangeDetectionStrategy, Component, Input, TrackByFunction } from '@angular/core';
+﻿import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  TrackByFunction,
+} from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { tap } from 'rxjs';
-import { WidgetComponent, WidgetDetails } from '@quantumart/qa-engine-page-structure-angular';
-import { NewsCategory, SubscribeWidgetService } from './subscribe-widget.service';
+import {
+  WidgetComponent,
+  WidgetDetails,
+} from '@quantumart/qa-engine-page-structure-angular';
+import { SubscribeWidgetService } from './subscribe-widget.service';
+import { NewsCategory } from './subscribe-widget.types';
 
-export interface SubscribeWidgetDetails extends WidgetDetails {
-}
+export interface SubscribeWidgetDetails extends WidgetDetails {}
 
 export interface Gender {
   title: 'Уважаемый' | 'Уважаемая';
@@ -18,44 +26,52 @@ export interface Gender {
   templateUrl: './subscribe-widget.component.html',
   styleUrls: ['./subscribe-widget.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [SubscribeWidgetService]
+  providers: [SubscribeWidgetService],
 })
 export class SubscribeWidgetComponent implements WidgetComponent {
   @Input()
-  public widget!: SubscribeWidgetDetails;
+  public readonly widget!: SubscribeWidgetDetails;
+  public readonly genders: Gender[] = [
+    {
+      title: 'Уважаемый',
+      value: 'm',
+      checked: true,
+    },
+    {
+      title: 'Уважаемая',
+      value: 'f',
+      checked: false,
+    },
+  ];
 
-  public readonly genders: Gender[] = [{
-    title: 'Уважаемый',
-    value: 'm',
-    checked: true
-  }, {
-    title: 'Уважаемая',
-    value: 'f',
-    checked: false
-  }];
-
-  public subscribeForm = new FormGroup({
-    gender: new FormControl('', Validators.required),
+  public readonly subscribeForm = new FormGroup({
+    gender: new FormControl('m', Validators.required),
     firstName: new FormControl('', Validators.required),
     lastName: new FormControl('', Validators.required),
     company: new FormControl('', Validators.required),
-    email: new FormControl('', Validators.compose([
-      Validators.required,
-      Validators.email
-    ])),
-    categories: new FormArray([])
+    email: new FormControl(
+      '',
+      Validators.compose([Validators.required, Validators.email])
+    ),
+    categories: new FormArray([]),
   });
 
-  public categories$ = this.subscribeWidgetService.getCategories().pipe(
-    tap(categories => {
-      categories.forEach(() => this.categories.push(new FormControl(true)))
-    })
-  );
+  public readonly isFailure$ = this.subscribeWidgetService.isFailure$;
+  public readonly isSuccess$ = this.subscribeWidgetService.isSuccess$;
+  public readonly categories$ = this.subscribeWidgetService
+    .getCategories()
+    .pipe(
+      tap((categories) => {
+        categories.forEach(() => this.categories.push(new FormControl(true)));
+      })
+    );
 
-  public readonly trackById: TrackByFunction<NewsCategory> = (_, item) => item.id;
+  public readonly trackById: TrackByFunction<NewsCategory> = (_, item) =>
+    item.id;
 
-  constructor(private readonly subscribeWidgetService: SubscribeWidgetService) {
-  }
+  constructor(
+    private readonly subscribeWidgetService: SubscribeWidgetService
+  ) {}
 
   public get gender() {
     return this.subscribeForm.get('gender')!;
@@ -81,9 +97,7 @@ export class SubscribeWidgetComponent implements WidgetComponent {
     return this.subscribeForm.get('categories')! as FormArray;
   }
 
-  public onSubmit(categories: NewsCategory[]): void {
-    //TODO: send form
-    //this.http.post()
-    console.log(this.subscribeForm.value);
+  public onSubmit(): void {
+    this.subscribeWidgetService.sendForm({ ...this.subscribeForm.value });
   }
 }

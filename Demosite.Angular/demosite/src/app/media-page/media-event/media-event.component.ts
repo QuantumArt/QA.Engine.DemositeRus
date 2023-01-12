@@ -1,5 +1,5 @@
 ﻿import { ChangeDetectionStrategy, Component, Input, TrackByFunction, ViewEncapsulation } from '@angular/core';
-import SwiperCore, { Navigation } from 'swiper';
+import SwiperCore, { Navigation, SwiperOptions } from 'swiper';
 import {
   ButtonsConfig,
   ButtonsStrategy,
@@ -39,10 +39,19 @@ SwiperCore.use([Navigation]);
 })
 export class MediaEventComponent {
   @Input() public item!: MediaEvent;
-  public readonly trackById: TrackByFunction<MediaEventImage> = (_, item) => item.id;
 
-  constructor(private readonly modalGalleryService: ModalGalleryService) {
+  public readonly trackById: TrackByFunction<MediaEventImage> = (_, item) => item.id;
+  public readonly swiperConfig: SwiperOptions = {
+    slidesPerView: 'auto',
+    spaceBetween: 32,
+    navigation: {
+      prevEl: '.slick-prev',
+      nextEl: '.slick-next',
+      disabledClass: 'slick-disabled'
+    }
   }
+
+  constructor(private readonly modalGalleryService: ModalGalleryService) {}
 
   public openGallery(
     event: Event,
@@ -56,7 +65,7 @@ export class MediaEventComponent {
       id, modal: { title, img: image }
     }));
     const currentImage = images[imageIndex];
-    const dialogRef = this.modalGalleryService.open({
+    this.modalGalleryService.open({
       id,
       images,
       currentImage,
@@ -75,6 +84,9 @@ export class MediaEventComponent {
             numberSeparator: ' из ',
             beforeTextDescription: ' => '
           }
+        },
+        previewConfig: {
+          number: sourceImages.length,
         }
       } as ModalLibConfig
     });

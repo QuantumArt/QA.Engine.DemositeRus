@@ -12,3 +12,9 @@ export const FEEDBACK_API_URL = new InjectionToken<FeedbackApiUrl>('Feedback api
   providedIn: 'root',
   factory: () => environment.FEEDBACK_API_URL,
 });
+
+export type SubscribeApiUrl = typeof environment.SUBSCRIBE_API_URL;
+export const SUBSCRIBE_API_URL = new InjectionToken<SubscribeApiUrl>('Subscribe api url', {
+  providedIn: 'root',
+  factory: () => environment.SUBSCRIBE_API_URL,
+})

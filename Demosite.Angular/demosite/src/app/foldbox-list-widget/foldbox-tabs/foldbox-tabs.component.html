@@ -2,7 +2,7 @@
   <div class="wrapper">
     <h2 *ngIf="title" class="h2">{{ title }}</h2>
     <div class="page__block">
-      <div class="tabs" data-tabs>
+      <div class="tabs foldbox__tabs" data-tabs>
         <div class="tabs__nav">
           <div class="tabs__nav-box">
             <div *ngFor="let item of items; trackBy: trackById; let isFirst = first"
@@ -17,7 +17,7 @@
                [attr.data-tabs-item]="item.id">
             <div class="tabs__item-box">
               <div class="card-slider" data-cs>
-                <div class="card-slider__box">
+                <div class="card-slider__box foldbox__cards-box">
                   <div class="card-slider__slides"
                        data-cs-slider
                        data-slider-count
