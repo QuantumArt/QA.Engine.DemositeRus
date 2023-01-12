@@ -23,10 +23,10 @@
     initPagination();
 
     function initPagination() {
-      if (!$("[data-current-page]", newsPage).length) {
+      if (!$(".pagination__list-item--current", newsPage).length) {
         return;
       }
-      $("[data-page-id]").off("click").on("click", function (e) {
+      $("[aria-current='page']>.page-link").off("click").on("click", function (e) {
         e.stopPropagation();
         e.preventDefault();
         let pageId = $(this).data("page-id");
@@ -34,20 +34,20 @@
         let monthVal = month.val() > 0 ? month.val() : null;
         debounceGetNews(yearVal, monthVal, pageId);
       });
-      $(".pagination__arrow--prev").off("click").on("click", function (e) {
+      $(".page-link[aria-label='Previous']").off("click").on("click", function (e) {
         e.stopPropagation();
         e.preventDefault();
-        let pageId = $(".pagination__list-item--current").data("page-id");
+        let pageId = $(".pagination__list-item--current > a").data("page-id");
         pageId = pageId - 1;
         let yearVal = year.val() > 0 ? year.val() : null;
         let monthVal = month.val() > 0 ? month.val() : null;
         debounceGetNews(yearVal, monthVal, pageId);
       });
 
-      $(".pagination__arrow--next").off("click").on("click", function (e) {
+      $(".page-link[aria-label='Next']").off("click").on("click", function (e) {
         e.stopPropagation();
         e.preventDefault();
-        let pageId = $(".pagination__list-item--current").data("page-id");
+        let pageId = $(".pagination__list-item--current > a").data("page-id");
         pageId = pageId + 1;
         let yearVal = year.val() > 0 ? year.val() : null;
         let monthVal = month.val() > 0 ? month.val() : null;

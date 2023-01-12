@@ -12,12 +12,12 @@
 {
     <div class="pagination">
         <ul class="pagination__list">
-            @if (Model.Current > 1)
+            @if (Model.IsMovePreviousAvailable)
             {
                 <li class="page-item">
                     <a href="@GetPageUrl(Model.Current - 1)"
-               class="page-link @(Model.IsMovePreviousAvailable ? string.Empty : "disabled")"
-               aria-label="Previous">
+                     class="page-link"
+                     aria-label="Previous">
                         <div class="pagination__arrow pagination__arrow--prev"></div>
                     </a>
                 </li>
@@ -26,20 +26,25 @@
             @for (var pageNumber = Model.MinValue; pageNumber <= Model.MaxValue; pageNumber++)
             {
                 <li class="pagination__list-item @(pageNumber == Model.Current ? "pagination__list-item--current" : string.Empty)" aria-current="page">
-                    <a href="@GetPageUrl(pageNumber)" class="page-link">
+                    <a href="@GetPageUrl(pageNumber)" class="page-link" data-page-id="@pageNumber">
                         <span aria-hidden="true">@pageNumber</span>
                     </a>
                 </li>
             }
 
-            <li class="page-item">
-                <a href="@GetPageUrl(Model.Current + 1)"
-               class="page-link @(Model.IsMoveNextAvailable ? string.Empty : "disabled")"
-               aria-label="Next"><div class="pagination__arrow pagination__arrow--next"></div></a>
-            </li>
+            @if (Model.IsMoveNextAvailable)
+            {
+                <li class="page-item">
+                    <a href="@GetPageUrl(Model.Current + 1)"
+                     class="page-link"
+                     aria-label="Next">
+                        <div class="pagination__arrow pagination__arrow--next"></div>
+                    </a>
+                </li>
+            }
         </ul>
-  </div>
-   
+    </div>
+
 }
 
 @functions {
