@@ -5,7 +5,7 @@ class SearchInputValidator {
     this.activeErrorMessage = false;
     this.invalid = true;
 
-    this.searchBtnFake = this.form.querySelector(".search-btn__fake");
+    this.searchBtnFake = this.form.querySelector(".search-buttons__btn-fake");
     this.submitBtn = this.form.querySelector('button[type="submit"]');
     this.input = this.form.querySelector("input");
     this.errorBlock = this.form.querySelector(".search-form__error");

@@ -23,12 +23,12 @@
                 {
                     <li class="card">
                         <div class="card__wrapper">
-                            <h4 class="card-title">@document.Title</h4>
-                            <div class="seperator"></div>
-                            <p class="card-description">@document.Description</p>
+                            <h4 class="card__title">@document.Title</h4>
+                            <div class="card__seperator"></div>
+                            <p class="card__description">@document.Description</p>
                             @if (Uri.TryCreate(document.SearchUrl, document.SearchUrlKind, out Uri uriResult))
                             {
-                                <a class="card-link" href=@(uriResult.AbsoluteUri) class="btn btn-light">Перейти</a>
+                                <a class="card__link" href=@(uriResult.AbsoluteUri) class="btn btn-light">Перейти</a>
                             }
                         </div>
                     </li>

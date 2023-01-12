@@ -1122,13 +1122,13 @@ h4,
 
 @font-face {
   font-family: "q4-icons";
-  src: url("https://d1azc1qln24ryf.cloudfront.net/50912/Q4mtsgsm2018ir/q4-icons.woff2?3qftse")
+  src: url("/static/fonts/q4-icons-new.woff2")
       format("woff2"),
-    url("https://d1azc1qln24ryf.cloudfront.net/50912/Q4mtsgsm2018ir/q4-icons.ttf?3qftse")
+    url("/static/fonts/q4-icons-new.ttf")
       format("truetype"),
-    url("https://d1azc1qln24ryf.cloudfront.net/50912/Q4mtsgsm2018ir/q4-icons.woff?3qftse")
+    url("/static/fonts/q4-icons-new.woff")
       format("woff"),
-    url("https://d1azc1qln24ryf.cloudfront.net/50912/Q4mtsgsm2018ir/q4-icons.svg?3qftse#q4-icons")
+    url("/static/fonts/q4-icons-new.svg")
       format("svg");
   font-weight: normal;
   font-style: normal;
@@ -4545,16 +4545,16 @@ input:checked ~ .checkbox__marker:before {
   margin-bottom: 0.5em;
 }
 
-.search-input {
+.search-form__search-input {
   width: 100%;
 }
 
-.search-btn__wrapper {
+.search-buttons {
   position: absolute;
   right: 0px;
 }
 
-.search-btn__fake {
+.search-buttons__btn-fake {
   position: absolute;
   height: 40px;
   width: 70px;
@@ -4562,7 +4562,7 @@ input:checked ~ .checkbox__marker:before {
   z-index: -1;
 }
 
-.search-btn {
+.search-buttons__btn {
   padding: 8px 12px;
   background: #e30611;
   color: #fff;
@@ -4577,12 +4577,12 @@ input:checked ~ .checkbox__marker:before {
   cursor: pointer;
 }
 
-.search-btn:disabled {
+.search-buttons__btn:disabled {
   opacity: 0.5;
   cursor: default;
 }
 
-.search-btn:disabled + .search-btn__fake {
+.search-buttons__btn:disabled + .search-buttons__btn-fake {
   z-index: 100;
 }
 
@@ -4688,7 +4688,7 @@ input:checked ~ .checkbox__marker:before {
   -webkit-transition: width 0.4s;
   transition: width 0.4s;
 }
-.card .card-title {
+.card .card__title {
   font-size: 18px;
   margin-top: 25px;
   letter-spacing: 2px;
@@ -4697,14 +4697,14 @@ input:checked ~ .checkbox__marker:before {
   text-overflow: ellipsis;
   max-width: 100%;
 }
-.card .card-description {
+.card .card__description {
   font-size: 15px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 100%;
 }
-.card .card-link {
+.card .card__link {
   font-size: 12px;
   text-transform: uppercase;
   background: #f9f5f5;
@@ -4718,7 +4718,7 @@ input:checked ~ .checkbox__marker:before {
   transition: .3s ease-in-out, box-shadow .3s ease-in-out;
 
 }
-.card .card-link:before {
+.card .card__link:before {
   content: "→";
   position: absolute;
   top: 50%;
@@ -4729,17 +4729,17 @@ input:checked ~ .checkbox__marker:before {
   -webkit-transition: all 350ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
-.card .card-link:hover:before{
+.card .card__link:hover:before{
   opacity:1;
 }
 
-.card .card-link:hover {
+.card .card__link:hover {
   padding-right: 30px;
   color: #fff;
   box-shadow: inset 200px 0 0 0 #e30611;
 }
 
-.seperator {
+.card__seperator {
   margin-bottom: 30px;
   width: 35px;
   height: 3px;
