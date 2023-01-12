@@ -2,5 +2,6 @@ export const environment = {
   production: true,
   WIDGET_PLATFORM_API_URL: 'http://wp-api.demositerus.dev.qsupport.ru',
   GRAPHQL_DATA_API_URL: 'http://graphql.demositerus.dev.qsupport.ru/graphql',
-  FEEDBACK_API_URL: 'TODO'
+  FEEDBACK_API_URL: 'feedback/sendfeedback',
+  SUBSCRIBE_API_URL: 'subscribe/add',
 };
