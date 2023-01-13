@@ -174,18 +174,20 @@ namespace Demosite.Services
 
         private NewsPostDto Map(Postgre.DAL.NewsPost post)
         {
-            return post == null
-                ? null
-                : new NewsPostDto
-                {
-                    Id = post.Id,
-                    Title = post.Title,
-                    PostDate = DateOnly.FromDateTime(post.PostDate.GetValueOrDefault(new DateTime(2001, 01, 01))),
-                    Brief = post.Brief,
-                    Text = post.Text,
-                    Category = Map(post.Category),
-                    Published = post.StatusTypeId == 143
-                };
+            if (post == null)
+            {
+                return null;
+            }
+            return new NewsPostDto
+            {
+                Id = post.Id,
+                Title = post.Title,
+                PostDate = DateOnly.FromDateTime(post.PostDate.GetValueOrDefault(new DateTime(2001, 01, 01))),
+                Brief = post.Brief,
+                Text = post.Text,
+                Category = Map(post.Category),
+                Published = post.StatusTypeId == 143
+            };
         }
     }
 }

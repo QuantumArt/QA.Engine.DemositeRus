@@ -30,15 +30,17 @@ namespace Demosite.Services
 
         private FoldBoxListItemDto Map(FoldBoxListItem item)
         {
-            return item == null
-                ? null
-                : new FoldBoxListItemDto
-                {
-                    Id = item.Id,
-                    Title = item.Title,
-                    Text = item.Text,
-                    SortOrder = item.SortOrder ?? 0
-                };
+            if (item == null)
+            {
+                return null;
+            }
+            return new FoldBoxListItemDto
+            {
+                Id = item.Id,
+                Title = item.Title,
+                Text = item.Text,
+                SortOrder = item.SortOrder ?? 0
+            };
         }
     }
 }

@@ -27,14 +27,16 @@ namespace Demosite.ViewModels.Builders
 
         private FoldBoxListItemViewModel Map(Interfaces.Dto.FoldBoxListItemDto item)
         {
-            return item == null
-                ? null
-                : new FoldBoxListItemViewModel
-                {
-                    Id = item.Id,
-                    Title = item.Title,
-                    Text = item.Text
-                };
+            if (item == null)
+            {
+                return null;
+            }
+            return new FoldBoxListItemViewModel
+            {
+                Id = item.Id,
+                Title = item.Title,
+                Text = item.Text
+            };
         }
     }
 }
