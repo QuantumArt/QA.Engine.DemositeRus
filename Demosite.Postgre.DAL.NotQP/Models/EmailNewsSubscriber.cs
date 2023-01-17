@@ -12,7 +12,7 @@ namespace Demosite.Postgre.DAL.NotQP.Models
         public string Email { get; set; }
         public bool IsActive { get; set; } = false;
         public string ConfirmCode { get; set; }
-        public DateTime? ConfirmCodeSendDate { get; set; }
+        public DateTimeOffset? ConfirmCodeSendDate { get; set; }
         public int[] NewsCategory { get; set; }
         public virtual ICollection<Envelope> Envelopes { get; set; }
     }

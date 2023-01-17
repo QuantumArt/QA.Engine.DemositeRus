@@ -39,7 +39,7 @@ namespace Demosite.ViewModels.Builders
             return new NewsRoomBlockItemViewModel
             {
                 Title = newsPost.Title,
-                PostData = newsPost.PostDate,
+                PostDate = newsPost.PostDate,
                 Brief = newsPost.Brief,
                 Url = $"/news_and_events/{categoryAlias}/details/{newsPost.Id}"
             };

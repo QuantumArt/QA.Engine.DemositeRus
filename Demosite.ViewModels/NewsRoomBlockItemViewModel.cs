@@ -6,7 +6,7 @@ namespace Demosite.ViewModels
     {
         public string Title { get; set; }
         public string Url { get; set; }
-        public DateTime? PostData { get; set; }
+        public DateOnly? PostDate { get; set; }
         public string Brief { get; set; }
     }
 }

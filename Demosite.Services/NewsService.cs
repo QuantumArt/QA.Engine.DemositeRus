@@ -67,61 +67,52 @@ namespace Demosite.Services
             });
         }
 
-        public NewsPostDto[] GetPosts(int[] ids)
-        {
-            return (_qpDataContext as PostgreQpDataContext).NewsPosts
-                .Include(c => c.Category)
-                .Where(p => ids.Contains(p.Id))
-                .Select(Map)
-                .ToArray();
-        }
-
-        private NewsPostDto Map(Postgre.DAL.NewsPost post)
-        {
-            return post == null
-                ? null
-                : new NewsPostDto
-                {
-                    Id = post.Id,
-                    Title = post.Title,
-                    PostDate = post.PostDate.GetValueOrDefault(new DateTime(2001, 01, 01)),
-                    Brief = post.Brief,
-                    Text = post.Text,
-                    Category = Map(post.Category),
-                    Published = post.StatusTypeId == 143
-                };
-        }
-
-        private NewsCategoryDto Map(Postgre.DAL.NewsCategory category)
-        {
-            return category == null
-                ? null
-                : new NewsCategoryDto
-                {
-                    Id = category.Id,
-                    Title = category.Title,
-                    AlternativeTitle = category.AlternativeTitle,
-                    Alias = category.Alias,
-                    ShowOnStart = category.ShowOnStart ?? false,
-                    SortOrder = category.SortOrder
-                };
-        }
-
-        public IEnumerable<NewsPostDto> GetAllPosts(PostRequest request, int[] categoryIds = null)
+        public IEnumerable<NewsPostDto> GetAllPosts(PostRequest request)
         {
             IQueryable<NewsPost> query = (_qpDataContext as PostgreQpDataContext).NewsPosts.AsNoTracking();
+            if (request.IsPublished.HasValue)
+            {
+                int publishedId = (_qpDataContext as PostgreQpDataContext).PublishedId;
+                if (request.IsPublished.Value)
+                {
+                    query = query.Where(n => n.StatusTypeId == publishedId);
+                }
+                else
+                {
+                    query = query.Where(n => n.StatusTypeId != publishedId);
+                }
+            }
             if (request.FromDate.HasValue)
             {
-                query = query.Where(n => n.PostDate >= request.FromDate.Value);
+                DateTimeOffset fromDate = request.FromDate.Value.ToDateTime(new TimeOnly(), DateTimeKind.Local);
+                query = query.Where(n => n.PostDate >= fromDate.UtcDateTime);
             }
             if (request.ToDate.HasValue)
             {
-                query = query.Where(n => n.PostDate <= request.ToDate.Value);
+                DateTimeOffset toDate = request.FromDate.Value.ToDateTime(new TimeOnly(), DateTimeKind.Local);
+                query = query.Where(n => n.PostDate <= toDate.UtcDateTime);
             }
-
-            if (categoryIds != null && categoryIds.Length > 0)
+            if (request.CategoryIds != null && request.CategoryIds.Values.Any())
             {
-                query = query.Where(q => q.Category_ID.HasValue && categoryIds.Contains(q.Category_ID.Value));
+                if (request.CategoryIds.Inverted)
+                {
+                    query = query.Where(q => q.Category_ID.HasValue && !request.CategoryIds.Values.Contains(q.Category_ID.Value));
+                }
+                else
+                {
+                    query = query.Where(q => q.Category_ID.HasValue && request.CategoryIds.Values.Contains(q.Category_ID.Value));
+                }
+            }
+            if (request.NewsIds != null && request.NewsIds.Values.Any())
+            {
+                if (request.NewsIds.Inverted)
+                {
+                    query = query.Where(n => !request.NewsIds.Values.Contains(n.Id));
+                }
+                else
+                {
+                    query = query.Where(n => request.NewsIds.Values.Contains(n.Id));
+                }
             }
             return query.Include(n => n.Category)
                         .OrderByDescending(o => o.PostDate)
@@ -158,9 +149,45 @@ namespace Demosite.Services
         {
             return nameof(GetPostsDateDictionary) + GetKeyComponent(categoryId);
         }
+
         private static string GetKeyComponent(int? value)
         {
             return value.HasValue ? $"_{value}" : string.Empty;
+        }
+
+        private NewsCategoryDto Map(Postgre.DAL.NewsCategory category)
+        {
+            if (category == null)
+            {
+                return null;
+            }
+            return new NewsCategoryDto
+            {
+                Id = category.Id,
+                Title = category.Title,
+                AlternativeTitle = category.AlternativeTitle,
+                Alias = category.Alias,
+                ShowOnStart = category.ShowOnStart ?? false,
+                SortOrder = category.SortOrder
+            };
+        }
+
+        private NewsPostDto Map(Postgre.DAL.NewsPost post)
+        {
+            if (post == null)
+            {
+                return null;
+            }
+            return new NewsPostDto
+            {
+                Id = post.Id,
+                Title = post.Title,
+                PostDate = DateOnly.FromDateTime(post.PostDate.GetValueOrDefault(new DateTime(2001, 01, 01))),
+                Brief = post.Brief,
+                Text = post.Text,
+                Category = Map(post.Category),
+                Published = post.StatusTypeId == 143
+            };
         }
     }
 }
