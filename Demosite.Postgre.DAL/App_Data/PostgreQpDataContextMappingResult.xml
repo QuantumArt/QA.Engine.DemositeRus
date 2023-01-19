@@ -134,11 +134,11 @@
     <attribute name="URL" mapped_name="URL" id="68704" type="String" is_localization="false" size="255" />
     <attribute name="Image" mapped_name="Image" id="68708" type="Image" is_localization="false" />
   </content>
-  <content id="30781" name="Настройки сайта" mapped_name="SiteSetting" plural_mapped_name="SiteSettings" use_default_filtration="true" virtual="0" user_query="0" split_articles="true">
-    <attribute name="Key" mapped_name="Key" id="68721" type="String" is_localization="false" size="255" />
-    <attribute name="Type" mapped_name="Type" id="68720" type="String" is_localization="false" size="255" />
-    <attribute name="StringValue" mapped_name="StringValue" id="68719" type="String" is_localization="false" size="255" />
-    <attribute name="ImageValue" mapped_name="ImageValue" id="68718" type="Image" is_localization="false" />
+  <content id="30782" name="Настройки сайта" mapped_name="SiteSetting" plural_mapped_name="SiteSettings" use_default_filtration="true" virtual="0" user_query="0" split_articles="true">
+    <attribute name="Key" mapped_name="Key" id="68725" type="String" is_localization="false" size="255" />
+    <attribute name="Type" mapped_name="Type" id="68726" type="String" is_localization="false" size="255" />
+    <attribute name="StringValue" mapped_name="StringValue" id="68727" type="String" is_localization="false" size="255" />
+    <attribute name="ImageValue" mapped_name="ImageValue" id="68728" type="Image" is_localization="false" />
   </content>
   <link id="88" self="1" content_id="538" linked_content_id="538" mapped_name="ItemDefinitionItemDefinitionArticle" plural_mapped_name="ItemDefinitionItemDefinitionArticles" />
   <link id="143" self="0" content_id="30769" linked_content_id="30770" mapped_name="SobytiyaFotosobytiyArticle" plural_mapped_name="SobytiyaFotosobytiyArticles" />
