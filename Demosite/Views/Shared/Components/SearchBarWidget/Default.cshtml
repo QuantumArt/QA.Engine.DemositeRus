@@ -8,13 +8,13 @@
           class="search-form"
           autocomplete="off">
         <div class="form__row search-form__row">
-            <div class="search-input">
+            <div class="search-form__search-input autoComplete_wrapper">
                 <input asp-for="Query" required minlength="3" maxlength="100" class="form-control autoComplete" size="16" spellcheck=false autocorrect="off" autocomplete="off" autocapitalize="off">
                 <input name="withCorrect" type="hidden" value="true" />
             </div>
-            <div class="search-btn__wrapper">
-                <button class="search-btn" type="submit">Найти</button>
-                <div class="search-btn__fake"></div>
+            <div class="search-buttons">
+                <button class="search-buttons__btn" type="submit">Найти</button>
+                <div class="search-buttons__btn-fake"></div>
             </div>
         </div>
         <div class="search-form__error search-form__error--hidden">Минимальная длина 3 символа</div>
