@@ -33,7 +33,7 @@ data:
   CaptchaSettings__BackgroundNoiseLevel: "#{captchaSettings.backgroundNoiseLevel}#"
   CaptchaSettings__DrawLineNoise: "#{captchaSettings.drawLineNoise}#"
   CaptchaSettings__Colors: "captchaSettings.colors"
-  CaptchaSettings__Referr: "#{captchaSettings.referrer}#"
+  CaptchaSettings__Referrer: "#{captchaSettings.referrer}#"
   CaptchaSettings__TextLength: "#{captchaSettings.textLength}#"
   CaptchaSettings__MaxAngle: "#{captchaSettings.maxAngle}#"
   CaptchaSettings__FontSize: "#{captchaSettings.fontSize}#"
