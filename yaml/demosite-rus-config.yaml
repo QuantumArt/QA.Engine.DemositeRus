@@ -4,6 +4,7 @@ metadata:
   name: demosite-rus-config
   namespace: #{k8snamepace}#
 data:
+  OnScreen__AdminSiteBaseUrl: "#{onscreenUrl}#"
   ConnectionStrings__DatabaseQPPostgre: "Server=#{postgre.db.server}#;Database=#{postgre.db.name}#;User Id=#{postgre.db.user}#;Password=#{postgre.db.password}#"
   QpSettings__IsStage: "#{isStage}#"
   QpSettings__DatabaseType: "postgres"
@@ -33,7 +34,7 @@ data:
   CaptchaSettings__BackgroundNoiseLevel: "#{captchaSettings.backgroundNoiseLevel}#"
   CaptchaSettings__DrawLineNoise: "#{captchaSettings.drawLineNoise}#"
   CaptchaSettings__Colors: "captchaSettings.colors"
-  CaptchaSettings__Referr: "#{captchaSettings.referrer}#"
+  CaptchaSettings__Referrer: "#{captchaSettings.referrer}#"
   CaptchaSettings__TextLength: "#{captchaSettings.textLength}#"
   CaptchaSettings__MaxAngle: "#{captchaSettings.maxAngle}#"
   CaptchaSettings__FontSize: "#{captchaSettings.fontSize}#"
