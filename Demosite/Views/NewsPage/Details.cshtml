@@ -5,7 +5,7 @@
     <div class="wrapper">
       @await Html.PartialAsync("../_BreadCrumbs.cshtml", Model.BreadCrumbs)
       <section class="page__section">
-        <onscreen-article id="@Model.Id" content-id="30757" title="@Model.Title">
+        <onscreen-article id="@Model.Id" content-id="30757" title="@Model.Title" published="@Model.Published">
           <div class="page-news-detail__box">
             <h1 class="page__main-title">@Model.Title</h1>
             <div class="page-news-detail__date">@Model.Date.ToString("MMMM d, yyyy")</div>
