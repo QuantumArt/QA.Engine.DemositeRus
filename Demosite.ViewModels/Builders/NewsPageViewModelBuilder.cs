@@ -55,6 +55,7 @@ namespace Demosite.ViewModels.Builders
                 Title = post.Title,
                 Date = post.PostDate,
                 Text = post.Text,
+                Published = post.Published,
                 CategoryName = post.Category.Title,
                 AllnewsUrl = newsPage.GetUrl(),
                 CommonText = commonText,

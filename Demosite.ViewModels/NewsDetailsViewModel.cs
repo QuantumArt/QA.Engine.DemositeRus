@@ -13,5 +13,6 @@ namespace Demosite.ViewModels
         public string AllnewsUrl { get; set; }
         public string CommonText { get; set; }
         public int Id { get; set; }
+        public bool Published { get; set; }
     }
 }
