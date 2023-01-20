@@ -29,6 +29,7 @@ namespace Demosite.ViewModels.Builders
                                       Date = p.PostDate,
                                       Brief = p.Brief,
                                       CategoryName = p.Category.Title,
+                                      Published = p.Published,
                                       Url = $"{newsPage.GetUrl()}/details/{p.Id}"
                                   }));
             viewModel.PageCount = (news.Count() + count - 1) / count;
