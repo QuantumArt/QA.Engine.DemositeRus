@@ -26,7 +26,7 @@
       if (!$(".pagination__list-item--current", newsPage).length) {
         return;
       }
-      $("[aria-current='page']>.page-link").off("click").on("click", function (e) {
+      $("[aria-current='page'] > .page-link").off("click").on("click", function (e) {
         e.stopPropagation();
         e.preventDefault();
         let pageId = $(this).data("page-id");
