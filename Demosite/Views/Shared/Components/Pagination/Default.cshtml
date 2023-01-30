@@ -15,9 +15,7 @@
             @if (Model.IsMovePreviousAvailable)
             {
                 <li class="page-item">
-                    <a href="@GetPageUrl(Model.Current - 1)"
-                     class="page-link"
-                     aria-label="Previous">
+                    <a href="@GetPageUrl(Model.Current - 1)" class="page-link" aria-label="Previous">
                         <div class="pagination__arrow pagination__arrow--prev"></div>
                     </a>
                 </li>
@@ -35,9 +33,7 @@
             @if (Model.IsMoveNextAvailable)
             {
                 <li class="page-item">
-                    <a href="@GetPageUrl(Model.Current + 1)"
-                     class="page-link"
-                     aria-label="Next">
+                    <a href="@GetPageUrl(Model.Current + 1)" class="page-link" aria-label="Next">
                         <div class="pagination__arrow pagination__arrow--next"></div>
                     </a>
                 </li>
