@@ -128,7 +128,7 @@ namespace Demosite
             }
             else
             {
-                cascheTagService.WithInvalidationByTimer();
+                cascheTagService.WithInvalidationByTimer(TimeSpan.FromSeconds(15));
             }
             //включаем инвалидацию по кештегам QP
             cascheTagService.WithCacheTrackers(invalidation =>
