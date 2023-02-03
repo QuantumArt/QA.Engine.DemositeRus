@@ -11,12 +11,9 @@
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.1.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="4.1.0" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="5.1.4" />
-    <PackageReference Include="QA.DotNetCore.Caching" Version="2.2.1-beta1" />
-    <PackageReference Include="QA.DotNetCore.Engine.AbTesting.Configuration" Version="2.2.1-beta1" />
-    <PackageReference Include="QA.DotNetCore.Engine.CacheTags" Version="2.2.1-beta1" />
-    <PackageReference Include="QA.DotNetCore.Engine.OnScreen" Version="2.2.1-beta1" />
-    <PackageReference Include="QA.DotNetCore.Engine.QpData.Configuration" Version="2.2.1-beta1" />
-    <PackageReference Include="QA.DotNetCore.Engine.Targeting" Version="2.2.1-beta1" />
+    <PackageReference Include="QA.DotNetCore.Engine.AbTesting.Configuration" Version="3.1.8" />
+    <PackageReference Include="QA.DotNetCore.Engine.OnScreen" Version="3.1.8" />
+    <PackageReference Include="QA.DotNetCore.Engine.QpData.Configuration" Version="3.1.8" />
     <PackageReference Include="SixLaborsCaptcha.Mvc.Core" Version="0.2.2" />
   </ItemGroup>
 

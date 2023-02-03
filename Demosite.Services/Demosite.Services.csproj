@@ -30,7 +30,7 @@
 
   <ItemGroup>
     <PackageReference Include="LinqKit.Microsoft.EntityFrameworkCore" Version="6.1.2" />
-    <PackageReference Include="QA.DotNetCore.Caching" Version="2.2.1-beta1" />
+    <PackageReference Include="QA.DotNetCore.Caching" Version="3.1.8" />
     <PackageReference Include="RazorLight" Version="2.1.0" />
     <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
   </ItemGroup>
