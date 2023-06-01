@@ -6,7 +6,7 @@ WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm install
+RUN npm ci
 
 COPY .browserslistrc ./
 COPY angular.json ./
@@ -17,10 +17,16 @@ COPY src ./src
 RUN npm run build:ssr -- --configuration=production
 
 FROM $RUNTIME_IMAGE as runtime
+RUN apt-get update && apt-get install -y --no-install-recommends dumb-init
+
 WORKDIR /app
 
 COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /app/package*.json ./
 COPY --from=build /app/dist ./dist
 
-CMD ["node", "dist/demosite/server/main.js"]
+ENV NODE_ENV production
+EXPOSE 4000
+
+USER node
+CMD ["dumb-init", "node", "dist/demosite/server/main.js"]
