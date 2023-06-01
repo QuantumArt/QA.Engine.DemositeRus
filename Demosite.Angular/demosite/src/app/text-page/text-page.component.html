@@ -1,0 +1,14 @@
+<ng-container *ngIf="pageDetails$ | async as pageDetails">
+  <div [class.page]="!pageDetails.hidetitle">
+    <div *ngIf="!pageDetails.hidetitle" class="wrapper">
+      <qa-breadcrumbs></qa-breadcrumbs>
+    </div>
+    <qa-widget-zone zone="Content" [nodeId]="pageDetails.id"></qa-widget-zone>
+    <div [innerHTML]="pageDetails.text | safe: 'html'"
+         qaDialogBehavior
+         qaFoldboxBehavior
+         qaTabsBehavior
+         (tabOpened)="initializeCardSlider($event)"></div>
+    <qa-widget-zone zone="ContentBelow" [nodeId]="pageDetails.id"></qa-widget-zone>
+  </div>
+</ng-container>

@@ -1,0 +1,9 @@
+<ng-container *ngIf="pageDetails$ | async as pageDetails">
+  <qa-widget-zone zone="Content" [nodeId]="pageDetails.id"></qa-widget-zone>
+  <section class="page__section">
+    <div class="wrapper">
+      <qa-sitemap-level [root]="siteStructureRoot$ | async"></qa-sitemap-level>
+    </div>
+  </section>
+  <qa-widget-zone zone="ContentBelow" [nodeId]="pageDetails.id"></qa-widget-zone>
+</ng-container>

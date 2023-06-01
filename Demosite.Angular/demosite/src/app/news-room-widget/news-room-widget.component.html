@@ -1,0 +1,10 @@
+﻿<section class="news">
+  <div class="wrapper">
+    <h2 class="news__title">{{ title }}</h2>
+    <div class="news__group">
+      <div *ngFor="let block of blocks$ | async; trackBy: trackById" class="news__col">
+        <qa-news-room-widget-tile [category]="block"></qa-news-room-widget-tile>
+      </div>
+    </div>
+  </div>
+</section>

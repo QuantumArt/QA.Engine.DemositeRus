@@ -1,0 +1,83 @@
+<ng-container *ngIf="pageDetails$ | async as pageDetails">
+  <h1 class="page__main-title">{{ pageDetails.details.title }}</h1>
+  <div class="page-news__filters">
+    <div class="page-news__filters-item">
+      <div class="select">
+        <div class="select__group">
+          <label class="select__label" for="yearFilter">Выберите год</label>
+          <div class="select__box">
+            <select #year id="yearFilter" (change)="changeFilter(year.value)">
+              <option value="0">Все</option>
+              <option *ngFor="let year of pageDetails.years" [attr.value]="year">{{ year }}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="page-news__filters-item">
+      <div class="select">
+        <div class="select__group">
+          <label class="select__label" for="monthFilter">Выберите месяц</label>
+          <div class="select__box">
+            <select #month id="monthFilter"
+                    [disabled]="year.value === '0'"
+                    (change)="changeFilter(year.value, month.value)">
+              <option *ngFor="let month of months" [value]="month[0]">{{ month[1] }}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <section data-news-section="">
+    <div class="page-news__list">
+      <div class="news-list" data-news-list="">
+        <div *ngFor="let item of pageDetails.items; trackBy: trackById" class="news-list__item">
+          <div class="card">
+            <div class="card__date">{{ item.postDate | date: "d MMMM, yyyy" }}</div>
+            <div class="card__title"><a [routerLink]="['details', item.id]">{{ item.title }}</a></div>
+            <div class="card__descr">{{ item.brief }}</div>
+            <a class="read-more card__read-more" [routerLink]="['details', item.id]">Читать...</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <ng-container *ngIf="currentPage$ | async as currentPage">
+      <div class="pagination" *ngIf="pageDetails.items.length">
+        <button
+          [ngClass]="{
+            'pagination__arrow': true,
+            'pagination__arrow--prev': true,
+            'pagination__arrow--hidden': currentPage === 1
+          }"
+          type="button"
+          aria-label="предыдущая страница"
+          (click)="changePage(currentPage - 1, pageDetails.pages.length, $event)"
+        >
+        </button>
+        <ul class="pagination__list">
+          <li *ngFor="let item of pageDetails.pages"
+            [ngClass]="{
+              'pagination__list-item': true,
+              'pagination__list-item--current': currentPage === item
+            }"
+            [attr.data-page-id]="item"
+          >
+            <a href (click)="changePage(item, pageDetails.pages.length, $event)">{{item}}</a>
+          </li>
+        </ul>
+        <button
+          [ngClass]="{
+            'pagination__arrow': true,
+            'pagination__arrow--next': true,
+            'pagination__arrow--hidden': currentPage === pageDetails.pages.length
+          }"
+          type="button"
+          aria-label="следующая страница"
+          (click)="changePage(currentPage + 1, pageDetails.pages.length, $event)"
+        >
+        </button>
+      </div>
+    </ng-container>
+  </section>
+</ng-container>

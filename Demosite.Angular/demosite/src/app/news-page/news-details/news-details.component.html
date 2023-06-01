@@ -1,0 +1,7 @@
+<div *ngIf="newsPost$ | async as newsPost" class="page-news-detail__box">
+  <h1 class="page__main-title">{{ newsPost.title }}</h1>
+  <div class="page-news-detail__date">{{ newsPost.postDate | date: 'd MMMM, yyyy' }}</div>
+  <div class="page-news-detail__descr" [innerHTML]="newsPost.text | safe: 'html'"></div>
+  <div class="page-news-detail__link"><a class="read-more" [routerLink]="['../../']">Все Новости</a></div>
+  <div class="page-news-detail__note">{{ newsPost.commonText }}</div>
+</div>

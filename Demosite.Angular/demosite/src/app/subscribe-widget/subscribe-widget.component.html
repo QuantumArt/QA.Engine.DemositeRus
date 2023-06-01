@@ -1,0 +1,208 @@
+﻿<div
+  class="page"
+  *ngIf="{
+    isSuccess: isSuccess$ | async,
+    isFailure: isFailure$ | async
+  } as states"
+>
+  <section
+    class="page__section"
+    *ngIf="states.isSuccess || states.isFailure; else formBlock"
+  >
+    <div class="wrapper">
+      <div class="page__block">
+        <h1 class="h1 center">
+          Ваше сообщение {{ states.isSuccess ? "отправлено" : "не отправлено" }}
+        </h1>
+        <div class="page__text center">
+          <p>
+            {{
+              states.isSuccess
+                ? "Спасибо за ваше обращение"
+                : "Извините, попробуйте позднее еще раз."
+            }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <ng-template #formBlock>
+    <section class="page__section">
+      <div class="wrapper">
+        <div class="page__block">
+          <div class="page__text center">
+            <div class="subscribe" *ngIf="categories$ | async as categories">
+              <form
+                class="form"
+                [formGroup]="subscribeForm"
+                (ngSubmit)="onSubmit()"
+              >
+                <div class="form__row">
+                  <div class="form__field">
+                    <div class="form__group">
+                      <div *ngFor="let gender of genders" class="radio">
+                        <label class="radio__label">
+                          <input
+                            formControlName="gender"
+                            [value]="gender.value"
+                            [checked]="gender.checked"
+                            class="radio__input"
+                            type="radio"
+                            name="gender"
+                          />
+                          <span class="radio__marker"></span>
+                          <span class="radio__text">{{ gender.title }}</span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form__row">
+                  <div class="form__field">
+                    <input
+                      formControlName="firstName"
+                      class="input"
+                      type="text"
+                      name="firstName"
+                      placeholder="Имя*"
+                    />
+                    <span
+                      *ngIf="
+                        firstName.invalid &&
+                        (firstName.dirty || firstName.touched)
+                      "
+                      class="feedback-form__error"
+                      data-error-name-field
+                      >Введите имя</span
+                    >
+                  </div>
+                  <div class="form__field">
+                    <input
+                      formControlName="lastName"
+                      class="input"
+                      type="text"
+                      name="lastName"
+                      placeholder="Фамилия*"
+                    />
+                    <span
+                      *ngIf="
+                        lastName.invalid && (lastName.dirty || lastName.touched)
+                      "
+                      class="feedback-form__error"
+                      data-error-name-field
+                      >Введите фамилию</span
+                    >
+                  </div>
+                </div>
+                <div class="form__row">
+                  <div class="form__field">
+                    <input
+                      formControlName="company"
+                      class="input"
+                      type="text"
+                      name="company"
+                      placeholder="Компания*"
+                    />
+                    <span
+                      *ngIf="
+                        company.invalid && (company.dirty || company.touched)
+                      "
+                      class="feedback-form__error"
+                      data-error-name-field
+                      >Введите название компании</span
+                    >
+                  </div>
+                  <div class="form__field">
+                    <input
+                      formControlName="email"
+                      class="input"
+                      type="text"
+                      name="email"
+                      placeholder="Email*"
+                    />
+                    <span
+                      *ngIf="email.invalid && (email.dirty || email.touched)"
+                      class="feedback-form__error"
+                      data-error-name-field
+                      >Введите email</span
+                    >
+                  </div>
+                </div>
+                <div class="form__row">
+                  <div class="form__field">
+                    <div class="form__group">
+                      <div
+                        *ngFor="
+                          let category of categories;
+                          trackBy: trackById;
+                          let i = index
+                        "
+                        class="checkbox"
+                        formArrayName="categories"
+                      >
+                        <label class="checkbox__label">
+                          <input
+                            [formControlName]="i"
+                            [checked]="true"
+                            [value]="category.id"
+                            class="checkbox__input"
+                            type="checkbox"
+                          />
+                          <span class="checkbox__marker"></span>
+                          <span class="checkbox__text">{{
+                            category.title
+                          }}</span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form__row">
+                  <div class="form__field">
+                    <div class="form__group">
+                      <div
+                        class="form__captcha"
+                        data-captcha
+                        data-captcha-defaultkey=""
+                      >
+                        <div class="form__captcha-code">
+                          <img class="img-rounded" src="/captcha" alt="" />
+                        </div>
+                        <div class="form__captcha-input">
+                          <input
+                            class="input"
+                            type="text"
+                            name="tokencaptcha"
+                            placeholder="Код с каптчи"
+                          />
+                        </div>
+                        <div class="form__captcha-btn">
+                          <button
+                            class="button button--refresh"
+                            value="captcha"
+                          >
+                            <img src="/static/images/refresh.svg" alt="" />
+                          </button>
+                        </div>
+                      </div>
+                      <button
+                        [disabled]="!subscribeForm.valid"
+                        class="button"
+                        value="subscribe"
+                        name="action_subscribe"
+                        type="submit"
+                      >
+                        Подписаться
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </ng-template>
+</div>

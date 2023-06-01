@@ -1,0 +1,49 @@
+﻿@use "src/mixins.scss" as mixin;
+
+.event {
+  &__slider-track {
+    margin: 0 -20px 20px;
+
+    @include mixin.min-laptop {
+      margin: 0 -30px 20px;
+    }
+
+    @include mixin.min-desktopXS {
+      margin: 0 -40px 20px;
+    }
+
+    @include mixin.min-desktop {
+      margin-left: 0;
+      margin-right: calc((100vw - 1680px) / -2 - 40px)
+    }
+  }
+
+  &__slider-item {
+    height: 180px;
+    max-width: 270px;
+  }
+
+  .swiper {
+    padding: 0 20px;
+
+    @include mixin.min-laptop {
+      padding: 0 30px;
+    }
+
+    @include mixin.min-desktopXS {
+      padding: 0 40px;
+    }
+
+    @include mixin.min-desktop {
+      padding-left: 0;
+    }
+  }
+
+  .swiper-slide {
+    width: auto;
+  }
+
+  .swiper-wrapper {
+    padding-right: 20px;
+  }
+}

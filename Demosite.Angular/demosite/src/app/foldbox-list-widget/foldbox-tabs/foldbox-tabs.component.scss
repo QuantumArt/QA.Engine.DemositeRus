@@ -1,0 +1,86 @@
+@use "src/mixins.scss" as mixin;
+
+::ng-deep {
+  .swiper-button-next,
+  .swiper-button-prev {
+    width: 24px;
+    height: 24px;
+    border-radius: 1px;
+    font-size: 0;
+    box-shadow: none;
+    border: 0;
+    background: none;
+    padding: 0;
+    cursor: pointer;
+
+    &::after {
+      display: none;
+    }
+
+    &::before {
+      content: "";
+      display: block;
+      position: absolute;
+      top: 50%;
+      width: 80%;
+      height: 80%;
+      border: 2px solid #e30611;
+      transform: translateY(-50%) rotate(45deg);
+    }
+  }
+
+  .swiper-button-next {
+    right: 10px;
+
+    &::before {
+      border-bottom-color: transparent;
+      border-left-color: transparent;
+    }
+  }
+
+  .swiper-button-prev {
+    left: 10px;
+
+    &::before {
+      border-top-color: transparent;
+      border-right-color: transparent;
+    }
+  }
+}
+
+.tabs {
+  margin: 0;
+
+  &__item-box {
+    padding: 20px 0;
+  }
+
+  &__nav-item {
+    margin: 0 20px 0 0;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+
+  .swiper {
+    margin: 0 -20px;
+    padding: 0 20px;
+    width: auto;
+
+    @include mixin.min-laptop {
+      margin: 0 -30px;
+      padding: 0 30px;
+    }
+
+    @include mixin.min-desktopXS {
+      margin: 0 -40px;
+      padding: 0 40px;
+    }
+
+    @include mixin.min-desktop {
+      margin: 0 -40px;
+      padding: 0 35px;
+    }
+  }
+}

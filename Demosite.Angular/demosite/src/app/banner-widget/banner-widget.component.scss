@@ -1,0 +1,75 @@
+﻿@use "src/mixins.scss" as mixin;
+@use "src/variables.scss" as var;
+
+.banner-slider {
+  &__box {
+    position: relative;
+  }
+
+  &__item {
+    height: 300px;
+    width: 100%;
+    display: block;
+  }
+
+  &__button {
+    position: absolute;
+    z-index: var.$layer-1;
+    top: 50%;
+    border: none;
+    display: none;
+    padding: 0;
+    background: none;
+    transform: translateY(-50%);
+    cursor: pointer;
+
+    &--prev {
+      left: 52px;
+      transform: translateY(-50%) rotate(180deg);
+    }
+
+    &--next {
+      right: 52px;
+    }
+  }
+
+  &__image-desktop {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  &__image-mobile {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+  }
+
+  &__pagination.swiper-pagination-bullets {
+    position: absolute;
+    z-index: var.$layer-1;
+    left: 50%;
+    bottom: 22px;
+    width: auto;
+    transform: translateX(-50%);
+  }
+
+  .swiper-pagination-bullet {
+    border-radius: 4px;
+    transition: width var.$default-transition;
+
+    &-active {
+      width: 24px;
+    }
+  }
+
+  @include mixin.min-laptop {
+    &__item {
+      height: 400px;
+    }
+
+    &__button {
+      display: block;
+    }
+  }
+}

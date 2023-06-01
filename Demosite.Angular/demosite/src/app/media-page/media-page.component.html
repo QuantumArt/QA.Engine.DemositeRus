@@ -1,0 +1,28 @@
+<ng-container *ngIf="pageDetails$ | async as pageDetails">
+  <qa-widget-zone zone="Content" [nodeId]="pageDetails.id"></qa-widget-zone>
+  <section class="page__section">
+    <div class="wrapper">
+      <qa-breadcrumbs></qa-breadcrumbs>
+      <ng-container *ngIf="firstDay$ | async as firstDay">
+        <h1 class="h1 center">{{ firstDay.title }}</h1>
+        <div class="page__block">
+          <qa-media-event [item]="firstDay"></qa-media-event>
+        </div>
+      </ng-container>
+    </div>
+  </section>
+  <section *ngIf="prevDays$ | async as prevDays" class="page__section">
+    <div class="wrapper" qaFoldboxBehavior>
+      <div *ngFor="let item of prevDays; trackBy: trackById" class="foldbox" data-foldbox>
+        <div class="foldbox__head" data-foldbox-head>
+          <div class="foldbox__title">{{ item.title }}</div>
+          <div class="foldbox__arrow"></div>
+        </div>
+        <div class="foldbox__body" data-foldbox-body>
+          <qa-media-event [item]="item"></qa-media-event>
+        </div>
+      </div>
+    </div>
+  </section>
+  <qa-widget-zone zone="ContentBelow" [nodeId]="pageDetails.id"></qa-widget-zone>
+</ng-container>

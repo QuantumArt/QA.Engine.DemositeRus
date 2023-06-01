@@ -1,0 +1,36 @@
+﻿<section class="foldbox" qaTabsBehavior (tabOpened)="initializeCardSlider($event)">
+  <div class="wrapper">
+    <h2 *ngIf="title" class="h2">{{ title }}</h2>
+    <div class="page__block">
+      <div class="tabs foldbox__tabs" data-tabs>
+        <div class="tabs__nav">
+          <div class="tabs__nav-box">
+            <div *ngFor="let item of items; trackBy: trackById; let isFirst = first"
+                 class="tabs__nav-item"
+                 [class.active]="isFirst"
+                 [attr.data-tabs-nav-item]="item.id">{{ item.title }}</div>
+          </div>
+        </div>
+        <div class="tabs__box">
+          <div *ngFor="let item of items; trackBy: trackById"
+               class="tabs__item"
+               [attr.data-tabs-item]="item.id">
+            <div class="tabs__item-box">
+              <div class="card-slider" data-cs>
+                <div class="card-slider__box foldbox__cards-box">
+                  <div class="card-slider__slides"
+                       data-cs-slider
+                       data-slider-count
+                       [innerHTML]="item.text | safe: 'html'">
+                  </div>
+                  <div class="card-slider__nav" data-cs-nav></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+

@@ -1,0 +1,6 @@
+<ul *ngIf="root" class="unordered-list">
+  <li *ngFor="let item of root.children; trackBy: trackById" [class.last-li-mapsite]="!item.children?.length">
+    <a qaRouterNavigation [attr.href]="item.href" [attr.class]="hasChildRoutes(item) || linkLevel === 1 ? 'unordered-list__title' : ''">{{ item.title }}</a>
+    <qa-sitemap-level [root]="item" [linkLevel]="linkLevel"></qa-sitemap-level>
+  </li>
+</ul>

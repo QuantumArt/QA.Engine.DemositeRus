@@ -1,0 +1,13 @@
+﻿input.ng-invalid.ng-dirty,
+input.ng-invalid.ng-touched,
+textarea.ng-invalid.ng-dirty,
+textarea.ng-invalid.ng-touched {
+  box-shadow: 0 0 0 2px #e30611;
+}
+
+input.ng-valid.ng-dirty,
+input.ng-valid.ng-touched,
+textarea.ng-valid.ng-dirty,
+textarea.ng-valid.ng-touched {
+  box-shadow: 0 0 0 2px #22aa3b;
+}

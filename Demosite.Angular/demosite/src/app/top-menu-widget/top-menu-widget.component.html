@@ -1,0 +1,66 @@
+<header class="header">
+  <div class="wrapper">
+    <div class="header__group">
+      <div class="logo">
+        <a [routerLink]="['/home']"><img src="/static/images/demo-logo.jpeg" alt="logo-image"></a>
+      </div>
+      <nav class="nav" [class.is-open-mobile]="menuOpened">
+        <div class="nav__burger" (click)="openMenu()"><img src="/static/images/menu.svg" alt="menu"></div>
+        <div class="nav__box">
+          <div class="nav__close" (click)="closeMenu()"><img src="/static/images/close.svg" alt="close menu"></div>
+          <div class="nav__menu">
+            <ul class="nav__list">
+              <li *ngFor="let item of items$ | async; trackBy: trackById"
+                  class="nav__list-item"
+                  [class.is-open]="item.isOpened">
+                <div class="menu-category menu-category--main">
+                  <a *ngIf="!item.children?.length else itemNotLink"
+                     class="menu-category__link"
+                     [attr.href]="item.href"
+                     qaRouterNavigation
+                     (click)="closeMenu()">{{ item.title }}</a>
+                  <ng-template #itemNotLink>
+                    <span class="menu-category__link">{{ item.title }}</span>
+                    <span class="menu-category__arrow" (click)="toggleSubMenu($event, item.id)"></span>
+                  </ng-template>
+                </div>
+                <div *ngIf="item.children?.length" class="nav__submenu">
+                  <div class="wrapper">
+                    <div class="nav__submenu-group">
+                      <ul class="menu"
+                          [style.display]="'block'"
+                          [@openClose]="item.isOpened || (isDesktop$ | async) ? 'open' : 'closed'">
+                        <li *ngFor="let subcol of item.children; trackBy: trackById"
+                            class="menu__item" [class.is-open]="subcol.isOpened">
+                          <div class="menu-category">
+                            <a class="menu-category__link"
+                               [attr.href]="subcol.href"
+                               qaRouterNavigation
+                               (click)="closeMenu()">{{ subcol.title }}</a>
+                            <span *ngIf="subcol.children?.length" class="menu-category__arrow"
+                                  (click)="toggleSubMenu($event, subcol.id)"></span>
+                          </div>
+                          <ul *ngIf="item.children?.length" class="menu"
+                              [style.display]="'block'"
+                              [@openClose]="subcol.isOpened || (isDesktop$ | async) ? 'open' : 'closed'">
+                            <li *ngFor="let subitem of subcol.children; trackBy: trackById" class="menu__item">
+                              <a class="menu-link"
+                                 [attr.href]="subitem.href"
+                                 qaRouterNavigation
+                                 (click)="closeMenu()">{{ subitem.title }}</a>
+                            </li>
+                          </ul>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+

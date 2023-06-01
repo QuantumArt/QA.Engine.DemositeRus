@@ -1,0 +1,6 @@
+﻿<div class="dialog">
+  <div class="popup__close" mat-dialog-close="true"><img alt="close menu" src="/static/images/close.svg"></div>
+  <div class="dialog__scrollable">
+    <div mat-dialog-content [style.max-width.px]="800" [innerHTML]="data.content | safe: 'html'"></div>
+  </div>
+</div>

@@ -1,0 +1,8 @@
+<div class="breadcrumbs">
+  <ul class="breadcrumbs__list">
+    <li *ngFor="let item of items$ | async; trackBy: trackById; last as isLast" class="breadcrumbs__list-item">
+      <a qaRouterNavigation *ngIf="!isLast" [attr.href]="item.href">{{ item.title }}</a>
+      <span *ngIf="isLast">{{ item.title }}</span>
+    </li>
+  </ul>
+</div>

@@ -1,0 +1,4 @@
+<qa-widget-zone *ngIf="nodeId$ | async as nodeId" zone="SiteHeaderZone" [nodeId]="nodeId"></qa-widget-zone>
+<router-outlet (activate)="updateCurrentNode($event)"></router-outlet>
+<qa-widget-zone *ngIf="nodeId$ | async as nodeId" zone="SiteFooterZone" [nodeId]="nodeId"></qa-widget-zone>
+

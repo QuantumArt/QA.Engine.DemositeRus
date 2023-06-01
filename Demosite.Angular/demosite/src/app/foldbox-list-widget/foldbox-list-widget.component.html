@@ -1,0 +1,6 @@
+﻿<ng-container *ngIf="items$ | async as items">
+  <qa-foldbox-tabs *ngIf="widgetType === 'Tab' else foldbox" [title]="title" [items]="items"></qa-foldbox-tabs>
+  <ng-template #foldbox>
+    <qa-foldbox-list [items]="items$ | async"></qa-foldbox-list>
+  </ng-template>
+</ng-container>

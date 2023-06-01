@@ -1,0 +1,32 @@
+﻿<section class="page__section">
+  <div class="wrapper">
+    <div class="banner-slider">
+      <div class="banner-slider__box">
+        <div *ngIf="items$ | async as items" class="banner-slider__slides">
+          <swiper [config]="swiperConfig">
+            <ng-template swiperSlide *ngFor="let item of items; trackBy: trackById">
+              <div *ngIf="!item.imageUrl else bannerImage" [innerHTML]="item.text"></div>
+              <ng-template #bannerImage>
+                <a class="banner-slider__item"
+                   [attr.href]="item.url || '#'"
+                   (click)="handleBannerClick($event, item.url)">
+                  <picture>
+                    <source media="(min-width: 1024px)" [attr.srcSet]="item.imageUrl">
+                    <img [attr.src]="item.imageUrl" width="335" height="400" alt="изображение баннера" >
+                  </picture>
+                </a>
+              </ng-template>
+            </ng-template>
+          </swiper>
+        </div>
+        <button #prevEl class="banner-slider__button banner-slider__button--prev" type="button" aria-label="Предыдущий слайд">
+          <img src="/static/images/banner-slider-right-arrow.svg">
+        </button>
+        <button #nextEl class="banner-slider__button banner-slider__button--next" type="button" aria-label="Следующий слайд">
+          <img src="/static/images/banner-slider-right-arrow.svg">
+        </button>
+        <div class="banner-slider__pagination"></div>
+      </div>
+    </div>
+  </div>
+</section>

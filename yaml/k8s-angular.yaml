@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: #{appName}#
+  namespace: #{k8snamepace}#
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: #{appName}#
+  template:
+    metadata:
+      labels:
+        app: #{appName}#
+        logging: enabled
+    spec:
+      containers:
+      - image: "||registry||/#{imageName}#:||version||"
+        name: #{appName}#
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 4000
+        resources:
+          limits:
+            memory: 1Gi
+          requests:
+            memory: 256Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: #{appName}#
+  namespace: #{k8snamepace}#
+spec:
+  ports:
+  - port: 80
+    targetPort: 4000
+  selector:
+    app: #{appName}#
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: #{appName}#
+  namespace: #{k8snamepace}#
+spec:
+  rules:
+  - host: #{appHost}#
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: #{appName}#
+            port: 
+              number: 80

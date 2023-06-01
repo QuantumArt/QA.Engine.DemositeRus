@@ -1,0 +1,55 @@
+﻿<section *ngIf="result$ | async as result else formBlock" class="page__section">
+  <div class="wrapper">
+    <div class="page__block">
+      <h1 class="h1 center">Ваше сообщение {{ result.succeed ? 'отправлено' : 'не отправлено' }}</h1>
+      <div class="page__text center">
+        <p>{{ result.succeed ? 'Спасибо за ваше обращение' : 'Извините, попробуйте позднее еще раз.' }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+<ng-template #formBlock>
+  <section class="page__section">
+    <div class="wrapper">
+      <form [formGroup]="feedbackForm"
+            class="feedback-form"
+            data-feedback-form
+            (ngSubmit)="onSubmit()">
+        <div class="feedback-form__item-container">
+          <input formControlName="name"
+                 class="feedback-form__item"
+                 placeholder="Как к вам обращаться"
+                 type="text"
+                 name="name">
+          <span *ngIf="name.invalid && (name.dirty || name.touched)"
+                class="feedback-form__error"
+                data-error-name-field>Введите имя</span>
+        </div>
+        <div class="feedback-form__item-container">
+          <input formControlName="phoneOrEmail"
+                 class="feedback-form__item"
+                 placeholder="Телефон или email"
+                 type="text"
+                 name="mobileOrEmail">
+          <span *ngIf="phoneOrEmail.invalid && (phoneOrEmail.dirty || phoneOrEmail.touched)"
+                class="feedback-form__error"
+                data-error-email-mobile-field>Неверный телефон или Email</span>
+        </div>
+        <div class="feedback-form__item-container-comment">
+        <textarea formControlName="text"
+                  class="feedback-form__item feedback-form__item-comment"
+                  placeholder="Комментарий"
+                  data-type="textarea"
+                  name="text"></textarea>
+          <span *ngIf="text.invalid && (text.dirty || text.touched)"
+                class="feedback-form__error"
+                data-error-text-field>Введите описание</span>
+        </div>
+        <button [disabled]="!feedbackForm.valid"
+                class="feedback-form__submit-btn"
+                type="submit">Отправить
+        </button>
+      </form>
+    </div>
+  </section>
+</ng-template>
