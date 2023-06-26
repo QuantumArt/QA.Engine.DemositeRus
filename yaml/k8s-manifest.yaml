@@ -20,6 +20,9 @@ spec:
         envFrom:
         - configMapRef:
             name: #{configmapName}#
+        env:
+        - name: QpSettings__IsStage
+          value: "#{isStage}#"          
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 80

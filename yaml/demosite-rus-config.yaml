@@ -6,7 +6,6 @@ metadata:
 data:
   OnScreen__AdminSiteBaseUrl: "#{onscreenUrl}#"
   ConnectionStrings__DatabaseQPPostgre: "Server=#{postgre.db.server}#;Database=#{postgre.db.name}#;User Id=#{postgre.db.user}#;Password=#{postgre.db.password}#"
-  QpSettings__IsStage: "#{isStage}#"
   QpSettings__DatabaseType: "postgres"
   QpSettings__CustomerCode: "#{customerCode}#"
   NewsNotificationServiceConfig__BaseURLNewsService: "#{notificationService.baseUrlService}#"
