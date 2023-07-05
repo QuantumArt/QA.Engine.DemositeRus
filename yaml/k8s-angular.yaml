@@ -15,7 +15,7 @@ spec:
         logging: enabled
     spec:
       containers:
-      - image: "||registry||/#{imageName}#:||version||"
+      - image: "#{registry}#/#{imageName}#:||version||"
         name: #{appName}#
         imagePullPolicy: IfNotPresent
         ports:
