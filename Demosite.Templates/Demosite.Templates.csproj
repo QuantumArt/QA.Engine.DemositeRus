@@ -5,11 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="QA.DotNetCore.Caching" Version="3.1.8" />
-    <PackageReference Include="QA.DotNetCore.Engine.Persistent.Interfaces" Version="3.1.8" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Update="CacheTags.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>CacheTags.cs</LastGenOutput>
@@ -26,6 +21,10 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>CacheTags.tt</DependentUpon>
     </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="QA.DotNetCore.Engine.QpData.Configuration" Version="3.2.22" />
   </ItemGroup>
 
 </Project>
