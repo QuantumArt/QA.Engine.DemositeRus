@@ -4,12 +4,13 @@
     <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
 
-   <ItemGroup>
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.7" />
+  <ItemGroup>
+    <ProjectReference Include="..\Demosite.Interfaces\Demosite.Interfaces.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Demosite.Interfaces\Demosite.Interfaces.csproj" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.35" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.35" />
   </ItemGroup>
 
 </Project>
