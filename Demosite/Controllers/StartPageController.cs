@@ -4,6 +4,8 @@ using QA.DotNetCore.Engine.Abstractions;
 using QA.DotNetCore.Engine.Routing;
 using System;
 using System.Linq;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using QA.DotNetCore.Engine.QpData;
 
 namespace Demosite.Controllers
 {
@@ -11,7 +13,7 @@ namespace Demosite.Controllers
     {
         public IActionResult Index()
         {
-            IAbstractItem firstChildPage = CurrentItem.GetChildren().OrderBy(i => i.SortOrder).FirstOrDefault();
+            IAbstractItem firstChildPage = CurrentItem.GetChildren().OfType<AbstractPage>().OrderBy(i => i.SortOrder).FirstOrDefault();
             return firstChildPage != null ? (IActionResult)new RedirectResult(firstChildPage.GetUrl(), false) : throw new Exception("Site is empty");
         }
     }
